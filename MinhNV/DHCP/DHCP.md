@@ -52,6 +52,7 @@ Nói một cách tổng quan hơn DHCP là dich vụ mang đến cho chúng ta n
 
 ##DHCP header
 
+<img src="https://www.technologyuk.net/internet/internet-technology/images/dhcp_frame_format.gif">
 Tên Field | Kích thước (byte) | Mô tả |
 --- | --- | --- |
 Op | 1 | *Operation Code*: Chỉ ra cho ta thấy loại thông điệp. Giá trị 1 là request message, 2 là reply message. |
