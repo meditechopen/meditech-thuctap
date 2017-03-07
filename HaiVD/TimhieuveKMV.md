@@ -51,10 +51,10 @@
 ### 2.2 Hiệu suất và cải tiến :
   - `CPU/Kernel` : được thừa kế rất nhiều từ các nhà sản xuất :
   <ul>
-  <li>`NUMA (Non-Uniform Memory Access)`: Truy cập bộ nhớ không đồng dạng NUMA là quá trình song song truy cập kiến trúc máy tính đi đôi với SMP (sysmetric multiprocessing: đa xử lý đối xứng) và MPP (massively parallel processing: xử lý song song “đồ sộ”) trong khả năng của nó để khai thác sức mạnh của hệ thống đa xử lý. </li>
-  <li>`CFS (Completely Fair Scheduler)` : là một quá trình lập lịch đã được sáp nhập vào bản phát hành 2.6.23 của hạt nhân Linux và là lịch trình mặc định. Nó xử lý phân bổ nguồn lực CPU để thực hiện các quy trình, và nhằm mục đích tối đa hóa việc sử dụng CPU tổng thể đồng thời tối đa hóa hiệu suất tương tác.</li>
-  <li>`RCU (Read Copy Update)` : Giúp xử lý tốt hơn các luồng dữ liệu chia sẻ. </li>
-  <li>`Up to 160 VCPUs` : Hỗ trợ tối đa lên đến 160 Virtual CPUs</li>
+  <li>NUMA (Non-Uniform Memory Access): Truy cập bộ nhớ không đồng dạng NUMA là quá trình song song truy cập kiến trúc máy tính đi đôi với SMP (sysmetric multiprocessing: đa xử lý đối xứng) và MPP (massively parallel processing: xử lý song song “đồ sộ”) trong khả năng của nó để khai thác sức mạnh của hệ thống đa xử lý. </li>
+  <li>CFS (Completely Fair Scheduler) : là một quá trình lập lịch đã được sáp nhập vào bản phát hành 2.6.23 của hạt nhân Linux và là lịch trình mặc định. Nó xử lý phân bổ nguồn lực CPU để thực hiện các quy trình, và nhằm mục đích tối đa hóa việc sử dụng CPU tổng thể đồng thời tối đa hóa hiệu suất tương tác.</li>
+  <li>RCU (Read Copy Update) : Giúp xử lý tốt hơn các luồng dữ liệu chia sẻ. </li>
+  <li>Up to 160 VCPUs : Hỗ trợ tối đa lên đến 160 Virtual CPUs</li>
   </ul>
 
 
