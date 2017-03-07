@@ -116,11 +116,11 @@ QEMU có thể tận dụng KVM khi chạy một kiến ​​trúc mục tiêu 
     `sudo aptitude install kvm libvirt-bin ubuntu-vm-builder bridge-utils`
 
     <ul>
-    <li>`libvirt-bin` : cung cấp libvirt mà bạn cần quản lý qemu và kvm bằng libvirt</li>
-    <li>`ubuntu-vm-builder` : Công cụ dưới dạng dòng lệnh giúp quản lý các máy ảo.</li>
-    <li>`qemu-kvm` : Phần phụ trợ cho KVM</li>
-    <li>`bridge-utils`: Cung cấp mạng kết nối bắc cầu từ máy ảo ra internet.</li>
-    <li>`virt-manager` : Virtual Machine Manager</li>
+    <li>libvirt-bin : cung cấp libvirt mà bạn cần quản lý qemu và kvm bằng libvirt</li>
+    <li>ubuntu-vm-builder : Công cụ dưới dạng dòng lệnh giúp quản lý các máy ảo.</li>
+    <li>qemu-kvm : Phần phụ trợ cho KVM</li>
+    <li>bridge-utils: Cung cấp mạng kết nối bắc cầu từ máy ảo ra internet.</li>
+    <li>virt-manager : Virtual Machine Manager</li>
     </ul>
 
 - Bước 3 : Chỉ quản trị viên (root user) và những người dùng thuộc libvirtd group có quyền sử dụng máy ảo KVM. Chạy lệnh sau để thêm tài khoản người dùng vào libvirtd group:
@@ -148,5 +148,6 @@ QEMU có thể tận dụng KVM khi chạy một kiến ​​trúc mục tiêu 
   Một danh sách máy ảo còn trống xuất hiện. Điều này thể hiện mọi thứ đang hoạt động đúng.
 
   <img src=http://i.imgur.com/nyYZFgJ.png>
+
 
   Như vậy là cài đặt xong.Để cài đặt một hệ điều hành trên KVM chúng ta tiến hành cài đặt nó trên Phần mềm Virtual Machine Manager.
