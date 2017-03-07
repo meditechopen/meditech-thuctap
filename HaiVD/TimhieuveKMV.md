@@ -11,7 +11,6 @@
 ### [2.4 Mô hình KVM QEMU](#qemu)
 ##  [III. Cài đặt KVM trên Linux Mint](#caidat)
 ### [3.1 Cài đặt KVM](#cdkvm)
-### [3.2]
 
 
 
