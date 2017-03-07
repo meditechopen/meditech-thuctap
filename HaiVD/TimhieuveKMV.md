@@ -9,6 +9,11 @@
 ### [2.2 Hiệu suất và cải tiến trong cấu trúc](#hieusuat)
 ### [2.3 Mô hình KVM Stack](#stack)
 ### [2.4 Mô hình KVM QEMU](#qemu)
+##  [III. Cài đặt KVM trên Linux Mint](#caidat)
+### [3.1 Cài đặt KVM](#cdkvm)
+### [3.2]
+
+
 
 -----------------------------------------
 
@@ -88,3 +93,60 @@ Mô hình :
 <img src=http://i.imgur.com/XVHHuxq.jpg>
 
 QEMU có thể tận dụng KVM khi chạy một kiến ​​trúc mục tiêu tương tự như kiến ​​trúc lưu trữ. Chẳng hạn, khi chạy qemu-system-x86 trên một bộ xử lý tương thích x86, bạn có thể tận dụng tăng tốc KVM - mang lại lợi ích cho máy chủ và hệ thống máy ảo của bạn.
+
+<a name="caidat"></a>
+## III. Cài đặt KVM trên Linux Mint
+
+<a name="cdkvm"></a>
+### 3.1 Cài đặt KVM
+- Bước 1 : KVM chỉ làm việc nếu CPU hỗ trợ ảo hóa phần cứng, Intel VT-x hoặc AMD-V. Để xác định CPU có những tính năng này không, thực hiện lệnh sau:
+
+  `egrep -c '(svm|vmx)' /proc/cpuinfo`
+
+  <img src=http://i.imgur.com/4j11OYS.png>
+
+  Giá trị 0 chỉ thị rằng CPU không hỗ trợ ảo hóa phần cứng trong khi giá trị khác 0 chỉ thị có hỗ trợ. Người dùng có thể vẫn phải kích hoạt chức năng hỗ trợ ảo hóa phần cứng trong BIOS của máy kể cả khi câu lệnh này trả về giá trị khác 0.Ở đây giá trị của mình là 4.
+- Bước 2 : Sử dụng lệnh sau để cài đặt KVM và các gói phụ   trợ. Virt-Manager là một ứng dụng có giao diện đồ họa dùng để quản lý máy ảo. Ta có thể dùng lệnh kvm trực tiếp nhưng libvirt và Virt-Manager giúp đơn giản hóa các bước hơn.
+   Đối với Lucid (10.04) hoặc phiên bản sau :
+
+    `sudo apt-get install qemu-kvm libvirt-bin bridge-utils virt-manager`
+
+   Đối với Karmic (9.10) hoặc phiên bản trước :
+
+    `sudo aptitude install kvm libvirt-bin ubuntu-vm-builder bridge-utils`
+
+    <ul>
+    <li>`libvirt-bin` : cung cấp libvirt mà bạn cần quản lý qemu và kvm bằng libvirt</li>
+    <li>`ubuntu-vm-builder` : Công cụ dưới dạng dòng lệnh giúp quản lý các máy ảo.</li>
+    <li>`qemu-kvm` : Phần phụ trợ cho KVM</li>
+    <li>`bridge-utils`: Cung cấp mạng kết nối bắc cầu từ máy ảo ra internet.</li>
+    <li>`virt-manager` : Virtual Machine Manager</li>
+    </ul>
+
+- Bước 3 : Chỉ quản trị viên (root user) và những người dùng thuộc libvirtd group có quyền sử dụng máy ảo KVM. Chạy lệnh sau để thêm tài khoản người dùng vào libvirtd group:
+
+   Đối với Karmic (9.10) và phiên bản sau (nhưng không phải 14.04 LTS)
+
+  `sudo add Username libvirtd`
+
+   Đối với phiên bản phát hành trước Karmic (9.10) :
+
+   `$ groups`
+
+   `$ sudo adduser Username kvm`
+
+   `$ sudo adduser Username libvirtd`
+
+
+
+   <img src=http://i.imgur.com/SoHk9rO.png>
+
+- Bước 4 : Sau khi chạy lệnh này, đăng xuất rồi đăng nhập trở lại. Nhập câu lệnh sau sau khi đăng nhập:
+
+  `virsh --connect qemu:///system list`
+
+  Một danh sách máy ảo còn trống xuất hiện. Điều này thể hiện mọi thứ đang hoạt động đúng.
+
+  <img src=http://i.imgur.com/nyYZFgJ.png>
+
+  Như vậy là cài đặt xong.Để cài đặt một hệ điều hành trên KVM chúng ta tiến hành cài đặt nó trên Phần mềm Virtual Machine Manager.
