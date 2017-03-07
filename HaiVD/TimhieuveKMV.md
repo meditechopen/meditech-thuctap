@@ -62,16 +62,16 @@
 
   - `Networking - Mạng`:
   <ul>
-  <li>`Vhost-net` : chưa tìm hiểu được.</li>
-  <li>`SR-IOV`: chưa tìm hiểu được.</li>
+  <li>Vhost-net : chưa tìm hiểu được.</li>
+  <li>SR-IOV: chưa tìm hiểu được.</li>
   </ul>
 
 
   - `Block I/O - Khối vào/ra` :
   <ul>
-  <li>`AIO (Asynchronous I/O)` : Hỗ trợ xử lý các luồng I/O khác nhau hoạt động chồng chéo với nhau.</li>
-  <li>`MSI ` : Ngắt kết nối thiết bị bus bus PCI </li>
-  <li>`Scatter Gather` : Giúp cải tiến I/O để xử lý các bộ nhớ đệm dữ liệu</li>
+  <li>AIO (Asynchronous I/O) : Hỗ trợ xử lý các luồng I/O khác nhau hoạt động chồng chéo với nhau.</li>
+  <li>MSI  : Ngắt kết nối thiết bị bus bus PCI </li>
+  <li>Scatter Gather: Giúp cải tiến I/O để xử lý các bộ nhớ đệm dữ liệu</li>
   </ul>
 
 <a name="stack"></a>
@@ -110,7 +110,7 @@ QEMU có thể tận dụng KVM khi chạy một kiến ​​trúc mục tiêu 
 
     `sudo apt-get install qemu-kvm libvirt-bin bridge-utils virt-manager`
 
-   Đối với Karmic (9.10) hoặc phiên bản trước :
+   Đối với Karmic (9.10) hoặc phiên bản trước :
 
     `sudo aptitude install kvm libvirt-bin ubuntu-vm-builder bridge-utils`
 
