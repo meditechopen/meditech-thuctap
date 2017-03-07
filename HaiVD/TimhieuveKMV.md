@@ -5,8 +5,10 @@
 ###   [1.1 Định nghĩa](#dinhnghia)
 ###   [1.2 Lịch sử ](#lichsu)
 ##  [II.Cấu trúc KVM](#cautruc)
-### [1.Mô hình KVM Stack](#stack)
-### [2.Mô hình KVM QEMU](#qemu)
+### [2.1 Cấu trúc tổng quan](#tongquan)
+### [2.2 Hiệu suất và cải tiến trong cấu trúc](#hieusuat)
+### [2.3 Mô hình KVM Stack](#stack)
+### [2.4 Mô hình KVM QEMU](#qemu)
 
 -----------------------------------------
 
@@ -29,14 +31,47 @@
 <a name="cautruc"></a>
 ## II. Cấu trúc KVM
 
+<a name="tongquan"></a>
+### 2.1 Cấu trúc tổng quan
+
+  <img src="http://i.imgur.com/8XkZY4C.png">
+
+   - Khi sử dụng KVM, máy ảo sẽ chạy như một tiến trình trên máy chủ Linux.
+   - Các CPU ảo (Virtual CPUs) được xử lý như các luồng thông thường,được xử lý theo lập lịch của Linux.
+   - Máy ảo được thừa kế các tính năng như NUMA (Non-uniform memory access) và HugePages trong linux.
+   - Ổ đĩa, card mạng, thiết bị vào/ra ảnh của máy ảo sẽ ảnh hưởng một phần đến máy chủ vật lý.
+   - Lưu lượng mạng thường đường truyền qua card Brige.
+
+<a name="hieusuat"></a>
+### 2.2 Hiệu suất và cải tiến :
+  - `CPU/Kernel` : được thừa kế rất nhiều từ các nhà sản xuất :
+  <ul>
+  <li>`NUMA (Non-Uniform Memory Access)`: Truy cập bộ nhớ không đồng dạng NUMA là quá trình song song truy cập kiến trúc máy tính đi đôi với SMP (sysmetric multiprocessing: đa xử lý đối xứng) và MPP (massively parallel processing: xử lý song song “đồ sộ”) trong khả năng của nó để khai thác sức mạnh của hệ thống đa xử lý. </li>
+  <li>`CFS (Completely Fair Scheduler)` : là một quá trình lập lịch đã được sáp nhập vào bản phát hành 2.6.23 của hạt nhân Linux và là lịch trình mặc định. Nó xử lý phân bổ nguồn lực CPU để thực hiện các quy trình, và nhằm mục đích tối đa hóa việc sử dụng CPU tổng thể đồng thời tối đa hóa hiệu suất tương tác.</li>
+  <li>`RCU (Read Copy Update)` : Giúp xử lý tốt hơn các luồng dữ liệu chia sẻ. </li>
+  <li>`Up to 160 VCPUs` : Hỗ trợ tối đa lên đến 160 Virtual CPUs</li>
+  </ul>
 
 
-  <img src="http://i.imgur.com/uYUebsU.png">
+  - `Memory- Bộ nhớ`
+  Hỗ trợ HugePages( giúp quản lý và cải thiện hiệu suất đang kể cho bộ nhớ) và tối ưu hóa cho các môi trường đòi hỏi tiêu tốn bộ nhớ.
 
-   - Bản chất mỗi máy ảo có một hoặc nhiều VCPU(Virtual CPU ), mỗi VCPU sẽ sử dụng cơ chế maping trực tiếp đến từng CPU của máy chủ vật lý
+  - `Networking - Mạng`:
+  <ul>
+  <li>`Vhost-net` : chưa tìm hiểu được.</li>
+  <li>`SR-IOV`: chưa tìm hiểu được.</li>
+  </ul>
+
+
+  - `Block I/O - Khối vào/ra` :
+  <ul>
+  <li>`AIO (Asynchronous I/O)` : Hỗ trợ xử lý các luồng I/O khác nhau hoạt động chồng chéo với nhau.</li>
+  <li>`MSI ` : Ngắt kết nối thiết bị bus bus PCI </li>
+  <li>`Scatter Gather` : Giúp cải tiến I/O để xử lý các bộ nhớ đệm dữ liệu</li>
+  </ul>
 
 <a name="stack"></a>
-### 2.1 Mô hình KVM Stack
+### 2.3 Mô hình KVM Stack
 
 <img src="http://i.imgur.com/DHuQKkm.png">
 
@@ -47,6 +82,9 @@ Trong đó :
 - `Kernel support` : Chính là KVM, cung cấp một module làm hạt nhân cho hạ tầng ảo hóa (kvm.ko) và một module kernel đặc biệt hỗ trợ các vi xử lý VT-x hoặc AMD-V (kvm-intel.ko hoặc kvm-amd.ko).
 
 <a name="qemu"></a>
-### 2.2 Mô hình KVM & QEMU
+### 2.4 Mô hình KVM & QEMU
 Mô hình :
+
 <img src=http://i.imgur.com/XVHHuxq.jpg>
+
+QEMU có thể tận dụng KVM khi chạy một kiến ​​trúc mục tiêu tương tự như kiến ​​trúc lưu trữ. Chẳng hạn, khi chạy qemu-system-x86 trên một bộ xử lý tương thích x86, bạn có thể tận dụng tăng tốc KVM - mang lại lợi ích cho máy chủ và hệ thống máy ảo của bạn.
