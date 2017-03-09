@@ -161,6 +161,7 @@ QEMU có thể tận dụng KVM khi chạy một kiến ​​trúc mục tiêu 
 
   Đầu tiên kiểm tra xem đã có đầy đủ tất cả các gói phụ trợ hay chưa :
   <img src="http://i.imgur.com/FaRnGB3.png">
+  
    Có tổng cộng tất cả 11 gói :
    - gir1.2-spice-client-glib-2.0
    - gir1.2-spice-client-gtk-2.0
