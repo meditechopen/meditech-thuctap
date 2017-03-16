@@ -9,7 +9,7 @@ Lần đầu tiên ra mắt vào năm 1999, Nagios đã có hàng ngàn dự án
 Nagios theo dõi toàn bộ cơ sở hạ tầng CNTT của bạn để đảm bảo hệ thống, ứng dụng, dich vụ và quy trình kinh quanh đnag hoạt động tốt. Trong trường hợp bị lỗi, Nagios có thể cảnh báo nhân viên kỹ thuật các vấn đề, cho phép họ bắt đầu quá trình phục hồi trước khi ảnh hưởng đến quá trình kinh doanh, người sử dụng, hoặc khách hàng.
 Được thiết kế với khả năng mở rộng và tính linh hoạt trong, Nagios mang đến cho bạn sự an tâm đến từ hiểu biết quy trình kinh doanh của tổ chức bạn sẽ không bị ảnh hưởng bởi sự cố ngừng hoạt động không rõ nguyên nhân.
 
-###Chức năng:
+### Chức năng:
 - Lên kế hoạch cho việc nâng cấp cơ sở hạ tầng trước khu hệ thống lỗi thời gây ra lỗi.
 - Ứng phó với các vấn đề ngay khi có dấu hiệu đầu tiên.
 - Tự động sửa chữa các vấn đề khi chúng đượcn phát hiện.
@@ -22,7 +22,7 @@ Nagios theo dõi toàn bộ cơ sở hạ tầng CNTT của bạn để đảm b
 - Thông báo cho người giám sát khi máy chủ hay dịch vụ có vấn đề và được giải quyết.
 - Tùy chọn giao diện web để xem tình trạng mạng hiện có, thông báo và lịch sử các vấn đề, đăng nhập tập tin,…
 
-###Đặc điểm:
+### Đặc điểm:
 - Giám sát toàn diện.
  -  Khả năng để giám sát các ứng dụng, dịch vụ, hệ điều hành, giao thức mạng, hệ thống số liệu và các thành phần cơ sở hạ tầng với một công cụ duy nhất.
  - API mạnh mẽ cho phép giám sát dễ dàng các ứng dụng và tùy chỉnh các dịch vụ, và các hệ thống.
@@ -60,8 +60,8 @@ Nagios theo dõi toàn bộ cơ sở hạ tầng CNTT của bạn để đảm b
  - Không giới hạn truy cập vào mã nguồn.
  - Phát hành theo giấy phép GPL (General Public License_Giấy phép công cộng).
 
-##2. Kiến trúc và phương thức hoạt động.
-###Kiến trúc 
+## 2. Kiến trúc và phương thức hoạt động.
+### Kiến trúc 
 Hệ thống Nagios gồm hai phần chính:
 
 - **Nagios core.**
@@ -76,22 +76,22 @@ Plugins xử lý đối số dòng lệnh, đi về các doanh nghiệp thực h
 
 Ngoài ra, còn có các thành phần Nagios Frontends, Nagios Configtools.
 
-###Phương thức hoạt động.
+### Phương thức hoạt động.
 
 <img src="http://3.bp.blogspot.com/-fS8xNLDPGCY/VqJQXmeKtHI/AAAAAAAAB5Q/YZiiaAPTESY/s1600/image009.png">
 
 
 Nagios có 5 cách thực thi các hành động kiểm tra:
-####Kiểm tra dịch vụ trực tiếp: 
+#### Kiểm tra dịch vụ trực tiếp: 
 Đối với các dịch vụ mạng có giao thức giao tiếp qua mạng như SMTP, HTTP, FTP,… Nagios có thể tiến hành kiểm tra trực tiếp một dịch vụ xem nó đang hoạt động hay không bằng cách gửi truy vấn kết nối dịch vụ đến server dịch vụ và đợi kết quả trả về. Các plugin phục vụ kiểm tra này được đặt ngay trên server Nagios.
-####Chạy các plugin trên máy ở xa bằng secure shell: 
+#### Chạy các plugin trên máy ở xa bằng secure shell: 
 Nagios server không có cách nào có thể truy cập trực tiếp client để theo dõi những thông tin như tình trạng sử dụng ổ đĩa, swap, tiến trình … Để làm được việc này thì trên máy được giám sát phải cài plugin cục bộ. Nagios sẽ điểu khiển các plugin cục bộ trên client qua secure shell ssh bằng plugin check_by_ssh. Phương pháp này yêu cầu một tài khoản truy cập host được giám sát nhưng nó có thể thực thi được tất cả các plugin được cài trên host đó.
-####Bộ thực thi plugin từ xa (NRPE - Nagios Remote Plugin Executor)
+#### Bộ thực thi plugin từ xa (NRPE - Nagios Remote Plugin Executor)
 
 NRPE là một addon đi kèm với Nagios. Nó trợ giúp việc thực thi các plugin được cài đặt trên máy/thiết bị được giám sát. NRPE được cài trên các host được giám sát. Khi nhận được truy vấn từ Nagios server thì nó gọi các plugin cục bộ phù hợp trên host này, thực hiện kiểm tra và trả về kết quả cho Nagios server. Phương pháp này không đòi hỏi tài khoản truy cập host được giám sát như sử dụng ssh. Tuy nhiên cũng như ssh các plugin phục vụ giám sát phải được cài đặt trên host được giám sát. NRPE có thể thực thi được tất cả các loại plugin giám sát. Nagios có thể điều khiển máy cài NRPE kiểm tra các thông số phần cứng, các tài nguyên, tình trạng hoạt động của máy đó hoặc sử dụng NRPE để thực thi các plugin yêu cầu truy vấn dịch vụ mạng đến một máy thứ 3 để kiểm tra hoạt động của các dịch vụ mạng như http, ftp, mail…
-####Giám sát qua SNMP  
+#### Giám sát qua SNMP  
 Cốt lõi của giao thức SNMP (SimpleNetwork Management Protocol )là tập hợp đơn giản các hoạt động giúp nhà quản trị mạng có thể quản lý, thay đổi trạng thái thiết bị. Hiện nay rất nhiều thiết bị mạng hỗ trợ giao thức SNMP như Switch, router, máy in, firewall ... Nagios cũng có khả năng sử dụng giao thức SNMP để theo dõi trạng thái của các client, các thiết bị mạng có hỗ trợ SNMP. Qua SNMP, Nagios có được thông tin về tình trạng hiện thời của thiết bị. Ví dụ như với SNMP, Nagios có thể biết được các cổng của Switch, router có mở hay không, thời gian Uptime (chạy liên tục) là bao nhiêu…
-####NSCA (Nagios Service Check Acceptor)
+#### NSCA (Nagios Service Check Acceptor)
 Nagios được coi là một phần mềm rất mạnh vì nó dễ dàng được mở rộng và kết hợp với các phần mềm khác. Nó có thể tổng hợp thông tin từ các phần mềm kiểm tra của hãng thứ ba hoặc các tiến trình Nagios khác về trạng thái của host/dịch vụ. Như thế Nagios không cần phải lập lịch và chạy các hành động kiểm tra host/dịch vụ mà các ứng dụng khác sẽ thực hiện điểu này và báo cáo thông tin về cho nó. Và các ứng dụ ng kiểm tra có thể tận dụng được khả năng rất mạnh của Nagios là thông báo và tổng hợp báo cáo. Nagios sử dụng công cụ NSCA để gửi các kết quả kiểm tra từ ứng dụ ng của bạn về server Nagios. Công cụ này giúp cho thông tin gửi trên mạng được an toàn hơn vì nó được mã hóa và xác thực.
 
 
