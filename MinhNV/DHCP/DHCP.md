@@ -73,7 +73,7 @@ SName | 64 | *Server Name* Tên của server, có thể là domain của server 
 File | 128 | *Boot Filename* Với client, khởi động thông điệp DHCPDiscover. Với server thì nó dùng để gửi đi các thông điệp Off |
 Options | Variable | Các tùy chọn, các thông số đi kèm (nếu có) |
 
-#Cài đặt và cấu hình DHCP
+# Cài đặt và cấu hình DHCP
 Mô hình triển khai 
 
 <img src="http://i.imgur.com/CaHMm6I.png">
