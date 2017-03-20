@@ -28,15 +28,15 @@ Sử dụng lệnh ``apt-get install virtinst`` để tải gói phụ trợ v�
 
  - Tải file image (giống như file ghost) về để khởi động, ví dụ này sẽ images linux được thu gọn. File được đặt trong thư mục chứa images của KVM ( ``/var/lib/libvirt/images``)
 
-``sh
+```sh
 cd /var/lib/libvirt/images
 wget wget https://ncu.dl.sourceforge.net/project/gns-3/Qemu%20Appliances/linux-microcore-3.8.2.img
-``
+```
 
 img src="http://i.imgur.com/4vowYDx.png">
 
 - Tạo VM từ IMG:
-``sh
+```sh
 sudo virt-install \
      -n VM01 \
      -r 128 \
@@ -47,7 +47,7 @@ sudo virt-install \
      --hvm --virt-type kvm \
      --vnc --noautoconsole \
      --import
-``
+```
 
 Trong đó: 
 - n: tên máy ảo
@@ -67,7 +67,7 @@ Kiểm tra các máy ảo VM: ``virsh list --all``
 - Tạo VM bằng cách tải cái gói từ trên internet về cài đặt
 
 
-``sh
+```sh
 virt-install \
 --name vmname \
 --ram 1024 \
@@ -84,14 +84,14 @@ virt-install \
 
 - Tạo VM bằng cách cài đặt từ file .iso
 
-``sh 
+```sh 
 virt-install --name vmname --ram 1024 --vcpus=1 \
 --disk path=/var/lib/libvirt/images/vmname.img,size=20,bus=virtio \
 --network bridge=br0 \
 --cdrom /home/tannt/ubuntu-14.04.4-server-amd64.iso \
 --graphics none --console pty,target_type=serial --hvm \
 --os-variant ubuntutrusty --virt-type=kvm --os-type Linux
-``
+```
 
 
 
@@ -105,5 +105,4 @@ virt-install --name vmname --ram 1024 --vcpus=1 \
 
 
 
--
->>>>>>> origin/master
+
