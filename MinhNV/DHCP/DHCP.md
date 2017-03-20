@@ -1,6 +1,6 @@
 
-#DHCP
-##Khái niệm:
+# DHCP
+## Khái niệm:
 DHCP là viết tắt của Dynamic Host Configuration Protocol:
 
 Giao thức Cấu hình Host Động DHCP được thiết kế làm giảm thời gian chỉnh cấu hình cho mạng TCP/IP bằng cách tự động gán các địa chỉ IP cho khách hàng khi họ vào mạng.
@@ -15,14 +15,14 @@ Nói một cách tổng quan hơn DHCP là dich vụ mang đến cho chúng ta n
 - Sự linh hoạt
 - Khả năng mở rộng.
 
-##Chức năng:
+## Chức năng:
 - Mỗi thiết bị trên mạng cơ sở TCP/IP phải có một địa chỉ IP duy nhất để truy cập mạng và các tài nguyên của nó. Không có DHCP, cấu hình IP phải được thực hiện một cách thủ công cho các máy tính mới, các máy tính di chuyển từ mạng con này sang mạng con khác, và các máy tính được loại bỏ khỏi mạng.
 
 - Bằng việc phát triển DHCP trên mạng, toàn bộ tiến trình này được quản lý tự động và tập trung. DHCP server bảo quản vùng của các địa chỉ IP và giải phóng một địa chỉ với bất cứ DHCP client có thể khi nó có thể ghi lên mạng. Do là cơ chế động nên các IP đã được cấp phát nhưng trong một khoảng thời gian nhất định mà không còn hoạt động sẽ được thu hồi và cấp lại cho máy khác khi tham gia mạng.
 
 
 
-##Các thông điệp DHCP:
+## Các thông điệp DHCP:
 
 - **DHCP Discover**: Một DHCP Client khi mới tham gia vào hệ thống mạng, nó sẽ yêu cầu thông tin địa chỉ IP từ DHCP Server bằng cách broadcast một gói DHCP Discover. Địa chỉ IP nguồn trong gói là 0.0.0.0 bởi vì client chưa có địa chỉ IP.
 
@@ -38,7 +38,7 @@ Nói một cách tổng quan hơn DHCP là dich vụ mang đến cho chúng ta n
 
 - **DHCP Release**: Client gửi bản tin này đến server để ngừng thuê IP. Khi nhận được bản tin này, server sẽ thu hồi lại IP đã cấp cho Client, khi đó client sẽ không được cấu hình IP.
 
-##Cơ chế hoạt động 
+## Cơ chế hoạt động 
 
 <img src="https://4.bp.blogspot.com/-a7zDnDRnrdE/V2HsgvgsNYI/AAAAAAAAAGQ/cOW7xedGlaw84kmRHWKOOebp62tb_FZuACLcB/s1600/dhcp.jpg">
 
@@ -50,7 +50,7 @@ Nói một cách tổng quan hơn DHCP là dich vụ mang đến cho chúng ta n
 
 - Bước 4: Máy Server được Client chấp nhận sẽ gửi ngược lại một gói tin DHCP ACK như một lời xác nhận, cho biết địa chỉ IP đó, Subnet Mask đó và thời hạn cho sử dụng đó sẽ chính thức được áp dụng. Ngoài ra server còn gửi kèm những thông tin bổ xung như địa chỉ Gateway mặc định, địa chỉ DNS Server.
 
-##DHCP header
+## DHCP header
 
 <img src="https://www.technologyuk.net/internet/internet-technology/images/dhcp_frame_format.gif">
 
@@ -73,7 +73,7 @@ SName | 64 | *Server Name* Tên của server, có thể là domain của server 
 File | 128 | *Boot Filename* Với client, khởi động thông điệp DHCPDiscover. Với server thì nó dùng để gửi đi các thông điệp Off |
 Options | Variable | Các tùy chọn, các thông số đi kèm (nếu có) |
 
-#Cài đặt và cấu hình DHCP
+# Cài đặt và cấu hình DHCP
 Mô hình triển khai 
 
 <img src="http://i.imgur.com/CaHMm6I.png">
