@@ -164,6 +164,7 @@ QEMU có thể tận dụng KVM khi chạy một kiến ​​trúc mục tiêu 
 
   Đầu tiên kiểm tra xem đã có đầy đủ tất cả các gói phụ trợ hay chưa :
   <img src="http://i.imgur.com/FaRnGB3.png">
+  
    Có tổng cộng tất cả 11 gói :
    - gir1.2-spice-client-glib-2.0
    - gir1.2-spice-client-gtk-2.0
@@ -181,21 +182,26 @@ Nếu thiếu gói nào thì các bạn hãy cài đặt gói ấy để tránh 
 Bây giờ chúng ta sẽ tiến hành cài đặt
   - Bước 1 : Mở Virtual Machine Manager lên xuất hiện hộp thoại, Chọn File/ New Virtual Machine xuất hiện hộp thoại  :
   <img src=http://i.imgur.com/QnxOEvn.png>
+  
   - Bước 2 : Trỏ Browse đến file iso hệ điều hành cần cài đặt :
   <img src=http://i.imgur.com/XZjrYsK.png>
-
-  - Bước 3 : Tùy chỉnh thông số máy ảo RAM,CPU
+  
+  - Bước 3 : Tùy chỉnh thông số máy ảo RAM,CPU :
+  
   <img src=http://i.imgur.com/eW4c5x6.png>
-
-  - Bước 4 : Tùy chọn dung lượn ổ cứng
+  
+  - Bước 4 : Tùy chọn dung lượn ổ cứng: 
+  
   <img src=http://i.imgur.com/zlVlrCa.png>
-
-  - Bước 5 : Đặt tên cho máy ảo và tùy chọn cấu hình, card mạng.
+  
+  - Bước 5 : Đặt tên cho máy ảo và tùy chọn cấu hình, card mạng:
   <img src=http://i.imgur.com/I8lc7bL.png>
-
-  - Bước 6 : Tiến hành cài đặt hệ điều hành như bình thường
+   
+  - Bước 6 : Tiến hành cài đặt hệ điều hành như bình thường : 
   <img src=http://i.imgur.com/LY4pA7o.png>
-  - Sau khi cài đặt xong :
+  
+  - Sau khi cài đặt xong :
+  
   <img src=http://i.imgur.com/SJfiiE8.png>
 
    Theo mình cảm nhận so với VMware thì tốc độ xử lý nhanh hơn rất nhiều.
