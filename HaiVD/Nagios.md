@@ -8,6 +8,7 @@
 ###  [1.4 Đặc điểm](#dacdiem)
 ###  [1.5 Kiến trúc và tổ chức hoạt động](#kientructochuc)
 ####  [1.5.1 Kiến trúc của Nagios](#kientruc)
+#### [1.5.2 Cách tổ chức hoạt động](#tochuchd)
 
 
 
@@ -76,23 +77,25 @@
 <a name="kientruc"></a>
 ### 1.5.1 Kiến trúc của Nagios
   Hệ thống Nagios gồm 2 thành phần chính :
-  - Lõi Nagios
-  - Các Plugin
+  - Nagios Core
+  - Nagios Plugin
 
-  Phần lõi Nagios có chức năng quản lý các Host/Dịch vụ được giám sát, thu thập các kết quả kiểm tra host/dịch vụ từ các Plugin gửi về, biểu diễn trên gia diện chương trình, lưu trữ và thông báo cho người quản trị. Ngoài ra nó còn tổng hợp và đưa ra các báo cáo về tình hình hoạt động chung hoặc của từng host/dịch vụ trong một khoảng thời gian nào đó.
+  `Nagios core` là công cụ giám sát và cảnh báo, nó làm việc như các ứng dụng chính trên hàng trăm dự ansNagios được xây dựng. Nó làm việc như là lịch trình sự kiện cơ bản, xử lý sự kiện,và quản lý thông báo cho các phần tử được theo dõi. Nó khắc họa một sooss API (Application Programming Interface_Giao diện lập trình ứng dụng) được sử dụng để mở rộng khả năng của mình để thực hiện nhiệm vụ bổ sung, được thực hiện như một tiến trình được viết bằng C vì lý do hiệu suất, và được thiết kế để chạy tự nhiên trên hệ thống Linux/* nix.
 
-  Plugin là một bộ phận trực tiếp thực hiện kiểm tra host/dịch vụ. Mỗi loại dịch vị đều có một Plugin riêng biệt được viết để ohuc vụ riêng cho vông ciêc kiểm tra dịch vụ đó. Plugin là các script (Perl, C,...) hay các tệp đã được biên dịch (executable). Khi cần thực hiện kiểm tra một host/dịch vụ nào đó,Nagios chỉ việc gọi plugin tương ứng và nhận kết quả kiểm tra từ chúng. Với thiết kế như vậy, hệ thống Nagios rất dễ dàng được mở rộng và phát triển. Bất kì một thiết bị hay dich vụ nào cũng có thể được giám sát nếu như được viết plugin cho nó.
+  `Nagios Plugin` là một bộ phận trực tiếp thực hiện kiểm tra host/dịch vụ. Mỗi loại dịch vị đều có một Plugin riêng biệt được viết để ohuc vụ riêng cho vông ciêc kiểm tra dịch vụ đó. Plugin là các script (Perl, C,...) hay các tệp đã được biên dịch (executable). Khi cần thực hiện kiểm tra một host/dịch vụ nào đó,Nagios chỉ việc gọi plugin tương ứng và nhận kết quả kiểm tra từ chúng. Với thiết kế như vậy, hệ thống Nagios rất dễ dàng được mở rộng và phát triển. Bất kì một thiết bị hay dich vụ nào cũng có thể được giám sát nếu như được viết plugin cho nó.
 
   <img src=http://i.imgur.com/t20GfIj.png>
 
   Hình 1 : Sự tương quan giữa các thành phần trong Nagios
 
-<a name="tochuc"></a>
+<a name="tochuchd"></a>
 ### 1.5.2 Cách thức tổ chức hoạt động.
   Nagios có 5 các thực thi các hành động kiểm tra :
   - `Kiểm tra dịch vụ trực tiếp` : đối với dịch vụ mạng có các giao thức giao tiếp như SMTP,FTP,HTTP,.. thì Nagios có thể tiến hành kiểm tra trực tiếp một dịch vu xem nó có hoạt động hay không bằng cách gửi truy vấn kết nói dịch vu đến server dịch vụ và chờ kết quả trả về. Các plugin phục vụ kiểm tra được đặt ngay trên server Nagios.
   - `Chạy các plugin trên máy ở xa bằng Secure Shell` : Nếu như không truy cập trực tiếp kết nối đến client thì phải cài plugin trên máy được giám sát, Nagios sẽ điều khiển các plugin cục bộ trên client qua Secure shell bằng plugin *check_by_ssh* .Phương pháp này yêu cầu một tài khoản truy cập host được giám sát nhưng nó có thể thực thi được tất cả các plugin trên host đó.
+
   - `Bộ thực thi plugin từ xa(NRPE- Nagios Remote Plugin Executor)` : NRPE là một addon đi kèm với Nagios .Nó trợ giúp việc thực thi các plugin được cài đặt trên thiết bị được giám sát. NRPE được cài đặt trên các thiết bị được giám sát.Khi nhận được truy vấn từ Nagios Server thì nó gọi các plugin cục bộ phù hợp trên host này, thực hiện kiểm tra và trả về kết của cho Nagios Server. Phương pháp này không đòi hỏi tài khoản truy cập host được giám sát như sử dụng SSH . Tuy nhiên cũng như ssh, các plugin  phải được cài đặt trên máy được giám sát. NRPE có thể thực thi tất cả các plugin giám sát.Nagios có thể diều khiển máy cài NRPE kiểm tra các thông số phần cứng, tài nguyên,... hoặc sử dụng NRPE để thực thi các plugin yêu cầu truy vấn dich vụ mạng đến một máy thứ 3 để kiểm tra hoạt động của các dịch vụ mạng như http,ftp,mail,...
+
   - `Giám sát qua SNMP (Simple Network Management Protocol)` : Là tập hợp các các hoạt động giúp nhà quản trị mạng có thể quản lý, thay đổi trạng thái thiết
 bị. Hiện nay rất nhiều thiết bị mạng hỗ trợ giao thức SNMP như Switch, router, máy
 in, firewall ... Nagios cũng có khả năng sử dụng giao thức SNMP để theo dõi trạng
@@ -100,6 +103,17 @@ thái của các client, các thiết bị mạng có hỗ trợ SNMP. Qua SNMP,
 thông tin về tình trạng hiện thời của thiết bị. Ví dụ như với SNMP, Nagios có thể biết
 được các cổng của Switch, router có mở hay không, thời gian Uptime (chạy liên tục) là
 bao nhiêu...
- - `NSCA (Nagios Service Check Acceptor)` : Nagios được coi là một phần mềm rất mạnh vì nó dễ dàng được mở rộng và kết
+
+-  `NSCA (Nagios Service Check Acceptor)` : Nagios được coi là một phần mềm rất mạnh vì nó dễ dàng được mở rộng và kết
 hợp với các phần mềm khác. Nó có thể tổng hợp thông tin từ các phần mềm kiểm tra của hãng thứ ba hoặc các tiến trình Nagios khác về trạng thái của host/dịch vụ. Như
 thế Nagios không cần phải lập lịch và chạy các hành động kiểm tra host/dịch vụ mà các ứng dụng khác sẽ thực hiện điểu này và báo cáo thông tin về cho nó. Và các ứng dụng kiểm tra có thể tận dụng được khả năng rất mạnh của Nagios là thông báo và tổng hợp báo cáo. Nagios sử dụng công cụ NSCA để gửi các kết quả kiểm tra từ ứng dụng của bạn về server Nagios. Công cụ này giúp cho thông tin gửi trên mạng được an toàn hơn vì nó được mã hóa và xác thực.
+
+Các phương thức kiểm soát của NAGIOS :
+
+<img src=http://i.imgur.com/QC0II6s.png>
+
+  Hình trên đưa ra cách nhìn tổng quan hơn về các kiểm soát các dịch vụ của Nagios. Gồm 5 Client tương ứng với 5 cách thức tổ chức giám sát của Nagios:
+  - Client 1: Nagios sử dụng các plug in (check_xyz)được cài đặt trên chính server của mình và thực hiện kiểm tra các dịch vụ trên các client thông qua http,ftp,...
+  - Client 2,3 : Nagios sử dụng các plugin trung gian (check_by_ssh, check nrpe) để quản lý plugin (check_xyz)giám sát được cài trực tiếp trên các máy client.
+  - Client 4 : Kiểm tra dịch vụ qua giao thức SNMP ,Nagios sẽ sử dụng các plugin check_snmp để quản lý các client có hỗ trợ giao thức SNMP : router,máy in,switch,...
+  - Client 5 : Đây là phương pháp kiểm tra bị động , Nagios không chủ động kiểm tra các client mà các client sẽ chủ động gửi kết quả kiểm tra dịch vụ về cho Nagios thông qua giao thức NSCA. Hệ thống này phù hợp cho giám sát phân tán.
