@@ -13,7 +13,10 @@
 ### [3.1 Cài đặt KVM](#cdkvm)
 ### [3.2 Hướng dẫn cài đặt máy ảo](#cdmayao)
 ## [IV. Tìm hiểu vể Virsh Command Line Interfaces](#vcli)
-
+## [V. Hướng dẫn cài đặt Webvirt](#webvirt)
+### [5.1 Mô hình](#mohinh)
+### [5.2 Cấu hình và cài đặt máy webvirt](#maywebvirt)
+### [5.3 Cấu hình và cài đặt máy KVM](#maykvm)
 
 
 
@@ -233,3 +236,224 @@ Các tùy chọn giám sát và khắc phục sự cố :
   - version : hiển thị phiên bản
   - dumpxml : thông tin domain trong XML
   - noteinfo : thông tin về note
+
+<a name=webvirt)</a>
+## V. Hướng dẫn cài đặt webvirt
+
+<a name=mohinh></a>
+### 5.1 Mô hình triển khai
+
+  Chúng ta có thể triển khai Werbvirt theo 3 cách :
+  - Mô hình 1 : Triển khai máy KVM và Webvirt trên 1 máy
+  - Mô hình 2 : Triển khai máy KVM và Webvirt trên 2 máy khác nhau
+  - Mô hình 3 : Triển khai máy Webvirt ngay trên máy ảo của KVM.
+
+  Ở bài này mình sẽ hướng dẫn các bạn cài trên mô hình thứ 2. và là mô hình phổ biến nhất hiện nay.
+  Nó giúp các nhà quản trị dễ dàng quản lý các máy ảo một các tập trung, dễ quản lý.
+
+  Mô hình triển khai gồm 2 node :
+  - Webvirt Host : Máy cài đặt Webvirt.
+  - Host Server : Máy cài đặt KVM .
+
+Cả 2 máy đều cài đặt UbuntuServer 14.04 và đều nằm cùng một dải mạng.
+
+<a name=maywebvirt>
+### 5.2 Cấu hình và cài đặt máy Webvirt
+
+- Cài đặt các gói cần thiết :
+
+  ```
+  sudo apt-get install git python-pip python-libvirt python-libxml2 novnc supervisor nginx
+  ```
+
+  <ul>
+  <li>Git : Gói cài đặt phần mềm git cho linux</li>
+  <li>Python-pip : gói trình quản lý và cài đặt các chương trình python </li>
+  <li>Python-libvirt : Gói các chương trình python cài đặt thư viện libvirt</li>
+  <li>Python-libxml2 : Gói các chương trình python cài đặt thư viện libxml2</li>
+  <li>Novnc : là một chương trình gần giống như remote desktop nhưng sử dụng HTML 5 để quản lý các Client</li>
+  <li>Supervisor : là một tiến trình quản lý ,hỗ trợ máy chủ Webvirt quản lý các tiến trình máy ảo</li>
+  <li>Nginx : Gói cài đặt HTTP Server hay Revert Proxy hoặc IMAP/POP3 server.Gói này giúp cấu hình phần webserver cho Webvirt.</li>
+  </ul>
+
+ - Cài đặt Python và các chương trình cần thiết hỗ trợ cho Django - xây dựng nền tảng web :
+
+ ```
+ cd ~/
+ git clone git://github.com/retspen/webvirtmgr.git
+ cd webvirtmgr
+ sudo pip install -r requirements.txt
+ ./manage.py syncdb
+```
+  Tiến hành cài đặt username , email, mật khẩu cho webvirt.
+
+  ```
+  You just installed Django's auth system, which means you don't have any superusers defined.
+Would you like to create one now? (yes/no): yes (Put: yes)
+Username (Leave blank to use 'admin'): admin (Put: your username or login)
+E-mail address: username@domain.local (Put: your email)
+Password: xxxxxx (Put: your password)
+Password (again): xxxxxx (Put: confirm password)
+Superuser created successfully.
+```
+Có thể cài quyền quản trị cao nhất Supper user như sau
+```
+./manage.py createsuperuser
+```
+- Cấu hình Nginx :
+
+  Tạo thêm thư mục `/var/www/` : ```sudo mkdir /var/www/```
+
+- Chuyển thư mục Webvirt :
+
+  ```sudo mv ~/webvirtmgr /var/www/webvirtmgr
+  ```
+
+- Thêm file cấu hình `webvirtmgr.conf` tại `/etc/nginx/config.d/webvirtmgr.conf` và thêm nội dung cho file webvirtmgr.conf :
+
+```
+  server {
+    listen 80 default_server;
+server_name $hostname;
+#access_log /var/log/nginx/webvirtmgr_access_log;
+
+location /static/ {
+    root /var/www/webvirtmgr/webvirtmgr; # or /srv instead of /var
+    expires max;
+}
+
+location / {
+    proxy_pass http://127.0.0.1:8000;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-for $proxy_add_x_forwarded_for;
+    proxy_set_header Host $host:$server_port;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_connect_timeout 600;
+    proxy_read_timeout 600;
+    proxy_send_timeout 600;
+    client_max_body_size 1024M; # Set higher depending on your needs
+}
+
+}
+```
+- Chỉnh sửa file cấu hình Nginx :
+
+  `sudo vi /etc/nginx/sites-enabled/default`
+
+- Chỉnh sửa nội dung file cấu hình Nginx như sau:
+
+```
+# You should look at the following URL's in order to grasp a solid understanding
+# of Nginx configuration files in order to fully unleash the power of Nginx.
+# http://wiki.nginx.org/Pitfalls
+# http://wiki.nginx.org/QuickStart
+# http://wiki.nginx.org/Configuration
+#
+# Generally, you will want to move this file somewhere, and start with a clean
+# file but keep this around for reference. Or just disable in sites-enabled.
+#
+# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
+##
+
+# Default server configuration
+#
+#server {
+#	listen 80 default_server;
+#	listen [::]:80 default_server;
+
+	# SSL configuration
+	#
+	# listen 443 ssl default_server;
+	# listen [::]:443 ssl default_server;
+	#
+	# Note: You should disable gzip for SSL traffic.
+	# See: https://bugs.debian.org/773332
+	#
+	# Read up on ssl_ciphers to ensure a secure configuration.
+	# See: https://bugs.debian.org/765782
+	#
+	# Self signed certs generated by the ssl-cert package
+	# Don't use them in a production server!
+	#
+	# include snippets/snakeoil.conf;
+
+#	root /var/www/html;
+
+	# Add index.php to the list if you are using PHP
+#	index index.html index.htm index.nginx-debian.html;
+
+#	server_name _;
+
+#	location / {
+		# First attempt to serve request as file, then
+		# as directory, then fall back to displaying a 404.
+#		try_files $uri $uri/ =404;
+#	}
+
+	# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+	#
+	#location ~ \.php$ {
+	#	include snippets/fastcgi-php.conf;
+	#
+	#	# With php7.0-cgi alone:
+	#	fastcgi_pass 127.0.0.1:9000;
+	#	# With php7.0-fpm:
+	#	fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+	#}
+
+	# deny access to .htaccess files, if Apache's document root
+	# concurs with nginx's one
+	#
+	#location ~ /\.ht {
+	#	deny all;
+	#}
+#}
+
+
+# Virtual Host configuration for example.com
+#
+# You can move that to a different file under sites-available/ and symlink that
+# to sites-enabled/ to enable it.
+#
+#server {
+#	listen 80;
+#	listen [::]:80;
+#
+#	server_name example.com;
+#
+#	root /var/www/example.com;
+#	index index.html;
+#
+#	location / {
+#		try_files $uri $uri/ =404;
+#	}
+#}
+
+```
+- Tiến hành Restart lại Nginx
+
+  `sudo service nginx restart`
+
+- Kích hoạt supervisord khi khởi động:
+<ul>
+<li>Với Ubuntu 14</li>
+
+```
+sudo -i
+curl https://gist.github.com/howthebodyworks/176149/raw/88d0d68c4af22a7474ad1d011659ea2d27e35b8d/supervisord.sh > /etc/init.d/supervisord
+chmod +x /etc/init.d/supervisord
+update-rc.d supervisord defaults
+service supervisord stop
+service supervisord start
+
+exit
+
+```
+<li>Với Ubuntu 16</li>
+
+```
+sudo systemctl enable supervisor
+sudo systemctl start supervisor
+
+```
+</ul>
