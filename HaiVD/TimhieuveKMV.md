@@ -164,7 +164,7 @@ QEMU có thể tận dụng KVM khi chạy một kiến ​​trúc mục tiêu 
 
   Đầu tiên kiểm tra xem đã có đầy đủ tất cả các gói phụ trợ hay chưa :
   <img src="http://i.imgur.com/FaRnGB3.png">
-  
+
    Có tổng cộng tất cả 11 gói :
    - gir1.2-spice-client-glib-2.0
    - gir1.2-spice-client-gtk-2.0
@@ -182,26 +182,26 @@ Nếu thiếu gói nào thì các bạn hãy cài đặt gói ấy để tránh 
 Bây giờ chúng ta sẽ tiến hành cài đặt
   - Bước 1 : Mở Virtual Machine Manager lên xuất hiện hộp thoại, Chọn File/ New Virtual Machine xuất hiện hộp thoại  :
   <img src=http://i.imgur.com/QnxOEvn.png>
-  
+
   - Bước 2 : Trỏ Browse đến file iso hệ điều hành cần cài đặt :
   <img src=http://i.imgur.com/XZjrYsK.png>
-  
+
   - Bước 3 : Tùy chỉnh thông số máy ảo RAM,CPU :
-  
+
   <img src=http://i.imgur.com/eW4c5x6.png>
-  
-  - Bước 4 : Tùy chọn dung lượn ổ cứng: 
-  
+
+  - Bước 4 : Tùy chọn dung lượn ổ cứng:
+
   <img src=http://i.imgur.com/zlVlrCa.png>
-  
+
   - Bước 5 : Đặt tên cho máy ảo và tùy chọn cấu hình, card mạng:
   <img src=http://i.imgur.com/I8lc7bL.png>
-   
-  - Bước 6 : Tiến hành cài đặt hệ điều hành như bình thường : 
+
+  - Bước 6 : Tiến hành cài đặt hệ điều hành như bình thường :
   <img src=http://i.imgur.com/LY4pA7o.png>
-  
+
   - Sau khi cài đặt xong :
-  
+
   <img src=http://i.imgur.com/SJfiiE8.png>
 
    Theo mình cảm nhận so với VMware thì tốc độ xử lý nhanh hơn rất nhiều.
@@ -261,6 +261,8 @@ Các tùy chọn giám sát và khắc phục sự cố :
   - Webvirt Host : Máy cài đặt Webvirt.
   - Host Server : Máy cài đặt KVM .
 
+  <img src=http://i.imgur.com/0DLjkq1.png>
+
 Cả 2 máy đều cài đặt UbuntuServer 14.04 và đều nằm cùng một dải mạng.
 
 <a name=maywebvirt>
@@ -312,7 +314,9 @@ Có thể cài quyền quản trị cao nhất Supper user như sau
 
 - Chuyển thư mục Webvirt :
 
-  ```sudo mv ~/webvirtmgr /var/www/webvirtmgr
+  ```
+  sudo mv ~/webvirtmgr /var/www/webvirtmgr
+
   ```
 
 - Thêm file cấu hình `webvirtmgr.conf` tại `/etc/nginx/config.d/webvirtmgr.conf` và thêm nội dung cho file webvirtmgr.conf :
@@ -463,3 +467,108 @@ sudo systemctl start supervisor
 
 ```
 </ul>
+
+- Cấu hình Supervisor :
+  Cấu hình novnc
+
+```
+  sudo -i
+
+  cat << EOF > /etc/insserv/overrides/novnc
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          nova-novncproxy
+# Required-Start:    $network $local_fs $remote_fs $syslog
+# Required-Stop:     $remote_fs
+# Default-Start:     
+# Default-Stop:      
+# Short-Description: Nova NoVNC proxy
+# Description:       Nova NoVNC proxy
+### END INIT INFO
+EOF
+
+service novnc stop
+insserv -r novnc
+
+```
+  Thay đổi quyền sở hữu :
+
+```
+chown -R www-data:www-data /var/www/webvirtmgr
+```
+
+  Thêm cấu hình tại : `/etc/supervisor/conf.d/webvirtmgr.conf`
+
+```
+cat << EOF > /etc/supervisor/conf.d/webvirtmgr.conf
+[program:webvirtmgr]
+command=/usr/bin/python /var/www/webvirtmgr/manage.py run_gunicorn -c /var/www/webvirtmgr/conf/gunicorn.conf.py
+directory=/var/www/webvirtmgr
+autostart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/webvirtmgr.log
+redirect_stderr=true
+user=www-data
+
+[program:webvirtmgr-console]
+command=/usr/bin/python /var/www/webvirtmgr/console/webvirtmgr-console
+directory=/var/www/webvirtmgr
+autostart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/webvirtmgr-console.log
+redirect_stderr=true
+user=www-data
+EOF
+```
+
+  Khởi động lại Supervisor :
+
+  ```
+  sudo service supervisor stop
+  sudo service supervisor start
+  exit
+  ```
+
+<a name=maykvm></a>
+### 5.3 Cấu hình và cài đặt máy KVM
+
+- Thực hiện trên máy Server Host (KVM).Trước khi cài đặt KVM lên node này, cần kiểm tra xem bộ xử lý của máy có hỗ trợ ảo hóa không (VT-x hoặc AMD-V). Nếu thực hiện lab trên máy thật cần khởi động lại máy này vào BIOS thiết lập chế độ hỗ trợ ảo hóa. Tuy nhiên bài lab này thực hiện trên VMWare nên trước khi cài đặt cần thiết lập cho máy ảo hỗ trợ ảo hóa như sau:
+
+<img src="http://i.imgur.com/XwwRHUl.png">
+
+- Cài đặt KVM :
+
+```
+  sudo apt-get install qemu-kvm libvirt-bin ubuntu-vm-builder bridge-utils
+
+Thêm user của phiên làm việc hiện tại vào libvirtd :
+
+  sudo adduser `id -un` libvirtd
+```
+- Cấu hình libvirt:
+
+```
+sudo -i
+
+cat << EOF > /etc/libvirt/libvirtd.conf
+listen_tls = 0
+listen_tcp = 1
+listen_addr = "0.0.0.0"
+unix_sock_group = "libvirtd"
+unix_sock_ro_perms = "0777"
+unix_sock_rw_perms = "0770"
+auth_unix_ro = "none"
+auth_unix_rw = "none"
+auth_tcp = "none"
+EOF
+
+cat << EOF > /etc/default/libvirt-bin
+start_libvirtd="yes"
+libvirtd_opts="-l -d"
+EOF
+
+```
+- Khởi động lại libvirt :
+```
+ service libvirt-bin restart
+```
