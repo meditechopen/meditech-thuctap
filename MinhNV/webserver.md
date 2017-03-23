@@ -30,9 +30,9 @@ Wordpress phát triển mạnh mẽ, được xem như là một hệ quản tr�
 - Hỗ trợ nhiều ngôn ngữ, kể cả tiếng việt.
 - Có thể làm ra nhiều loại website: không chỉ có thể tạo blog cá nhân, wordpress có thể tạo ra nhiều loại website phức tạp như bán hàng, tin tức,...
 ## Cài apache2:
-câu lệnh sử dụng ```sudo apt-get install apache2``` rồi chọn ``y``
+Câu lệnh sử dụng ```sudo apt-get install apache2``` rồi chọn ``y``
 
-sau khi tải về dung trình duyệt để kiểm tra
+Sau khi tải về dung trình duyệt để kiểm tra
 
 <img src="http://i.imgur.com/mqsBoeL.png">
 
@@ -52,9 +52,9 @@ sau khi tải về dung trình duyệt để kiểm tra
 Như vậy là xong bước cài đặt apache2 
 
 ## Cài Myqsl:
-câu lệnh sử dung ```sudo apt-get install MySQL-server php5-mysql``` rồi chọn ``y`` rồi nhập password cho MySQL.
+Câu lệnh sử dung ```sudo apt-get install MySQL-server php5-mysql``` rồi chọn ``y`` rồi nhập password cho MySQL.
 
-tiếp đó ta khai báo một hệ thống cơ sở trong MySQL để lưu trữ thông tin 
+Tiếp đó ta khai báo một hệ thống cơ sở trong MySQL để lưu trữ thông tin 
 
 ``sudo mysql_install_db``
 
@@ -62,31 +62,33 @@ Thiết lập bảo mật cho MySQL:
 
 ```sudo myqsl_secure_installation``` 
 
-sau đó MySQL sẽ hỏi password mà bạn vừa khởi tạo lúc cài nó. Sau khi nhập pass nếu bạn muốn thay đổi thì chọn Y không thì chọn N
+Sau đó MySQL sẽ hỏi password mà bạn vừa khởi tạo lúc cài nó. Sau khi nhập pass nếu bạn muốn thay đổi thì chọn Y không thì chọn N
 
 Chọn y để thiết lập các cài đặt mặc định về password cho MySQL có sẵn
 
 ## Cài PHP:
 ```sudo apt- get install PHP5 libapache-mod-php5 php5-mcrypt```
 
-ta chỉnh sửa file cấu hình để apache cho phép người dùng truy cập đến file index.php thay vì index.html đầu tiên.
+Ta chỉnh sửa file cấu hình để apache cho phép người dùng truy cập đến file index.php thay vì index.html đầu tiên.
 
 ```sudo vi /etc/apache2/mods-enabled/dir.conf```
-chuyển index.php lên đầu 
+
+Chuyển index.php lên đầu 
+
 <img src="http://i.imgur.com/RubAbXU.png">
 
 restart lại ``sudo service apache2 restart ``
 
-sau đó mở trình duyệt kiểm tra 
+Sau đó mở trình duyệt kiểm tra 
 
 <img src="http://i.imgur.com/l5EvT0Z.png">
 
 ## Tạo tài khoản user và database của wordpress trên MySQL 
-đăng nhập vào MySQL ```mysql -u root -p```
+Đăng nhập vào MySQL ```mysql -u root -p```
 tạo một database với tên người dùng là minhkma
 <img src="http://i.imgur.com/fmGwRWe.png">
 
-tiến hành cấp quyền cho user
+Tiến hành cấp quyền cho user
 
 <img src="http://i.imgur.com/KTFAjVN.png">
 
@@ -99,23 +101,23 @@ tiến hành cấp quyền cho user
 
 <img src="http://i.imgur.com/WuAVGZi.png">
 
-giải nén ``tar xzvf latest.tar.gz``
+Giải nén ``tar xzvf latest.tar.gz``
 
 ## Thiết lập và cài đặt wordpress trong Ubuntu 
 
 ### Cấu hình file wd-config.php
 Ta sẽ sử dụng file-config.php có sẵn và thực hiện một số thay đổi.
-copy file có sẵn sang file cấu hình
+Copy file có sẵn sang file cấu hình
 
 <img src="http://i.imgur.com/VuyUBpm.png">
 
- chỉnh sửa file cấu hình:
+ Chỉnh sửa file cấu hình:
 
 ```vi wp-config-php```
 
 <img src="http://i.imgur.com/6rPCcGX.png">
 
-ta thay đổi như sau:
+Ta thay đổi như sau:
 
 <img src="http://i.imgur.com/WAzHeIA.png">
 
@@ -129,12 +131,12 @@ Di chuyển tới thư mục var/www/html/ để cấp quyền giúp chúng ta c
 
 <img src="http://i.imgur.com/2uvhb0e.png">
 
-sau đó tạo một thư mục upload để up tranh ảnh,video,vv... để wordpress có thể upload lên và cấp quyền cho nó 
+Sau đó tạo một thư mục upload để up tranh ảnh,video,vv... để wordpress có thể upload lên và cấp quyền cho nó 
 
 ```mkdir /var/www/html/wp-content/uploads```
 ```sudo chown -R :www-data /var/www/html/wp-content/uploads```
 
-kiểm tra bằng trình duyệt 
+Kiểm tra bằng trình duyệt 
  
 <img src="http://i.imgur.com/kCLAOt8.png">
 
