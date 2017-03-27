@@ -11,6 +11,9 @@
 ### [2.1 Mã hóa](#mh)
 ### [2.2 Thuật toán](#tt)
 ## [III. OpenSHH Server ](#openserver)
+### [3.1 File cấu hình](#31)
+
+
 
 
 ====================================
@@ -80,3 +83,54 @@ Có 2 cách để mã hóa dữ liệu :
 
 <a name=opensshserver></a>
 ## III. OpenSSH Server
+
+<a name=31></a>
+### 3.1 File cấu hình
+
+  Chỉnh sửa file cấu hình của SSH trong thư mục `/etc/ssh/sshd_config` nếu chúng ta cần thay đổi hoặc thêm một số tùy chọn :
+
+```
+# This is ssh server systemwide configuration file.
+
+         Port 22
+         ListenAddress 0.0.0.0
+         HostKey /etc/ssh/ssh_host_key
+         ServerKeyBits 1024
+         LoginGraceTime 600
+         KeyRegenerationInterval 3600
+         PermitRootLogin no
+         IgnoreRhosts yes
+         IgnoreUserKnownHosts yes
+         StrictModes yes
+         X11Forwarding no
+         PrintMotd yes
+         SyslogFacility AUTH
+         LogLevel INFO
+         RhostsAuthentication no
+         RhostsRSAAuthentication no
+         RSAAuthentication yes
+         PasswordAuthentication yes
+         PermitEmptyPasswords no
+         AllowUsers admin
+```
+
+- *Port 22* : Cổng lắng nghe của dịch vụ ssh, mặc định là cổng 22.
+- *ListenAddress* : Cho phép truy cập ssh từ một địa chỉ nào đó, mặc định để 0.0.0.0 nghĩa là tất cả các địa chỉ đều có thể ssh đến SSH Server.
+- *Hostkey* : Các tùy chọn về Hostkey, mặc định là */etc/ssh/ssh_host_key* nơi chứa các Private key của SSH Server.
+- *ServerKeyBits* : Tùy chon độ dài bit của khóa trong RSA.
+- *LoginGraceTime* : Xác định khoảng thời gian (giây) máy chủ sẽ đợi tới lúc ngắt kết nối khi thực hiện đăng nhập không thành công.
+- *KeyRegenerationInterval* : Chỉ định khoảng thời gian (giây) mà máy chủ đợi trước khi tự động tạo khóa.Tùy chọn này nhằm tránh trường hợp giải mã các khóa khi bị nghe lén.
+- *PermitRootLogin* : Cho phép đăng nhập với quyền `root` từ xa.Mặc định trên linux sẽ là *No* .Nếu muốn đăng nhập với quyền *root* thì cần thay đổi thông số này về *Yes*.
+- *IgnoreRhosts* : xác định xem các tệp rhost hoặc shosts không nên được sử dụng trong xác thực.
+- *IgnoreUserKnownHosts* : Tùy chọn xác định xem nên bỏ qua các user trong $HOME/ .ssh/know trong RhostsRSAAuthentication.
+- *StrictModes* : xác định xem ssh nên kiểm tra quyền của người dùng trong thư mục chính và tệp rhosts của họ trước khi chấp nhận đăng nhập. Tùy chọn này nên đê *Yes*.
+- *X11Forwarding* : xác định xem chuyển tiếp X11 nên được bật hay không trên máy chủ SSH Server.
+- *PrintMotd* : xác định liệu trình nền ssh nên in nội dung của tập tin `/etc/motd` khi người dùng đăng nhập tương tác. Tập tin `/etc/motd` còn được gọi là thông điệp trong ngày.
+- *SyslogFacility* : Mã cơ sở được sử dụng trong thông báo đăng nhập của sshd.
+- *LogLevel* : xác định mức độ được sử dụng trong thông báo đăng nhập của sshd.
+- *RhostsAuthentication* :  xác định xem sshd có thể thử sử dụng xác thực dựa trên rhosts. Bởi vì rhosts xác thực là không an toàn, bạn không nên sử dụng tùy chọn này.
+- *RhostsRSAAuthentication* : xác định xem thử xác thực rhosts trong thương lượng với xác thực máy chủ RSA.
+- *RSAAuthentication* :  xác định xem thử RSA được xác thực hay không. Tùy chọn này phải được đặt thành có để bảo mật tốt hơn trong các phiên của bạn.
+- *PasswordAuthentication* : chỉ định chúng ta nên sử dụng xác thực dựa trên mật khẩu hay không. Để đảm bảo an toàn, tùy chọn này luôn phải được đặt thành *Yes*.
+- *PermitEmptyPasswords* : Tùy chọn này cho phép đăng nhập vào hệ thống mà không cần mật khẩu. Thường sử dụng trong các SCP tự động.
+- *AllowUsers* : Xác định và kiểm soát người dùng có thể truy cập các dịch vụ ssh. 
