@@ -11,7 +11,9 @@
 ### [2.1 Mã hóa](#mh)
 ### [2.2 Thuật toán](#tt)
 ## [III. OpenSHH Server ](#openserver)
-### [3.1 File cấu hình](#31)
+## [IV. Tùy chon nâng cao về SSH ](#nangcao)
+### [4.1 Xác thực RSA ](#41)
+
 
 
 
@@ -84,9 +86,6 @@ Có 2 cách để mã hóa dữ liệu :
 <a name=opensshserver></a>
 ## III. OpenSSH Server
 
-<a name=31></a>
-### 3.1 File cấu hình
-
   Chỉnh sửa file cấu hình của SSH trong thư mục `/etc/ssh/sshd_config` nếu chúng ta cần thay đổi hoặc thêm một số tùy chọn :
 
 ```
@@ -133,4 +132,75 @@ Có 2 cách để mã hóa dữ liệu :
 - *RSAAuthentication* :  xác định xem thử RSA được xác thực hay không. Tùy chọn này phải được đặt thành có để bảo mật tốt hơn trong các phiên của bạn.
 - *PasswordAuthentication* : chỉ định chúng ta nên sử dụng xác thực dựa trên mật khẩu hay không. Để đảm bảo an toàn, tùy chọn này luôn phải được đặt thành *Yes*.
 - *PermitEmptyPasswords* : Tùy chọn này cho phép đăng nhập vào hệ thống mà không cần mật khẩu. Thường sử dụng trong các SCP tự động.
-- *AllowUsers* : Xác định và kiểm soát người dùng có thể truy cập các dịch vụ ssh. 
+- *AllowUsers* : Xác định và kiểm soát người dùng có thể truy cập các dịch vụ ssh.
+
+<a name=nangcao></a>
+## IV . Tùy chọn nâng cao về SSH
+
+<a name=rsa></a>
+### 4.1 Xác thực RSA
+
+  Mặc định SSH sử dụng Password để xác thực truy cập SSH Server, tuy nhiên chúng ta có thể sử dụng RSA để xác thực,cách này tương tự như việc sử dụng Hostkey để xác thực.
+
+- Tạo key : Sử dụng ssh-keygen với tùy chọn '-t rsa' để tạo RSA key, sử dụng phiên bản 2 của giao thức SSH.
+
+```
+root@UbuntuServer:~# ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa):
+Created directory '/root/.ssh'.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+0a:39:6a:73:df:26:e3:65:42:38:7e:98:c2:6d:2c:70 root@UbuntuServer
+The key's randomart image is:
++--[ RSA 2048]----+
+|                 |
+|                 |
+|                 |
+|     o           |
+|. E * . S        |
+| + = B .         |
+|  B O + o        |
+| . * oo=.        |
+|     .o+.        |
++-----------------+
+```
+<img src=http://i.imgur.com/f06QWM7.png>
+
+- Cho phép đăng nhập thông qua key đó : Trên remote host, thêm nội dung trong file ~/.ssh/id_rsa.pub vào file ~/.ssh/authorized_keys.
+Copy file id_rsa.pub lên host:
+
+```
+root@UbuntuServer:~/.ssh# scp id_rsa.pub 192.168.0.103:/home/haikma/
+```
+
+<img src=http://i.imgur.com/5TwsZus.png>
+
+ Thêm nội dung file id_rsa.pub vào file authorized_keys và thử ssh lại để kiểm tra:
+
+```
+hai@hai-SVE14A15FXS ~ $ ls -l id_rsa.pub
+-rw-r--r-- 1 root root 399 Mar 27 12:49 id_rsa.pub
+
+hai@hai-SVE14A15FXS ~ $ cat id_rsa.pub >> ~/.ssh/authorized_keys
+hai@hai-SVE14A15FXS ~ $ cat ~/.ssh/authorized_keys
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDTgps0sqspxsNt8+WPRkGWDqBLQwoQuhi0GsbkUPVYkvcm2Su4ow045Mz7a/D6NN0tlaofytfDL911tMP9gRSI3pdrAydwXgLovHUT7C/Xu1cB8t1YmN2VL8cnOxHot/v2Vnbho7jxZk5ftm/5v3vf4wOrEOCtSdu1XzTDtbxlE8mManFCNe4AQJJv2HXUsO5gV4aP3GcBqhohcLDNG+asLWghOPuzVXCdl3MFfLRqC4bxKAnNqsYGEZrpFUaK6m4UV3bG5NJ/mIuHEcor7MyLPcooEXgMXWpnT6Yw/q5Ok6mwUwn95tP/+R7L21EGX8rIMNJNeq8n4fWbCN3NTAON root@UbuntuServer
+```
+  Kết quả :
+
+```
+hai@hai-SVA14A15FXS:~/.ssh$ ssh 192.168.0.102
+Enter passphrase for key '/home/hai/.ssh/id_rsa':
+Welcome to Ubuntu 14.04.5 LTS (GNU/Linux 4.4.0-31-generic i686)
+
+ * Documentation:  https://help.ubuntu.com/
+
+ System information disabled due to load higher than 1.0
+
+Last login: Mon Mar 27 12:29:41 2017
+
+```
+  Như vậy là đã xong xác thực RSA.
