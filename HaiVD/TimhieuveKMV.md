@@ -17,6 +17,10 @@
 ### [5.1 Mô hình](#mohinh)
 ### [5.2 Cấu hình và cài đặt máy webvirt](#maywebvirt)
 ### [5.3 Cấu hình và cài đặt máy KVM](#maykvm)
+## [VI. Các chế độ card mạng KVM](#network)
+### [6.1 NAT](#nat)
+### [6.2 Public Bridging](#pubbr)
+### [6.3 Private Bridging](#prbr)
 
 
 
@@ -572,3 +576,89 @@ EOF
 ```
  service libvirt-bin restart
 ```
+- Kiểm tra cài đặt :
+
+```
+ps ax | grep [l]ibvirtd
+netstat -pantu | grep libvirtd
+virsh -c qemu+tcp://127.0.0.1/system
+```
+
+ Nếu thực hiện các câu lệnh trên mà xuất hiện các thông số thì việc cài đặt thành công :
+
+ <img src=http://i.imgur.com/J6o9dgm.png>
+
+ - Bước tiếp theo : cài đặt card mạng KVM
+
+<a name=network></a>
+## [VI. Các chế độ card mạng của KVM]
+
+<a name=nat></a>
+### 6.1 : NAT
+
+  Đây là cấu hình card mạng mặc định của KVM.
+
+  NAT (Network Address Translation) giống như một Router, chuyển tiếp các gói tin giữa những lớp mạng khác nhau trên một mạng lớn. NAT dịch hay thay đổi một hoặc cả hai địa chỉ bên trong một gói tin khi gói tin đó đi qua một Router, hay một số thiết bị khác. Thông thường NAT thường thay đổi địa chỉ thường là địa chỉ riêng (IP Private) của một kết nối mạng thành địa chỉ công cộng (IP Public).
+
+<a name=pbbr></a>
+### 6.2: Public Bridging
+
+  Nếu bạn chỉ có một NIC trên máy chủ KVM, trong khi bạn muốn các Guest của mình cũng được truy cập vào cùng dải mạng vật lý thì phải thiết lập một bridge kết nối thông qua cổng eth0 của máy vật lý.
+
+  - Thiết lập 1 card Bridge và gán nó cho eth0:
+  ```
+  # ip link add br0 type bridge
+  # brctl addbr br0
+  # brctl addif br0 eth0
+  ```
+
+  - Cấu hình /etc/network/interfaces.Comment eth0 và cấu hình cho br0.
+  ```
+  #auto eth0
+  #iface eth0 inet dhcp
+
+  auto br0
+  iface br0 inet dhcp
+          bridge_ports eth0
+          bridge_stp off
+          bridge_fd 0
+          bridge_maxwait 0
+  ```
+   Các thông số kèm theo :
+  <ul>
+  <li>*ports eth0* : gán port brigde cho eth0</li>
+  <li>*stp* : giao thức chống lặp gói tin trong mạng</li>
+  <li>*fd*  : chuyển tiếp dữ liệu từ máy ảo tới bridge </li>
+  <li> *maxwait* :Thời gian chờ lớn nhất nhận cổng </li>
+  </ul>
+
+<a name=prbr></a>
+### 6.3: Private Bridging
+
+  Các này tạo một card bridge sử dụng một dải ip riêng dùng để giao tiếp với các guest KVM thông qua công eth0 mà không ảnh hưởng tới địa chỉ của KVM host.Chính vì vậy không cần tham số  `bridge_ports` và cũng không cần comment `eth0` :
+
+  ```
+  # The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+auto eth0
+iface eth0 inet static
+    address 192.168.0.101
+    netmask 255.255.255.0
+    network 192.168.0.0
+    broadcast 192.168.0.255
+    gateway 192.168.0.1
+
+# The private bridge
+auto br0 inet static
+    address 172.16.0.1
+    netmask 255.255.255.0
+    network 172.16.0.0
+    broadcast 172.16.0.255
+    bridge_ports none
+    bridge_stp off
+    bridge_fd 0
+    bridge_maxwait 0
+  ```
