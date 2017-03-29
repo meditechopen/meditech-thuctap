@@ -41,11 +41,6 @@ Cấu hình số lượng hop với tùy chọn ``-m``
 ### ```--report```
 Trong chế độ báo cáo, mtr sẽ chạy cho số chu kỳ (mặc định 10), và sau đó in số liệu thống kê và thoát. Chế độ này sẽ hữu ích cho việc tạo statstics về chất lượng mạng.
 
-## 3. Tài liệu tham khảo thêm
-
-http://manpages.ubuntu.com/manpages/xenial/man8/mtr.8.html
-<img src="http://i.imgur.com/dYZtL6e.png">
-
 ### ```--no-dns```
 MTR tìm thấy tên máy của mỗi router / node bằng cách sử dụng Reverse DNS Lookup.
 
@@ -55,6 +50,13 @@ MTR tìm thấy tên máy của mỗi router / node bằng cách sử dụng Rev
 Sử dụng datagram UDP thay vì ICMP ECHO : 
 
 ``mtr -u google.com``
+
+## 3. Tài liệu tham khảo thêm
+
+http://manpages.ubuntu.com/manpages/xenial/man8/mtr.8.html
+<img src="http://i.imgur.com/dYZtL6e.png">
+
+
 
 
 
