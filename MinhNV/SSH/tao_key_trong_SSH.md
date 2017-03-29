@@ -26,8 +26,8 @@ và dùng mobaxterm để load file để tạo key đăng nhập.
 - Trong file sshd_config bỏ comment đường dẫn đến nơi lưu key public 
 - Trong đường dẫn mặc định là /.ssh/authorized_key nên chúng ta cần phải tạo thêm thư mục ~/.ssh/authorized để copy đoạn mã hóa của file pulic vào.
 
-```sh chmod 700 ~/.ssh
-
+```sh
+chmod 700 ~/.ssh
 chmod 600 ~/.ssh/authorized_key
 ```
 - Chú ý độ dài bit mặc định trong file sshd_config 
