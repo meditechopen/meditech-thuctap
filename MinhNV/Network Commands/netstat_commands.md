@@ -15,16 +15,19 @@ Trong đó
 
 <img src="http://i.imgur.com/tUTr9Yz.png">
 
-- Proto: Tên giao thức
-- Recv-Q: là dữ liệu mà chưa được kéo từ 
+ Proto: Tên giao thức
+
+ Recv-Q: là dữ liệu mà chưa được kéo từ 
 bộ đệm socket bởi ứng dụng. 
-- Send-Q: Số byte không được máy chủ từ xa thừa nhận
-- Local Address: Địa chỉ IP của hệ thống và port kết nối
-- Foreign Address: Địa chỉ dịch vụ đang được kết nối đến và số port
-- State: Trạng thái port
 
-
-
+ Send-Q: Số byte không được máy chủ từ xa thừa nhận
+ 
+ Local Address: Địa chỉ IP của hệ thống và port kết nối
+ 
+ Foreign Address: Địa chỉ dịch vụ đang được kết nối đến và số port
+ 
+ State: Trạng thái port
+ 
  - ESTABLISHED : Ổ cắm có kết nối đã được thiết lập.
  - SYN_SENT : Ổ cắm đang tích cực cố gắng thiết lập kết nối. 
  - SYN_RECV : Đã nhận được yêu cầu kết nối từ mạng. 
@@ -34,7 +37,7 @@ bộ đệm socket bởi ứng dụng.
  - CLOSE : Ổ cắm không được sử dụng. 
  - CLOSE_WAIT : The remote end has shut down, waiting for the socket to close. 
  - LAST_ACK : The remote end has shut down, and the socket is closed. Waiting for acknowledgement. 
- - LISTEN | Ổ cắm đang lắng nghe cho các kết nối đến. Các ổ cắm này không được hiển thị trong đầu ra, trừ khi bạn chỉ định tùy chọn --listening ( -l ) hoặc --all ( -a ). 
+ - LISTEN : Ổ cắm đang lắng nghe cho các kết nối đến. Các ổ cắm này không được hiển thị trong đầu ra, trừ khi bạn chỉ định tùy chọn --listening ( -l ) hoặc --all ( -a ). 
  - CLOSING : Cả hai ổ cắm đều bị đóng lại nhưng chúng tôi vẫn không có tất cả dữ liệu của chúng tôi được gửi. 
  - UNKNOWN : Không xác định. 
 
