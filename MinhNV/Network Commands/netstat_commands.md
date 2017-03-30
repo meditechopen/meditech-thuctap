@@ -88,5 +88,9 @@ VD ```netstat -st``` thống kê giao thức TCP
 
 ```netstat  -an | grep :22```
 
+### Hiển thị bảng định tuyến 
+
+```nestat -nr```
+
 
 
