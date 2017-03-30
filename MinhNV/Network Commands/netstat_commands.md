@@ -22,7 +22,7 @@ bộ đệm socket bởi ứng dụng.
 - Local Address: Địa chỉ IP của hệ thống và port kết nối
 - Foreign Address: Địa chỉ dịch vụ đang được kết nối đến và số port
 - State: Trạng thái port
-
+|-------------|---------------------------------------|
 | ESTABLISHED | Ổ cắm có kết nối đã được thiết lập.|
 | SYN_SENT | Ổ cắm đang tích cực cố gắng thiết lập kết nối. |
 | SYN_RECV | Đã nhận được yêu cầu kết nối từ mạng. |
