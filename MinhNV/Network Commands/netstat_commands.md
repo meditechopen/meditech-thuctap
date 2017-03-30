@@ -24,19 +24,19 @@ bộ đệm socket bởi ứng dụng.
 - State: Trạng thái port
 
 
-|-------------|---------------------------------------|
-| ESTABLISHED | Ổ cắm có kết nối đã được thiết lập.|
-| SYN_SENT | Ổ cắm đang tích cực cố gắng thiết lập kết nối. |
-| SYN_RECV | Đã nhận được yêu cầu kết nối từ mạng. |
-| FIN_WAIT1 | Ổ cắm đã được đóng, và kết nối đang tắt. |
-| FIN_WAIT2 | Kết nối đã được đóng lại, và ổ cắm đang chờ tắt máy từ đầu xa. |
-| TIME_WAIT | Các ổ cắm đang chờ đợi sau khi gần xử lý các gói tin vẫn còn trong mạng. |
-| CLOSE | Ổ cắm không được sử dụng. |
-| CLOSE_WAIT | The remote end has shut down, waiting for the socket to close. |
-|LAST_ACK | The remote end has shut down, and the socket is closed. Waiting for acknowledgement. |
-| LISTEN | Ổ cắm đang lắng nghe cho các kết nối đến. Các ổ cắm này không được hiển thị trong đầu ra, trừ khi bạn chỉ định tùy chọn --listening ( -l ) hoặc --all ( -a ). |
-| CLOSING | Cả hai ổ cắm đều bị đóng lại nhưng chúng tôi vẫn không có tất cả dữ liệu của chúng tôi được gửi. |
-| UNKNOWN | Không xác định. |
+
+ - ESTABLISHED : Ổ cắm có kết nối đã được thiết lập.
+ - SYN_SENT : Ổ cắm đang tích cực cố gắng thiết lập kết nối. 
+ - SYN_RECV : Đã nhận được yêu cầu kết nối từ mạng. 
+ - FIN_WAIT1 : Ổ cắm đã được đóng, và kết nối đang tắt. 
+ - FIN_WAIT2 : Kết nối đã được đóng lại, và ổ cắm đang chờ tắt máy từ đầu xa. 
+ - TIME_WAIT : Các ổ cắm đang chờ đợi sau khi gần xử lý các gói tin vẫn còn trong mạng. 
+ - CLOSE : Ổ cắm không được sử dụng. 
+ - CLOSE_WAIT : The remote end has shut down, waiting for the socket to close. 
+ - LAST_ACK : The remote end has shut down, and the socket is closed. Waiting for acknowledgement. 
+ - LISTEN | Ổ cắm đang lắng nghe cho các kết nối đến. Các ổ cắm này không được hiển thị trong đầu ra, trừ khi bạn chỉ định tùy chọn --listening ( -l ) hoặc --all ( -a ). 
+ - CLOSING : Cả hai ổ cắm đều bị đóng lại nhưng chúng tôi vẫn không có tất cả dữ liệu của chúng tôi được gửi. 
+ - UNKNOWN : Không xác định. 
 
 
 
