@@ -14,8 +14,7 @@
 Trong đó: 
 <ul>
   <li>Lost% : Hiển thị% số gói bị mất tại mỗi bước nhảy.</li>
-  <li>Snt : Cho biết số không: của: các gói được gửi đi.</li>
-  <li>Last Lần cuối : độ trễ của gói tin cuối cùng được gửi</li>
+  <li>Last : độ trễ của gói tin cuối cùng được gửi</li>
   <li>AVG : Độ trễ trung bình của tất cả các gói.</li>
   <li>Best : Hiển thị thời gian quay vòng tốt nhất cho gói tin đến máy chủ lưu trữ này (RTT ngắn nhất).</li>
   <li>Wrst : Hiển thị thời gian quay vòng vòng tồi tệ nhất cho một gói tin đến máy chủ lưu trữ này (RTT dài nhất).</li>
