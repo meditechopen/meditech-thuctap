@@ -80,8 +80,8 @@
   - Loss% : Phần trăm các gói tin bị mất.
   - Last : độ trễ của gói tin cuối cùng.
   - Avg : Độ trễ  trung bình của tất cả gói tin .
-  - Best : Độ trễ nhỏ nhất.
-  - Wrst : Độ trễ lớn nhất
+  - Best : Thời gian phản hồi nhỏ nhất.
+  - Wrst : Thời gian phản hồi lớn nhất
   - StDev : Tiêu chuẩn độ trễ  từng router.
   
   <a name=14></a>
