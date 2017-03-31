@@ -2,13 +2,9 @@
 [Tổng quan](#tongquan)
 - [1. Lịch sử hình thành](#history)
 - [2. Kiến trúc](#kientruc)
-
-<ul>
  - [2.1 Kiến trúc KVM](#kientruc)
  - [2.2 Mô hình thực hiện](#mohinh)
  - [2.3 Kvm stack](#stack)
-</ul>
-
 - [3. KVM-qemu](#qemu)
 - [4. Tính năng của KVM](#tinhnang)
 
