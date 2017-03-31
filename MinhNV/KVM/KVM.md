@@ -2,11 +2,13 @@
 [Tổng quan](#tongquan)
 - [1. Lịch sử hình thành](#history)
 - [2. Kiến trúc](#kientruc)
- - [2.1 Kiến trúc KVM](#kientruc)
- - [2.2 Mô hình thực hiện](#mohinh)
- - [2.3 Kvm stack](#stack)
+<ul>
+<li> [2.1 Kiến trúc KVM](#kientruc)</li>
+<li> [2.2 Mô hình thực hiện](#mohinh)</li>
+<li> [2.3 Kvm stack](#stack)</li>
+ </ul>
 - [3. KVM-qemu](#qemu)
-- [4. Tính năng của KVM](#tinhang)
+- [4. Tính năng của KVM](#tinhnang)
 
 # Tìm hiểu về Kernel-based Virtual Machine (KVM)
 
