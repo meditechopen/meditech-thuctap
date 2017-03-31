@@ -4,9 +4,9 @@
 - [2. Kiến trúc](#kientruc)
 
 <ul>
-<li> [2.1 Kiến trúc KVM](#kientruc)</li>
-<li> [2.2 Mô hình thực hiện](#mohinh)</li>
-<li> [2.3 Kvm stack](#stack)</li>
+ - [2.1 Kiến trúc KVM](#kientruc)
+ - [2.2 Mô hình thực hiện](#mohinh)
+ - [2.3 Kvm stack](#stack)
 </ul>
 
 - [3. KVM-qemu](#qemu)
