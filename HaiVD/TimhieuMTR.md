@@ -85,6 +85,6 @@
   - StDev : Tiêu chuẩn độ trễ  từng router.
   
   <a name=14></a>
-  ### 1.4 Tài liệu tham khảo 
+### 1.4 Tài liệu tham khảo 
   
   http://manpages.ubuntu.com/manpages/xenial/man8/mtr.8.html 
