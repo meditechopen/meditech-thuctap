@@ -5,7 +5,7 @@
 ### [1.1 Định nghĩa MTR](#11)
 ### [1.2 Các tùy chọn trong MTR](#12)
 ### [1.3 Ví dụ ](#13)
-
+### [1.4 Tài liệu tham khảo](#14)
 <a name=mtr></a>
 ## I. MTR
 
@@ -83,3 +83,8 @@
   - Best : Độ trễ nhỏ nhất.
   - Wrst : Độ trễ lớn nhất
   - StDev : Tiêu chuẩn độ trễ  từng router.
+  
+  <a name=14></a>
+  ### 1.4 Tài liệu tham khảo 
+  
+  http://manpages.ubuntu.com/manpages/xenial/man8/mtr.8.html 
