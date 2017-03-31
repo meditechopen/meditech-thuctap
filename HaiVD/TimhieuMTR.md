@@ -52,7 +52,9 @@
   </ul>
   
   - `-y n, --ipinfo n`.
+  
   - `-z, --aslookup`.
+  
   - ` -i SECONDS, --interval SECONDS` : thông báo thời gian (s) lớn hơn hoặc bằng 0  giữa các yêu cầu ICMP.Có 2 tùy chọn 0 và 1.
   - `-c COUNT, --report-cycles COUNT` :  Đếm các gói tin gửi thành công trong vòng 1 giây.
   - `-s PACKETSIZE, --psize PACKETSIZE` : Đưa ra kích cỡ của Header gói tin.
