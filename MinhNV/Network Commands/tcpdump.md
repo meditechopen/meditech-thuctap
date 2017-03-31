@@ -2,9 +2,9 @@
 ## Mục lục
 [1.Giới thiệu về tcpdump](#gioithieu)
 - [Tính năng](#tinhnang)
-- [Các option](#optinos)
+- [Các option](#options)
 
-[2.Một số lệnh cơ bản](#commands)
+[2.Một số lệnh thường dùng](#commands)
 <a name=gioithieu></a>
 ## 1. Giới thiệu về tcpdump
 TCPDUMP là một chương trình phân tích gói tin cho phép theo dõi băng thông mạng thông qua việc lưu trữ dữ liệu (gói tin – packet) truyền tải trên mạng có thể "bắt được" (capture) vào file để phục vụ công việc phân tích sâu hơn về sau này. Lệnh tcpdump này có sẵn ở hầu hết các hệ điều hành Linux/Unix.
