@@ -1,13 +1,15 @@
 # Tìm hiểu về tcpdump
 ## Mục lục
-[1.Giới thiệu về tcpdump](# gioithieu)
+[1.Giới thiệu về tcpdump](#gioithieu)
 - [Tính năng](#tinhnang)
 - [Các option](#optinos)
-[2.Một số lệnh cơ bản](#commands)
 
+[2.Một số lệnh cơ bản](#commands)
+<a name=gioithieu></a>
 ## 1. Giới thiệu về tcpdump
 TCPDUMP là một chương trình phân tích gói tin cho phép theo dõi băng thông mạng thông qua việc lưu trữ dữ liệu (gói tin – packet) truyền tải trên mạng có thể "bắt được" (capture) vào file để phục vụ công việc phân tích sâu hơn về sau này. Lệnh tcpdump này có sẵn ở hầu hết các hệ điều hành Linux/Unix.
 
+<a name=tinhnang></a>
 ### Một số tính năng của tcpdump:
 
 - Nhìn thấy được các bản tin dump trên terminal
@@ -16,6 +18,7 @@ TCPDUMP là một chương trình phân tích gói tin cho phép theo dõi băng
 - Có thể nhìn được trực tiếp các bản tin điều khiển hệ thống Linux sử dụng wireshark
 - Có thể nhìn được trực tiếp các bản tin điều khiển hệ thống Linux sử dụng wireshark
 
+<a name=options></a>
 ### Các option: tham khảo tài liệu ở đây <a href="http://www.tcpdump.org/tcpdump_man.html">tcpdump man page</a>
 
 - `-i` sử dụng tùy chọn này khi người sử dụng cần chụp các gói tin trên interfaces chỉ định.
@@ -41,6 +44,7 @@ TCPDUMP là một chương trình phân tích gói tin cho phép theo dõi băng
 - `-L` Hiển thị danh sách các datalink type mà interface hỗ trợ.
 - `-y` Lựa chọn datalinktype khi bắt các gói tin.
 
+<a name=commands></a>
 ## 2. Một số lệnh cơ bản 
 
 2.1 Bắt gói tin từ một giao diện ethernet cụ thể thông qua tcpdump -i
