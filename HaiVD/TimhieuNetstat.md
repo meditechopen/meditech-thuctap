@@ -3,7 +3,8 @@
 # Mục lục
 ## [I. Định nghĩa Netstat](#dn)
 ## [II. Các tùy chọn trong Netstat](#tuychon)
-## [III. Tài liệu tham khảo](#tltk)
+## [III. Các trạng thái Port trong Netstat](#trangthai)
+## [IV. Tài liệu tham khảo](#tltk)
 
 <a name=dn></a>
 ## I. Định nghĩa Netstat
@@ -59,8 +60,21 @@ netstat [-a] [-e] [-n] [-l] [-o] [-p Protocol] [-r] [-s] [Interval]
 
 <img src=http://i.imgur.com/QQi1K0i.png>
 
+## III. Các trạng thái Port trong Netstat
+  Khi kiểm tra trạng thái các Port sẽ xuất hiện một trong các trạng thái sau :
+  - ESTABLISHED : Kết nối được thiết lập
+  - SYN_SENT : Đang cố gắng thiết lập kết nối.
+  - SYN_RECV : Đã nhận được yêu cầu kết nối từ mạng.
+  - FIN_WAIT1 : Kết nối đã được đóng và đang tắt.
+  - FIN_WAIT2 : Kết nối đã được đóng và đang chờ ngắt kết nối từ xa.
+  - TIME_WAIT : Kết nối đang chờ xử lý các gói tin còn trong mạng.
+  - CLOSE : Kết nối không được sử dụng.
+  - CLOSE_WAIT : Kết nối từ xa đã đóng, và đang chờ kết nối cục bộ kết thúc.
+  - LAST_ACK : Kết nối từ xa đã đóng,kết nối cục bộ đã đóng và đang chờ xác nhận.
+  - LISTEN : Kết nối đang được mở.
+  - UNKNOWN : Không xác định.
 <a name=tltk></a>
-## III. Tài liệu tham khảo
+## IV. Tài liệu tham khảo
 
 - https://technet.microsoft.com/en-us/library/bb490947.aspx
 - http://netstat.net/
