@@ -3,7 +3,7 @@
 # Mục lục
 ## [I. Định nghĩa](#dn)
 ## [II. Định dạng chung của một dòng giao thức](#ddc)
-## [III. Các tùy chọn](#options)
+## [III. Các tùy chọn](#tuychon)
 ## [VI. Một số bộ lọc cơ bản](#boloc)
 ## [V. Một số ví dụ TCPdump](#vidu)
 ## [VI . Tài liệu tham khảo](#tltk)
@@ -39,12 +39,13 @@ time-stamp src > dst:  flags  data-seqno  ack  window urgent options
   <li>P(PUSH): Thường được đặt ở cuối để đánh dấu việc truyền dữ liệu.</li>
   <li>R(RST): Được sử dụng khi muốn thiết lập lại đường truyền.</li>
   </ul>
+  
   - `Data-sqeno` : Số sequence number của gói dữ liệu hiện tại.
   - `ACK` : Mô tả số sequence number tiếp theo của gói tin do bên gởi truyền (số sequence number mong muốn nhận được).
   - `Window` : Vùng nhớ đệm có sẵn theo hướng khác trên kết nối này.
   - `Urgent` : Cho biết có dữ liệu khẩn cấp trong gói tin.
 
-<a name=tc></a>
+<a name=tuychon></a>
 ## III. Một số tùy chọn trong TCPdump
   TCPdump có các tùy chọn thông dụng sau :
   - `-i` : Sử dụng option này khi khách hàng muốn chụp các gói tin trên một interface được chỉ định.
