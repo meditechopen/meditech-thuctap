@@ -13,7 +13,14 @@
 ### [3.1 Cài đặt KVM](#cdkvm)
 ### [3.2 Hướng dẫn cài đặt máy ảo](#cdmayao)
 ## [IV. Tìm hiểu vể Virsh Command Line Interfaces](#vcli)
-
+## [V. Hướng dẫn cài đặt Webvirt](#webvirt)
+### [5.1 Mô hình](#mohinh)
+### [5.2 Cấu hình và cài đặt máy webvirt](#maywebvirt)
+### [5.3 Cấu hình và cài đặt máy KVM](#maykvm)
+## [VI. Các chế độ card mạng KVM](#network)
+### [6.1 NAT](#nat)
+### [6.2 Public Bridging](#pubbr)
+### [6.3 Private Bridging](#prbr)
 
 
 
@@ -161,7 +168,7 @@ QEMU có thể tận dụng KVM khi chạy một kiến ​​trúc mục tiêu 
 
   Đầu tiên kiểm tra xem đã có đầy đủ tất cả các gói phụ trợ hay chưa :
   <img src="http://i.imgur.com/FaRnGB3.png">
-  
+
    Có tổng cộng tất cả 11 gói :
    - gir1.2-spice-client-glib-2.0
    - gir1.2-spice-client-gtk-2.0
@@ -179,26 +186,26 @@ Nếu thiếu gói nào thì các bạn hãy cài đặt gói ấy để tránh 
 Bây giờ chúng ta sẽ tiến hành cài đặt
   - Bước 1 : Mở Virtual Machine Manager lên xuất hiện hộp thoại, Chọn File/ New Virtual Machine xuất hiện hộp thoại  :
   <img src=http://i.imgur.com/QnxOEvn.png>
-  
+
   - Bước 2 : Trỏ Browse đến file iso hệ điều hành cần cài đặt :
   <img src=http://i.imgur.com/XZjrYsK.png>
-  
+
   - Bước 3 : Tùy chỉnh thông số máy ảo RAM,CPU :
-  
+
   <img src=http://i.imgur.com/eW4c5x6.png>
-  
-  - Bước 4 : Tùy chọn dung lượn ổ cứng: 
-  
+
+  - Bước 4 : Tùy chọn dung lượn ổ cứng:
+
   <img src=http://i.imgur.com/zlVlrCa.png>
-  
+
   - Bước 5 : Đặt tên cho máy ảo và tùy chọn cấu hình, card mạng:
   <img src=http://i.imgur.com/I8lc7bL.png>
-   
-  - Bước 6 : Tiến hành cài đặt hệ điều hành như bình thường : 
+
+  - Bước 6 : Tiến hành cài đặt hệ điều hành như bình thường :
   <img src=http://i.imgur.com/LY4pA7o.png>
-  
+
   - Sau khi cài đặt xong :
-  
+
   <img src=http://i.imgur.com/SJfiiE8.png>
 
    Theo mình cảm nhận so với VMware thì tốc độ xử lý nhanh hơn rất nhiều.
@@ -239,3 +246,419 @@ Các tùy chọn giám sát và khắc phục sự cố :
   - version : hiển thị phiên bản
   - dumpxml : thông tin domain trong XML
   - noteinfo : thông tin về note
+
+<a name=webvirt)</a>
+## V. Hướng dẫn cài đặt webvirt
+
+<a name=mohinh></a>
+### 5.1 Mô hình triển khai
+
+  Chúng ta có thể triển khai Werbvirt theo 3 cách :
+  - Mô hình 1 : Triển khai máy KVM và Webvirt trên 1 máy
+  - Mô hình 2 : Triển khai máy KVM và Webvirt trên 2 máy khác nhau
+  - Mô hình 3 : Triển khai máy Webvirt ngay trên máy ảo của KVM.
+
+  Ở bài này mình sẽ hướng dẫn các bạn cài trên mô hình thứ 2. và là mô hình phổ biến nhất hiện nay.
+  Nó giúp các nhà quản trị dễ dàng quản lý các máy ảo một các tập trung, dễ quản lý.
+
+  Mô hình triển khai gồm 2 node :
+  - Webvirt Host : Máy cài đặt Webvirt.
+  - Host Server : Máy cài đặt KVM .
+
+  <img src=http://i.imgur.com/0DLjkq1.png>
+
+Cả 2 máy đều cài đặt UbuntuServer 14.04 và đều nằm cùng một dải mạng.
+
+<a name=maywebvirt>
+### 5.2 Cấu hình và cài đặt máy Webvirt
+
+- Cài đặt các gói cần thiết :
+
+  ```
+  sudo apt-get install git python-pip python-libvirt python-libxml2 novnc supervisor nginx
+  ```
+
+  <ul>
+  <li>Git : Gói cài đặt phần mềm git cho linux</li>
+  <li>Python-pip : gói trình quản lý và cài đặt các chương trình python </li>
+  <li>Python-libvirt : Gói các chương trình python cài đặt thư viện libvirt</li>
+  <li>Python-libxml2 : Gói các chương trình python cài đặt thư viện libxml2</li>
+  <li>Novnc : là một chương trình gần giống như remote desktop nhưng sử dụng HTML 5 để quản lý các Client</li>
+  <li>Supervisor : là một tiến trình quản lý ,hỗ trợ máy chủ Webvirt quản lý các tiến trình máy ảo</li>
+  <li>Nginx : Gói cài đặt HTTP Server hay Revert Proxy hoặc IMAP/POP3 server.Gói này giúp cấu hình phần webserver cho Webvirt.</li>
+  </ul>
+
+ - Cài đặt Python và các chương trình cần thiết hỗ trợ cho Django - xây dựng nền tảng web :
+
+ ```
+ cd ~/
+ git clone git://github.com/retspen/webvirtmgr.git
+ cd webvirtmgr
+ sudo pip install -r requirements.txt
+ ./manage.py syncdb
+```
+  Tiến hành cài đặt username , email, mật khẩu cho webvirt.
+
+  ```
+  You just installed Django's auth system, which means you don't have any superusers defined.
+Would you like to create one now? (yes/no): yes (Put: yes)
+Username (Leave blank to use 'admin'): admin (Put: your username or login)
+E-mail address: username@domain.local (Put: your email)
+Password: xxxxxx (Put: your password)
+Password (again): xxxxxx (Put: confirm password)
+Superuser created successfully.
+```
+Có thể cài quyền quản trị cao nhất Supper user như sau
+```
+./manage.py createsuperuser
+```
+- Cấu hình Nginx :
+
+  Tạo thêm thư mục `/var/www/` : ```sudo mkdir /var/www/```
+
+- Chuyển thư mục Webvirt :
+
+  ```
+  sudo mv ~/webvirtmgr /var/www/webvirtmgr
+
+  ```
+
+- Thêm file cấu hình `webvirtmgr.conf` tại `/etc/nginx/config.d/webvirtmgr.conf` và thêm nội dung cho file webvirtmgr.conf :
+
+```
+  server {
+    listen 80 default_server;
+server_name $hostname;
+#access_log /var/log/nginx/webvirtmgr_access_log;
+
+location /static/ {
+    root /var/www/webvirtmgr/webvirtmgr; # or /srv instead of /var
+    expires max;
+}
+
+location / {
+    proxy_pass http://127.0.0.1:8000;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-for $proxy_add_x_forwarded_for;
+    proxy_set_header Host $host:$server_port;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_connect_timeout 600;
+    proxy_read_timeout 600;
+    proxy_send_timeout 600;
+    client_max_body_size 1024M; # Set higher depending on your needs
+}
+
+}
+```
+- Chỉnh sửa file cấu hình Nginx :
+
+  `sudo vi /etc/nginx/sites-enabled/default`
+
+- Chỉnh sửa nội dung file cấu hình Nginx như sau:
+
+```
+# You should look at the following URL's in order to grasp a solid understanding
+# of Nginx configuration files in order to fully unleash the power of Nginx.
+# http://wiki.nginx.org/Pitfalls
+# http://wiki.nginx.org/QuickStart
+# http://wiki.nginx.org/Configuration
+#
+# Generally, you will want to move this file somewhere, and start with a clean
+# file but keep this around for reference. Or just disable in sites-enabled.
+#
+# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
+##
+
+# Default server configuration
+#
+#server {
+#	listen 80 default_server;
+#	listen [::]:80 default_server;
+
+	# SSL configuration
+	#
+	# listen 443 ssl default_server;
+	# listen [::]:443 ssl default_server;
+	#
+	# Note: You should disable gzip for SSL traffic.
+	# See: https://bugs.debian.org/773332
+	#
+	# Read up on ssl_ciphers to ensure a secure configuration.
+	# See: https://bugs.debian.org/765782
+	#
+	# Self signed certs generated by the ssl-cert package
+	# Don't use them in a production server!
+	#
+	# include snippets/snakeoil.conf;
+
+#	root /var/www/html;
+
+	# Add index.php to the list if you are using PHP
+#	index index.html index.htm index.nginx-debian.html;
+
+#	server_name _;
+
+#	location / {
+		# First attempt to serve request as file, then
+		# as directory, then fall back to displaying a 404.
+#		try_files $uri $uri/ =404;
+#	}
+
+	# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+	#
+	#location ~ \.php$ {
+	#	include snippets/fastcgi-php.conf;
+	#
+	#	# With php7.0-cgi alone:
+	#	fastcgi_pass 127.0.0.1:9000;
+	#	# With php7.0-fpm:
+	#	fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+	#}
+
+	# deny access to .htaccess files, if Apache's document root
+	# concurs with nginx's one
+	#
+	#location ~ /\.ht {
+	#	deny all;
+	#}
+#}
+
+
+# Virtual Host configuration for example.com
+#
+# You can move that to a different file under sites-available/ and symlink that
+# to sites-enabled/ to enable it.
+#
+#server {
+#	listen 80;
+#	listen [::]:80;
+#
+#	server_name example.com;
+#
+#	root /var/www/example.com;
+#	index index.html;
+#
+#	location / {
+#		try_files $uri $uri/ =404;
+#	}
+#}
+
+```
+- Tiến hành Restart lại Nginx
+
+  `sudo service nginx restart`
+
+- Kích hoạt supervisord khi khởi động:
+<ul>
+<li>Với Ubuntu 14</li>
+
+```
+sudo -i
+curl https://gist.github.com/howthebodyworks/176149/raw/88d0d68c4af22a7474ad1d011659ea2d27e35b8d/supervisord.sh > /etc/init.d/supervisord
+chmod +x /etc/init.d/supervisord
+update-rc.d supervisord defaults
+service supervisord stop
+service supervisord start
+
+exit
+
+```
+<li>Với Ubuntu 16</li>
+
+```
+sudo systemctl enable supervisor
+sudo systemctl start supervisor
+
+```
+</ul>
+
+- Cấu hình Supervisor :
+  Cấu hình novnc
+
+```
+  sudo -i
+
+  cat << EOF > /etc/insserv/overrides/novnc
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          nova-novncproxy
+# Required-Start:    $network $local_fs $remote_fs $syslog
+# Required-Stop:     $remote_fs
+# Default-Start:     
+# Default-Stop:      
+# Short-Description: Nova NoVNC proxy
+# Description:       Nova NoVNC proxy
+### END INIT INFO
+EOF
+
+service novnc stop
+insserv -r novnc
+
+```
+  Thay đổi quyền sở hữu :
+
+```
+chown -R www-data:www-data /var/www/webvirtmgr
+```
+
+  Thêm cấu hình tại : `/etc/supervisor/conf.d/webvirtmgr.conf`
+
+```
+cat << EOF > /etc/supervisor/conf.d/webvirtmgr.conf
+[program:webvirtmgr]
+command=/usr/bin/python /var/www/webvirtmgr/manage.py run_gunicorn -c /var/www/webvirtmgr/conf/gunicorn.conf.py
+directory=/var/www/webvirtmgr
+autostart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/webvirtmgr.log
+redirect_stderr=true
+user=www-data
+
+[program:webvirtmgr-console]
+command=/usr/bin/python /var/www/webvirtmgr/console/webvirtmgr-console
+directory=/var/www/webvirtmgr
+autostart=true
+autorestart=true
+stdout_logfile=/var/log/supervisor/webvirtmgr-console.log
+redirect_stderr=true
+user=www-data
+EOF
+```
+
+  Khởi động lại Supervisor :
+
+  ```
+  sudo service supervisor stop
+  sudo service supervisor start
+  exit
+  ```
+
+<a name=maykvm></a>
+### 5.3 Cấu hình và cài đặt máy KVM
+
+- Thực hiện trên máy Server Host (KVM).Trước khi cài đặt KVM lên node này, cần kiểm tra xem bộ xử lý của máy có hỗ trợ ảo hóa không (VT-x hoặc AMD-V). Nếu thực hiện lab trên máy thật cần khởi động lại máy này vào BIOS thiết lập chế độ hỗ trợ ảo hóa. Tuy nhiên bài lab này thực hiện trên VMWare nên trước khi cài đặt cần thiết lập cho máy ảo hỗ trợ ảo hóa như sau:
+
+<img src="http://i.imgur.com/XwwRHUl.png">
+
+- Cài đặt KVM :
+
+```
+  sudo apt-get install qemu-kvm libvirt-bin ubuntu-vm-builder bridge-utils
+
+Thêm user của phiên làm việc hiện tại vào libvirtd :
+
+  sudo adduser `id -un` libvirtd
+```
+- Cấu hình libvirt:
+
+```
+sudo -i
+
+cat << EOF > /etc/libvirt/libvirtd.conf
+listen_tls = 0
+listen_tcp = 1
+listen_addr = "0.0.0.0"
+unix_sock_group = "libvirtd"
+unix_sock_ro_perms = "0777"
+unix_sock_rw_perms = "0770"
+auth_unix_ro = "none"
+auth_unix_rw = "none"
+auth_tcp = "none"
+EOF
+
+cat << EOF > /etc/default/libvirt-bin
+start_libvirtd="yes"
+libvirtd_opts="-l -d"
+EOF
+
+```
+- Khởi động lại libvirt :
+```
+ service libvirt-bin restart
+```
+- Kiểm tra cài đặt :
+
+```
+ps ax | grep [l]ibvirtd
+netstat -pantu | grep libvirtd
+virsh -c qemu+tcp://127.0.0.1/system
+```
+
+ Nếu thực hiện các câu lệnh trên mà xuất hiện các thông số thì việc cài đặt thành công :
+
+ <img src=http://i.imgur.com/J6o9dgm.png>
+
+ - Bước tiếp theo : cài đặt card mạng KVM
+
+<a name=network></a>
+## [VI. Các chế độ card mạng của KVM]
+
+<a name=nat></a>
+### 6.1 : NAT
+
+  Đây là cấu hình card mạng mặc định của KVM.
+
+  NAT (Network Address Translation) giống như một Router, chuyển tiếp các gói tin giữa những lớp mạng khác nhau trên một mạng lớn. NAT dịch hay thay đổi một hoặc cả hai địa chỉ bên trong một gói tin khi gói tin đó đi qua một Router, hay một số thiết bị khác. Thông thường NAT thường thay đổi địa chỉ thường là địa chỉ riêng (IP Private) của một kết nối mạng thành địa chỉ công cộng (IP Public).
+
+<a name=pbbr></a>
+### 6.2: Public Bridging
+
+  Nếu bạn chỉ có một NIC trên máy chủ KVM, trong khi bạn muốn các Guest của mình cũng được truy cập vào cùng dải mạng vật lý thì phải thiết lập một bridge kết nối thông qua cổng eth0 của máy vật lý.
+
+  - Thiết lập 1 card Bridge và gán nó cho eth0:
+  ```
+  # ip link add br0 type bridge
+  # brctl addbr br0
+  # brctl addif br0 eth0
+  ```
+
+  - Cấu hình /etc/network/interfaces.Comment eth0 và cấu hình cho br0.
+  ```
+  #auto eth0
+  #iface eth0 inet dhcp
+
+  auto br0
+  iface br0 inet dhcp
+          bridge_ports eth0
+          bridge_stp off
+          bridge_fd 0
+          bridge_maxwait 0
+  ```
+   Các thông số kèm theo :
+  <ul>
+  <li>*ports eth0* : gán port brigde cho eth0</li>
+  <li>*stp* : giao thức chống lặp gói tin trong mạng</li>
+  <li>*fd*  : chuyển tiếp dữ liệu từ máy ảo tới bridge </li>
+  <li> *maxwait* :Thời gian chờ lớn nhất nhận cổng </li>
+  </ul>
+
+<a name=prbr></a>
+### 6.3: Private Bridging
+
+  Các này tạo một card bridge sử dụng một dải ip riêng dùng để giao tiếp với các guest KVM thông qua công eth0 mà không ảnh hưởng tới địa chỉ của KVM host.Chính vì vậy không cần tham số  `bridge_ports` và cũng không cần comment `eth0` :
+
+  ```
+  # The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+auto eth0
+iface eth0 inet static
+    address 192.168.0.101
+    netmask 255.255.255.0
+    network 192.168.0.0
+    broadcast 192.168.0.255
+    gateway 192.168.0.1
+
+# The private bridge
+auto br0 inet static
+    address 172.16.0.1
+    netmask 255.255.255.0
+    network 172.16.0.0
+    broadcast 172.16.0.255
+    bridge_ports none
+    bridge_stp off
+    bridge_fd 0
+    bridge_maxwait 0
+  ```
