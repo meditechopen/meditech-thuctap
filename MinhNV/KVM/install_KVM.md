@@ -266,4 +266,4 @@ Như vậy máy ảo sẽ đi ra ngoài internet thông qua bridge br0.
 
 
 
->>>>>>> 5f0f8b1d94de9c396ccc1c1dd07b9b5aba53c879
+
