@@ -4,10 +4,10 @@
 Máy cài KVM và VM đều cài đặt Ubuntu 14.04 và sử dụng <a href="https://github.com/hocchudong/Linux-bridge">Linux brigde</a> 
 
 
-<img src="http://i.imgur.com/Qr8KNrk.png">
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/KVM.PNG?raw=true">
 
 - IP Planing
-<img src="http://i.imgur.com/LNjQ25v.png">
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/ip.PNG?raw=true">
 
 # Cài đặt KVM
 ## Bước 1: 
@@ -98,6 +98,8 @@ Khởi động lại dịch vụ mạng:
 <img src="http://i.imgur.com/SFhwAy0.png">]
 
 Bước 5: Tạo máy ảo để kiểm tra.
+
+Cách tạo máy ảo <a href="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/docs/th%E1%BB%B1c%20h%C3%A0nh/install_KVM.md">Tham khảo</a> 
 
 - Trên máy server cài KVM kiểm tra địa chỉ IP. Kết quả như sau: 
 
@@ -268,4 +270,4 @@ Như vậy máy ảo sẽ đi ra ngoài internet thông qua bridge br0.
 
 
 
->>>>>>> origin/master:MinhNV/KVM/install_KVM.md
+
