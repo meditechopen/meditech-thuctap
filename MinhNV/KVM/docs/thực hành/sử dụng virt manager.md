@@ -127,19 +127,19 @@ VD: Máy vm01 của mình sử dụng virtual network default  (NAT)
 
 - Chọn biểu tượng dấu cộng 
 
-<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/hostonly1.png">
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/hostonly1.PNG">
 
 - Chọn tên network muốn tạo mới 
 
-<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/hostonly2.png">
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/hostonly2.PNG?raw=true">
 
 - Chọn địa chỉ IP
 
-<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/hostonly3.png">
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/hostonly3.PNG?raw=true">
 
 - Chọn ``isolated virtual network``
 
-<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/hostonly4.png">
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/hostonly4.PNG?raw=true">
 
 - Chọn finish
 
@@ -147,5 +147,5 @@ VD: Máy vm01 của mình sử dụng virtual network default  (NAT)
 
 - Ping giữa máy vm03 và vm04
 
-<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/hostonly5.png">
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/hostonly5.PNG?raw=true">
 
