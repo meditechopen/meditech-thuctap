@@ -2,9 +2,9 @@
 - [ Sử dụng virt-manager](#sudụng)
 - [ Tạo máy ảo bằng virt-manager](#caidat)
 - [ Cài đặt network cho máy ảo](#network)
-
-<a name=sudung></a>
 # Cách sử dụng Virt Manager để quản lý máy ảo.
+<a name=sudung></a>
+# 1 Dùng virt manager để tạo ra máy ảo
 Ở đây chúng ta dùng putty để ssh vào máy server đã cài đặt sẵn KVM. Vì vậy:
 
 - Máy server cài KVM và Linux Brigde 
@@ -74,13 +74,23 @@ Tham khảo cài cách cài đặt <a href="https://github.com/nguyenminh1205199
 
 
 <a name=network></a>
-## Các tùy chọn network cho máy ảo. 
+## 2. Các tùy chọn network cho máy ảo. 
+Có 3 tùy chọn network cho máy ảo
+- brigde public
+- NAT
+- bridge private
 
-### Sử dụng Linux brigde đã cấu hình trên KVM 
+### 2.1 Cài đặt brigde pulic cho máy ảo
 
-VD: Máy vm02 của mình sử dụng Linux bridge 
+Kịch bản: 
 
-- Trong tùy chọn Details của màn hình console vm01 chon NIC
+- Sử dụng Linux brigde đã cấu hình trên KVM có địa chỉ IP là 192.168.100.30
+
+- Tạo ra 1 máy ảo có tên vm02 bằng virt manager
+
+- Trong tùy chọn Details của màn hình console vm02 chon NIC
+
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/brigdepub.PNG?raw=true">
 
 - Gán card mạng của máy ảo với bridge có tên là br0
 
@@ -94,11 +104,14 @@ VD: Máy vm02 của mình sử dụng Linux bridge
 
 <img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/bridgemtr.PNG?raw=true">
 
-### Sử dụng NAT được cấu hình sẵn trong network default
+### 2.2 Sử dụng NAT được cấu hình sẵn trong network default
 
-VD: Máy vm01 của mình sử dụng virtual network default  (NAT)
+Kịch bản
+- Tạo ra vm01 bằng virt manager 
 
 - Trong tùy chọn Details  của màn hình console vm01 chon NIC
+
+<img src="
 
 - Gán card mạng của máy ảo với virtual network default: NAT
 
@@ -117,7 +130,12 @@ VD: Máy vm01 của mình sử dụng virtual network default  (NAT)
 
 <img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/bridgemtr.PNG?raw=true">
 
-### Sử dụng host only tạo mạng riêng giữa các máy ảo 
+### 2.3 Sử dụng brigde private để tạo mạng riêng cho các máy ảo 
+
+Kịch bản
+- Tạo 1 virtual network sử dụng dải mạng private là 10.10.10.0/24
+
+- Tạo ra 2 máy ảo vm03 và vm04 bằng virt manager gán card mạng của 2 máy vào virtual network vừa tạo
 
 **Tạo 1 virtual network** 
 
