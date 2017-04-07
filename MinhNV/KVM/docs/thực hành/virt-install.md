@@ -1,10 +1,10 @@
-# 1.1 Sử dung virt install để tạo máy ảo 
+# Sử dung virt install để tạo máy ảo 
 
 Tải gói phụ trợ: 
 
 ```sudo apt-get install virtinst```
 
-## Tạo máy ảo bằng file image 
+## 1.1 Tạo máy ảo bằng file image 
 
 - Tải file image (giống như file ghost) về để khởi động, ví dụ này sẽ images linux được thu gọn. File được đặt trong thư mục chứa images của KVM ( /var/lib/libvirt/images)
 
