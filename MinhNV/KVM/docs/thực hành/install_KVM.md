@@ -99,7 +99,7 @@ Khởi động lại dịch vụ mạng:
 
 Bước 5: Tạo máy ảo để kiểm tra.
 
-Cách tạo máy ảo <a href="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/docs/th%E1%BB%B1c%20h%C3%A0nh/install_KVM.md">Tham khảo</a> 
+Cách tạo máy ảo bằng virt manager <a href="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/docs/th%E1%BB%B1c%20h%C3%A0nh/s%E1%BB%AD%20d%E1%BB%A5ng%20virt%20manager.md">Tham khảo</a> 
 
 - Trên máy server cài KVM kiểm tra địa chỉ IP. Kết quả như sau: 
 
