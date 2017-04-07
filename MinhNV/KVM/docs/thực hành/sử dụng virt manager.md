@@ -4,7 +4,7 @@
 - [ Cài đặt network cho máy ảo](#network)
 # Cách sử dụng Virt Manager để quản lý máy ảo.
 <a name=sudung></a>
-# 1 Dùng virt manager để tạo ra máy ảo
+# 1. Dùng virt manager để tạo ra máy ảo
 Ở đây chúng ta dùng putty để ssh vào máy server đã cài đặt sẵn KVM. Vì vậy:
 
 - Máy server cài KVM và Linux Brigde 
@@ -19,6 +19,22 @@ Khởi động putty và cấu hình để kích hoạt X11 phía client theo h�
 
 **Note: Login với tài khoản root (lưu ý, tính năng cho phép ssh bằng root phải được kích hoạt trước) và gõ lệnh dưới để khởi động công cụ quản lý KVM**
 
+- Trên máy server cài KVM. Cấu hình file sshd_config 
+
+``sudo vi /etc/ssh/sshd_config``
+
+- Chúng ta tìm đến 2 dòng chỉnh sửa như sau
+ 
+```sh 
+PermitRootLogin yes
+PasswordAuthentication yes
+```
+- Lưu và khởi động ssh 
+
+``service ssh restart`` 
+
+- Trở lại putty và đăng nhập 
+
 ## Bước 3: Sử dụng lệnh để mở virt manager
 
 ``virt-manager``
@@ -28,8 +44,12 @@ Sau khi sử dụng lệnh để gọi virt manager trên máy client hiển th�
 <a name=caidat></a>
 ## Bước 4: Dùng virt-manager để tạo máy ảo.
 
-Ở đây, mình tạo máy ảo từ file iso
+- Ở đây, mình tạo máy ảo từ file iso
+
 ### Bước 4.1 Chọn New và nhập tên máy ảo
+
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/new.PNG?raw=true">
+
 <img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/Capture.PNG?raw=true">
 
 Chọn Forward để sang bước tiếp.
@@ -111,7 +131,7 @@ Kịch bản
 
 - Trong tùy chọn Details  của màn hình console vm01 chon NIC
 
-<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/brnat.PNG?raw=true">
+<img src="
 
 - Gán card mạng của máy ảo với virtual network default: NAT
 
