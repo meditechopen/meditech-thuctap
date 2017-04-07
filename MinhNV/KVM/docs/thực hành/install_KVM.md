@@ -65,7 +65,7 @@ Một cách để kích hoạt KVM máy ảo để truy cập vào mạng bên n
 
 ```sudo brctl addbr br0```
 
-- Gán port eth1 cho bridge đó
+- Gán port eth0 cho bridge đó
 
 ``brctl addif br0 eth0``
 
