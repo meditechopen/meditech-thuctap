@@ -67,6 +67,10 @@ Gán port eth1 cho bridge đó
 
 ``brctl addif br0 eth0``
 
+Kiểm tra xem br0 đã gán với card eth0 bằng cách
+
+<img src="http://i.imgur.com/SFhwAy0.png">
+
 Cấu hình Linux brigde br0 trong / etc / network / interfaces như sau:
 
 **note: chúng ta phải comment 2 dòng đầu lại**
@@ -95,7 +99,7 @@ Khởi động lại dịch vụ mạng:
 
 ``ifdown -a && ifup -a``
 
-<img src="http://i.imgur.com/SFhwAy0.png">]
+
 
 Bước 5: Tạo máy ảo để kiểm tra.
 
