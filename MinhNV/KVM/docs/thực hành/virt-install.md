@@ -1,9 +1,15 @@
 # Sử dung virt install để tạo máy ảo 
 
+Có 3 cách tạo máy ảo 
+-[Tạo máy ảo bằng file image](#img)
+-[Tạo máy ảo bằng file iso](#iso)
+-[Tạo máy ảo bằng cách tải trực tiếp file trên web về cài đặt](#web) 
+
 Tải gói phụ trợ: 
 
 ```sudo apt-get install virtinst```
 
+<a name=imd></a>
 ## 1.1 Tạo máy ảo bằng file image 
 
 - Tải file image (giống như file ghost) về để khởi động, ví dụ này sẽ images linux được thu gọn. File được đặt trong thư mục chứa images của KVM ( /var/lib/libvirt/images)
@@ -43,6 +49,7 @@ Trong đó:
 - vnc: đưa ra giao diện ảo vnc để điều khiển VM .
 - noautoconsole: không tự động kết nối tới guest console
 
+<a name=iso></a>
 ## 1.2 Tạo máy ảo bằng file iso 
 
 ```sh 
@@ -66,6 +73,7 @@ VD:
 - Tham khảo cách cài đặt <a href="https://github.com/nguyenminh12051997/MediTech/blob/master/install_ubuntu_server.md">Ubuntu14.04</a>
 
 
+<a name=web></a>
 ## 1.3 Tạo máy ảo bằng cách tải trực tiếp các gói trên mạng về để cài đặt
 
 ```sh
