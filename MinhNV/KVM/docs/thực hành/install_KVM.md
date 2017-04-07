@@ -59,7 +59,7 @@ Một cách để kích hoạt KVM máy ảo để truy cập vào mạng bên n
 
 Đầu tiên, cài đặt một gói phần mềm cần thiết, và tạo ra một Brigde Linux từ dòng lệnh:
 
-``sudo apt-get install bridge-utils```
+``sudo apt-get install bridge-utils``
 
 ```sudo brctl addbr br0```
 
