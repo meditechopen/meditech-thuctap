@@ -4,10 +4,10 @@
 Máy cài KVM và VM đều cài đặt Ubuntu 14.04 và sử dụng <a href="https://github.com/hocchudong/Linux-bridge">Linux brigde</a> 
 
 
-<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/KVM.PNG?raw=true">
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/KVM1.PNG?raw=true">
 
 - IP Planing
-<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/ip.PNG?raw=true">
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/ippp.PNG?raw=true">
 
 # Cài đặt KVM
 ## Bước 1: 
