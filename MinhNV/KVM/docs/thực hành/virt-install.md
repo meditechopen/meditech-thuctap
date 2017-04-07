@@ -1,4 +1,4 @@
-# Sử dung virt install để tạo máy ảo 
+# 1.1 Sử dung virt install để tạo máy ảo 
 
 Tải gói phụ trợ: 
 
@@ -43,7 +43,7 @@ Trong đó:
 - vnc: đưa ra giao diện ảo vnc để điều khiển VM .
 - noautoconsole: không tự động kết nối tới guest console
 
-## Tạo máy ảo bằng file iso 
+## 1.2 Tạo máy ảo bằng file iso 
 
 ```sh 
 virt-install --name vmname --ram 1024 --vcpus=1 \
@@ -65,7 +65,7 @@ VD:
 - Tham khảo cách cài đặt <a href="https://github.com/nguyenminh12051997/MediTech/blob/master/install_ubuntu_server.md">Ubuntu14.04</a>
 
 
-## Tạo máy ảo bằng cách tải trực tiếp các gói trên mạng về để cài đặt
+## 1.3 Tạo máy ảo bằng cách tải trực tiếp các gói trên mạng về để cài đặt
 
 ```sh
 virt-install \
