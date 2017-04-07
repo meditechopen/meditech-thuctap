@@ -4,6 +4,7 @@
 ## [I. Định nghĩa](#dn)
 ## [II. Các tùy chọn cú pháp](#tc)
 ## [III. Một số ví dụ](#vd)
+## [IV. Tài liệu tham khảo](#tltk)
 
 <a name=dn></a>
 ## I. Định nghĩa
@@ -120,3 +121,6 @@ ICMP Host Unreachable from 192.168.100.126 for ICMP Echo sent to 192.168.100.44
 ```
 
    Trong 3 địa chỉ trên chỉ có địa chỉ 192.168.100.30 đang hoạt động.
+<a name=tltk></a>
+## IV. Tài liệu tham khảo 
+- https://fping.org/fping.1.html
