@@ -33,7 +33,7 @@ PasswordAuthentication yes
 
 ``service ssh restart`` 
 
-- Trở lại putty và đăng nhập 
+- Trở lại putty trên máy client và đăng nhập 
 
 ## Bước 3: Sử dụng lệnh để mở virt manager
 
@@ -96,10 +96,12 @@ Tham khảo cài cách cài đặt <a href="https://github.com/nguyenminh1205199
 <a name=network></a>
 ## 2. Các tùy chọn network cho máy ảo. 
 Có 3 tùy chọn network cho máy ảo
-- brigde public
-- NAT
-- bridge private
+- [brigde public](#pub)
+- [NAT](#nat)
+- [bridge private](#pri)
 
+
+<a name=pub></a>
 ### 2.1 Cài đặt brigde public cho máy ảo
 
 Kịch bản: 
@@ -124,6 +126,8 @@ Kịch bản:
 
 <img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/bridgemtr.PNG?raw=true">
 
+
+<a name=nat></a>
 ### 2.2 Sử dụng NAT được cấu hình sẵn trong network default
 
 Kịch bản
@@ -150,6 +154,8 @@ Kịch bản
 
 <img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/bridgemtr.PNG?raw=true">
 
+
+<a name=pri></a>
 ### 2.3 Sử dụng brigde private để tạo mạng riêng cho các máy ảo 
 
 Kịch bản
