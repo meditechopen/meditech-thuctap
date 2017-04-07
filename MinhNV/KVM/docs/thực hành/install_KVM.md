@@ -57,21 +57,23 @@ Tại thời điểm này, bạn sẽ có thể chạy virsh như một người
 
 Một cách để kích hoạt KVM máy ảo để truy cập vào mạng bên ngoài là thông qua một Brigde Linux tạo ra trên một máy chủ KVM. Các cầu liên kết nối giao diện ảo của máy ảo với giao diện vật lý của máy chủ, do đó các máy ảo có thể gửi hoặc nhận thông qua giao diện vật lý. Điều này được gọi là  Brigde Networking.
 
-Đầu tiên, cài đặt một gói phần mềm cần thiết, và tạo ra một Brigde Linux từ dòng lệnh:
+- Đầu tiên, cài đặt một gói phần mềm cần thiết, và tạo ra một Brigde Linux từ dòng lệnh:
 
 ``sudo apt-get install bridge-utils``
 
+- Tạo ra brigde có tên là br0
+
 ```sudo brctl addbr br0```
 
-Gán port eth1 cho bridge đó
+- Gán port eth1 cho bridge đó
 
 ``brctl addif br0 eth0``
 
-Kiểm tra xem br0 đã gán với card eth0 bằng cách
+- Kiểm tra xem br0 đã gán với card eth0 bằng cách
 
 <img src="http://i.imgur.com/SFhwAy0.png">
 
-Cấu hình Linux brigde br0 trong / etc / network / interfaces như sau:
+- Cấu hình Linux brigde br0 trong / etc / network / interfaces như sau:
 
 **note: chúng ta phải comment 2 dòng đầu lại**
 
