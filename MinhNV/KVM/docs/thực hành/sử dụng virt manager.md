@@ -100,7 +100,7 @@ Có 3 tùy chọn network cho máy ảo
 - NAT
 - bridge private
 
-### 2.1 Cài đặt brigde pulic cho máy ảo
+### 2.1 Cài đặt brigde public cho máy ảo
 
 Kịch bản: 
 
@@ -131,7 +131,7 @@ Kịch bản
 
 - Trong tùy chọn Details  của màn hình console vm01 chon NIC
 
-<img src="
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/nattt.PNG?raw=true">
 
 - Gán card mạng của máy ảo với virtual network default: NAT
 
