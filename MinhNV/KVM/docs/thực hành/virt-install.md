@@ -3,7 +3,9 @@
 Có 3 cách tạo máy ảo 
 
 -[Tạo máy ảo bằng file image](#img)
+
 -[Tạo máy ảo bằng file iso](#iso)
+
 -[Tạo máy ảo bằng cách tải trực tiếp file trên web về cài đặt](#web) 
 
 Tải gói phụ trợ: 
