@@ -54,6 +54,7 @@ virt-install --name vmname --ram 1024 --vcpus=1 \
 --os-variant ubuntutrusty --virt-type=kvm --os-type Linux
 ```
 VD: 
+- Trên máy KVM mình cài máy ảo có tên là minhnv sử dụng câu lệnh virt-install
 
 <img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/virt(iso).PNG?raw=true">
 
