@@ -99,7 +99,7 @@ ps -p "1 2" -p 3,4
 - Hiển thị các tiến trình của gười dùng.Để lọc các quá trình bởi người dùng sở hữu sử dụng tùy chọn "-u" theo sau tên người dùng. Nhiều tên người dùng có thể được cung cấp cách nhau bằng dấu phẩy.
 
   ```
- ps -f -u
+  ps -f -u
 
   ```
 - Hiển thị tiến trình theo tên hoặc ID tiến trình :
@@ -109,5 +109,3 @@ ps -p "1 2" -p 3,4
 
  ps -f -p 3150,7298
  ```
-
--
