@@ -2,6 +2,7 @@
 ## Mục lục 
 
 -[Mô hình chuẩn bị](#mohinh)
+
 -[Cài đặt KVM](#caidat)
 
 <a name=mohinh></a>
