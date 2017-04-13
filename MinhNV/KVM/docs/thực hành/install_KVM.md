@@ -3,7 +3,7 @@
 
 - [Mô hình chuẩn bị](#mohinh)
 
-- [Cài đặt KVM](#caidat)]
+- [Cài đặt KVM](#caidat)
 
 - [Tài liệu tham khảo](#tailieu)
 
@@ -143,6 +143,7 @@ Cách tạo máy ảo bằng virt manager <a href="https://github.com/nguyenminh
 
 Như vậy máy ảo sẽ đi ra ngoài internet thông qua bridge br0.
 
+<a name=tailieu></a>
 ### Tài liệu tham khảo 
 - https://github.com/hocchudong/Linux-bridge
 - https://websetnet.com/kvm-command-line-debian-ubuntu/
