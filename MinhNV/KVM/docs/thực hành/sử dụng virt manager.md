@@ -195,6 +195,7 @@ Kịch bản
 
 <img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/hostonly5.PNG?raw=true">
 
+<a name=tailieu></a>
 ## Tài liệu tham khảo 
 - https://github.com/hocchudong/KVM-QEMU
 - https://www.ibm.com/support/knowledgecenter/linuxonibm/liaag/wkvm/wkvm_c_net_nat.htm
