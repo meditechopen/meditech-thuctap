@@ -41,7 +41,7 @@ sudo virt-install \
       --vnc --noautoconsole \
       --import
 ```
-img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/imgvirt.PNG"
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/imgvirt.PNG">
 
 Trong đó:
 
