@@ -1,9 +1,9 @@
 # LAB cài đặt KVM trên Ubuntu 14.04
 ## Mục lục 
 
--[Mô hình chuẩn bị](#mohinh)
+- [Mô hình chuẩn bị](#mohinh)
 
--[Cài đặt KVM](#caidat)
+- [Cài đặt KVM](#caidat)
 
 <a name=mohinh></a>
 ## Mô hình 
