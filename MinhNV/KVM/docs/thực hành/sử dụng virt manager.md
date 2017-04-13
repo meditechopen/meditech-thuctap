@@ -2,6 +2,8 @@
 - [ Sử dụng virt-manager](#sudụng)
 - [ Tạo máy ảo bằng virt-manager](#caidat)
 - [ Cài đặt network cho máy ảo](#network)
+- [ Tài liệu tham khảo](#tailieu)
+
 # Cách sử dụng Virt Manager để quản lý máy ảo.
 <a name=sudung></a>
 # 1. Dùng virt manager để tạo ra máy ảo
@@ -193,3 +195,7 @@ Kịch bản
 
 <img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/hostonly5.PNG?raw=true">
 
+## Tài liệu tham khảo 
+- https://github.com/hocchudong/KVM-QEMU
+- https://www.ibm.com/support/knowledgecenter/linuxonibm/liaag/wkvm/wkvm_c_net_nat.htm
+- http://serverfault.com/questions/775433/virtual-nics-and-host-only-adapter-in-kvm
