@@ -8,6 +8,8 @@ Có 3 cách tạo máy ảo
 
 - [Tạo máy ảo bằng cách tải trực tiếp file trên web về cài đặt](#web) 
 
+- [Tài liệu tham khảo](#tailieu)
+
 Tải gói phụ trợ: 
 
 ```sudo apt-get install virtinst```
@@ -107,5 +109,11 @@ Nguồn  <a href="https://www.server-world.info/en/note?os=Ubuntu_14.04&p=kvm&f=
 <img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/virtdownss.PNG?raw=true">
 
 - Tới bước này mình cài đặt hệ điều hành giống các bước cài đặt Ubuntu 14.04. Tham khảo cách cài đặt <a href="https://github.com/nguyenminh12051997/MediTech/blob/master/install_ubuntu_server.md">Ubuntu14.04</a>
+
+<a name=tailieu></a>
+## Tài liệu tham khảo
+
+- https://github.com/hocchudong/KVM-QEMU
+- https://www.server-world.info/en/note?os=Ubuntu_14.04&p=kvm&f=2
 
 
