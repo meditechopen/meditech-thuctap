@@ -1,4 +1,12 @@
-# Mô hình 
+# LAB cài đặt KVM trên Ubuntu 14.04
+## Mục lục 
+
+-[Mô hình chuẩn bị](#mohinh)
+-[Cài đặt KVM](#caidat)
+
+<a name=mohinh></a>
+## Mô hình 
+
 - Chuẩn bị
 
 Máy cài KVM và VM đều cài đặt Ubuntu 14.04 và sử dụng <a href="https://github.com/hocchudong/Linux-bridge">Linux brigde</a> 
@@ -9,8 +17,9 @@ Máy cài KVM và VM đều cài đặt Ubuntu 14.04 và sử dụng <a href="ht
 - IP Planing
 <img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/ippp.PNG?raw=true">
 
-# Cài đặt KVM
-## Bước 1: 
+<a name=caidat></a>
+## Cài đặt KVM
+### Bước 1: 
 KVM chỉ làm việc nếu CPU hỗ trợ ảo hóa phần cứng, Intel VT-x hoặc AMD-V. Để xác định CPU có những tính năng này không, thực hiện lệnh sau:
 
 ``egrep -c '(svm|vmx)' /proc/cpuinfo``
@@ -23,7 +32,7 @@ Giá trị 0 chỉ thị rằng CPU không hỗ trợ ảo hóa phần cứng tr
 
 <img src="http://i.imgur.com/9CaDfrL.png">
 
-## Bước 2:
+### Bước 2:
  Sử dụng lệnh sau để cài đặt KVM và các gói liên quan. 
 
 ``sudo apt-get install qemu-kvm libvirt-bin``
@@ -32,15 +41,19 @@ Trong đó:
 
 - libvirt-bin : cung cấp libvirt mà bạn cần quản lý qemu và kvm bằng libvirt
 
-## Bước 3 : Phân quyền
+### Bước 3 : Phân quyền
 
 Chọn quản trị viên (root user) và những người dùng thuộc libvirtd group có quyền sử dụng máy ảo KVM
 
 Trong khi cài đặt, nhóm libvirtd sẽ được tạo ra, và userID của bạn sẽ được tự động thêm vào nhóm. Điều này sẽ cho phép bạn quản lý các máy ảo như một người sử dụng thường xuyên không phải root. Bạn có thể xác minh rằng bằng cách sử dụng lệnh id, mà sẽ hiển thị ID nhóm của bạn:
 
+``id medietch``
+
 <img src="http://i.imgur.com/NI2RTLk.png">
 
 libvirtd không tìm thấy trong danh sách groupId của bạn, bạn có thể tự thêm mình vào nhóm như sau:
+
+``sudo adduser meditech livirtd``
 
 <img src="http://i.imgur.com/yG4LZxi.png">
 
@@ -53,7 +66,7 @@ Tại thời điểm này, bạn sẽ có thể chạy virsh như một người
 
 <img src="http://i.imgur.com/5EhqA7J.png">
 
-## Bước 4: Cấu hình Brigde Networking
+### Bước 4: Cấu hình Brigde Networking
 
 Một cách để kích hoạt KVM máy ảo để truy cập vào mạng bên ngoài là thông qua một Brigde Linux tạo ra trên một máy chủ KVM. Các cầu liên kết nối giao diện ảo của máy ảo với giao diện vật lý của máy chủ, do đó các máy ảo có thể gửi hoặc nhận thông qua giao diện vật lý. Điều này được gọi là  Brigde Networking.
 
@@ -101,9 +114,13 @@ Khởi động lại dịch vụ mạng:
 
 ``ifdown -a && ifup -a``
 
+*note* Nếu chưa ping được ra ngoài chúng ta reboot lại máy.
+
+``sudo reboot``
 
 
-Bước 5: Tạo máy ảo để kiểm tra.
+
+### Bước 5: Tạo máy ảo để kiểm tra.
 
 Cách tạo máy ảo bằng virt manager <a href="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/docs/th%E1%BB%B1c%20h%C3%A0nh/s%E1%BB%AD%20d%E1%BB%A5ng%20virt%20manager.md">Tham khảo</a> 
 
