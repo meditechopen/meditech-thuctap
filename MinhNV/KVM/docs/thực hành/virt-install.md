@@ -31,16 +31,17 @@ Tải gói phụ trợ:
 
 ```sh 
 sudo virt-install \
-     -n VM01 \ 
-     -r 128 \ 
-      --vcpus 1 \ số cpu 
-     --os-variant=generic \ 
-     --disk path=/var/lib/libvirt/images/linux-microcore-3.8.2.img,format=qcow2,bus=virtio,cache=none \ 
-     --network brigde=br0 \
-     --hvm --virt-type kvm \
-     --vnc --noautoconsole \
-     --import
+      -n VM01 \
+      -r 128 \
+       --vcpus 1 \
+      --os-variant=generic \
+      --disk path=/var/lib/libvirt/images/linux-microcore-3.8.2.img,format=qcow2,bus=virtio,cache=none \
+      --network bridge=br0 \
+      --hvm --virt-type kvm \
+      --vnc --noautoconsole \
+      --import
 ```
+img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/KVM/images/imgvirt.PNG"
 
 Trong đó:
 
