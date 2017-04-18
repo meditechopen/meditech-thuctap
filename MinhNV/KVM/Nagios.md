@@ -1,4 +1,11 @@
 # Tổng quan về Nagios
+## Mục lục
+- [1. Sơ lược về Nagios](#about)
+- [2. Kiến trúc và phương thức hoạt động](#mohinh)
+	+ [Kiến trúc](#kientruc)
+	+ [Phương thức hoạt động](#phuongthuc)
+
+	<a name="about"></a>
 ## 1. Sơ lược về Nagios
 ### Nagios là gì?
 
@@ -24,41 +31,41 @@ Nagios theo dõi toàn bộ cơ sở hạ tầng CNTT của bạn để đảm b
 
 ### Đặc điểm:
 - Giám sát toàn diện.
- -  Khả năng để giám sát các ứng dụng, dịch vụ, hệ điều hành, giao thức mạng, hệ thống số liệu và các thành phần cơ sở hạ tầng với một công cụ duy nhất.
- - API mạnh mẽ cho phép giám sát dễ dàng các ứng dụng và tùy chỉnh các dịch vụ, và các hệ thống.
+ +  Khả năng để giám sát các ứng dụng, dịch vụ, hệ điều hành, giao thức mạng, hệ thống số liệu và các thành phần cơ sở hạ tầng với một công cụ duy nhất.
+ + API mạnh mẽ cho phép giám sát dễ dàng các ứng dụng và tùy chỉnh các dịch vụ, và các hệ thống.
 - Tầm nhìn.
- - Tập trung theo dõi toàn bộ cơ sở hạ tầng CNTT.
- - Chi tiết thông tin trạng thái hoạt động thông qua giao diện web.
+ + Tập trung theo dõi toàn bộ cơ sở hạ tầng CNTT.
+ + Chi tiết thông tin trạng thái hoạt động thông qua giao diện web.
 - Nhận thức.
- - Nhanh chóng phát hiện các sự cố ngưng hoạt động của cơ sở hạ tầng.
- - Cảnh báo có thể được gửi đến nhân viên kỹ thuật qua email hoặc tin nhắn SMS.
- - Khả năng leo thang đảm bảo các thông báo cảnh báo đến đúng người.
+ + Nhanh chóng phát hiện các sự cố ngưng hoạt động của cơ sở hạ tầng.
+ + Cảnh báo có thể được gửi đến nhân viên kỹ thuật qua email hoặc tin nhắn SMS.
+ + Khả năng leo thang đảm bảo các thông báo cảnh báo đến đúng người.
 - Khắc phục vấn đề.
- - Xác nhận cảnh báo cung cấp thông tin về các vấn đề được biết đến và ứng phó vấn đề.
- - Xử lý sự kiện cho phép tự động khởi động các ứng dụng thất bại và dịch vụ.
+ + Xác nhận cảnh báo cung cấp thông tin về các vấn đề được biết đến và ứng phó vấn đề.
+ + Xử lý sự kiện cho phép tự động khởi động các ứng dụng thất bại và dịch vụ.
 - Lập kế hoạch chủ động.
- - Những phần bổ trợ lập kế hoạch cho xu hướng và năng lực hoạt động đảm bảo bạn nhận thức được sự xuống cáp của cơ sở hạ tầng.
- - Dự kiến thời gian ngưng hoạt động cho phép tắt cảnh bóa trong quá trình nâng cấp cơ sở hạ tầng.
+ + Những phần bổ trợ lập kế hoạch cho xu hướng và năng lực hoạt động đảm bảo bạn nhận thức được sự xuống cáp của cơ sở hạ tầng.
+ + Dự kiến thời gian ngưng hoạt động cho phép tắt cảnh bóa trong quá trình nâng cấp cơ sở hạ tầng.
 - Báo cáo
- - Báo cáo sẵn có đảm bỏa SLA (Service Level Agreement_Thỏa thuận cung cấp độ dịch vụ) đang được đáp ứng.
- - Cung cấp lịch sử các báo cáo ghi lại các cảnh báo, thông báo, sự cố ngưng hoạt động, và xác nhận cảnh báo.
+ + Báo cáo sẵn có đảm bỏa SLA (Service Level Agreement_Thỏa thuận cung cấp độ dịch vụ) đang được đáp ứng.
+ + Cung cấp lịch sử các báo cáo ghi lại các cảnh báo, thông báo, sự cố ngưng hoạt động, và xác nhận cảnh báo.
 - Nhiều người sử dụng
- - Với chức năng này, cho phép nhiều người sử dụng có quyền truy cập xem tình trạng của cơ sở hạ tầng.
- - Những người xem riêng biệt chỉ thấy được cơ sở hạ tầng của họ.
+ + Với chức năng này, cho phép nhiều người sử dụng có quyền truy cập xem tình trạng của cơ sở hạ tầng.
+ + Những người xem riêng biệt chỉ thấy được cơ sở hạ tầng của họ.
 - Kiến trúc mở rộng
- - Hàng trăm phần bổ trợ được phát triển bởi cộng đồng mở rộng tính năng cốt lõi của Nagios.
- - Ổn định, đáng tin cậy và nền tảng vững chắc
- - Hơn 10 năm phát triển hoạt động.
- - Cân bằng để giám sát hàng ngàn điểm.
- - Failover đảm bảo khả năng giám sát không ngừng của các thành phần cơ sở hạ tầng CNTT quan trọng.
- - Nhiều giải thưởng, phương tiện truyền thông và công nhận chứng minh giá trị của Nagios.
+ + Hàng trăm phần bổ trợ được phát triển bởi cộng đồng mở rộng tính năng cốt lõi của Nagios.
+ + Ổn định, đáng tin cậy và nền tảng vững chắc
+ + Hơn 10 năm phát triển hoạt động.
+ + Cân bằng để giám sát hàng ngàn điểm.
+ + Failover đảm bảo khả năng giám sát không ngừng của các thành phần cơ sở hạ tầng CNTT quan trọng.
+ + Nhiều giải thưởng, phương tiện truyền thông và công nhận chứng minh giá trị của Nagios.
 - Cộng đồng phát triển rộng rãi.
- - Ước tính hơn 1 triệu người sử dụng trên toàn thế giới.
- - Các hoạt động của cộng đồng được hỗ trợ miễn phí.
+ + Ước tính hơn 1 triệu người sử dụng trên toàn thế giới.
+ + Các hoạt động của cộng đồng được hỗ trợ miễn phí.
 - Mã nguồn tùy chỉnh.
- - Phần mềm nguồn mở.
- - Không giới hạn truy cập vào mã nguồn.
- - Phát hành theo giấy phép GPL (General Public License_Giấy phép công cộng).
+ + Phần mềm nguồn mở.
+ + Không giới hạn truy cập vào mã nguồn.
+ + Phát hành theo giấy phép GPL (General Public License_Giấy phép công cộng).
 
 ## 2. Kiến trúc và phương thức hoạt động.
 ### Kiến trúc 
@@ -89,9 +96,27 @@ Nagios server không có cách nào có thể truy cập trực tiếp client đ
 #### Bộ thực thi plugin từ xa (NRPE - Nagios Remote Plugin Executor)
 
 NRPE là một addon đi kèm với Nagios. Nó trợ giúp việc thực thi các plugin được cài đặt trên máy/thiết bị được giám sát. NRPE được cài trên các host được giám sát. Khi nhận được truy vấn từ Nagios server thì nó gọi các plugin cục bộ phù hợp trên host này, thực hiện kiểm tra và trả về kết quả cho Nagios server. Phương pháp này không đòi hỏi tài khoản truy cập host được giám sát như sử dụng ssh. Tuy nhiên cũng như ssh các plugin phục vụ giám sát phải được cài đặt trên host được giám sát. NRPE có thể thực thi được tất cả các loại plugin giám sát. Nagios có thể điều khiển máy cài NRPE kiểm tra các thông số phần cứng, các tài nguyên, tình trạng hoạt động của máy đó hoặc sử dụng NRPE để thực thi các plugin yêu cầu truy vấn dịch vụ mạng đến một máy thứ 3 để kiểm tra hoạt động của các dịch vụ mạng như http, ftp, mail…
-#### Giám sát qua SNMP  
+
+<img src="">
+
+- NRPE addon bao gồm 2 thành phần:
+
+	+ Plugin check_nrpe: nằm trên máy Nagios (là monitoring server)
+	+ Daemon NRPE: chạy trên máy Linux/Unix (remote host) cần monitor
+	+ Khi máy Nagios cần check các resources/services trên máy Linux/Unix ở xa:
+
+- Nagios sẽ thực thi plugin check_nrpe và cho biết resource/service nào cần check
+	+ Plugin check_nrpe sẽ liên lạc với daemon NRPE trên remote host. Kênh liên lạc có thể được bảo vệ bằng SSL
+	+ Daemon NRPE sẽ chạy các plugin thích hợp (như check_disk, check_load, check_http, v.v..) để check các resource/service được yêu cầu
+	+ NRPE daemon truyền kết quả cho check_nrpe, sau đó plugin này trả kết quả lại cho Nagios process
+	
+**Lưu ý là NRPE daemon yêu cầu các Nagios plugins cần được cài đặt trên các remote Linux/Unix host.**	
+
+#### Giám sát qua SNMP 
+ 
 Cốt lõi của giao thức SNMP (SimpleNetwork Management Protocol )là tập hợp đơn giản các hoạt động giúp nhà quản trị mạng có thể quản lý, thay đổi trạng thái thiết bị. Hiện nay rất nhiều thiết bị mạng hỗ trợ giao thức SNMP như Switch, router, máy in, firewall ... Nagios cũng có khả năng sử dụng giao thức SNMP để theo dõi trạng thái của các client, các thiết bị mạng có hỗ trợ SNMP. Qua SNMP, Nagios có được thông tin về tình trạng hiện thời của thiết bị. Ví dụ như với SNMP, Nagios có thể biết được các cổng của Switch, router có mở hay không, thời gian Uptime (chạy liên tục) là bao nhiêu…
 #### NSCA (Nagios Service Check Acceptor)
+
 Nagios được coi là một phần mềm rất mạnh vì nó dễ dàng được mở rộng và kết hợp với các phần mềm khác. Nó có thể tổng hợp thông tin từ các phần mềm kiểm tra của hãng thứ ba hoặc các tiến trình Nagios khác về trạng thái của host/dịch vụ. Như thế Nagios không cần phải lập lịch và chạy các hành động kiểm tra host/dịch vụ mà các ứng dụng khác sẽ thực hiện điểu này và báo cáo thông tin về cho nó. Và các ứng dụ ng kiểm tra có thể tận dụng được khả năng rất mạnh của Nagios là thông báo và tổng hợp báo cáo. Nagios sử dụng công cụ NSCA để gửi các kết quả kiểm tra từ ứng dụ ng của bạn về server Nagios. Công cụ này giúp cho thông tin gửi trên mạng được an toàn hơn vì nó được mã hóa và xác thực.
 
 
