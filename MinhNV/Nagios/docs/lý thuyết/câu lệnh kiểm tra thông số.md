@@ -43,7 +43,14 @@ Trước hết với lệnh sar -u 3 10, bạn có thể hiểu là: với lện
  
  <img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/Nagios/image/df%20-h.PNG?raw=true">
  
- <a href="https://tailieu.123host.vn/kb/vps/kiem-tra-luu-luong-mang-tren-vps-linux-voi-iftop.html"><Xem thêm cách sử dụng lệnh df</a>
+ - Size: Tổng kích thước dung lượng
+ - Used: Dung lượng đã sử dụng
+ - Avail: Dung lượng trống còn lại
+ - %use: Phần trăm dung lượng đã sử dụng
+ - Mounted on: Đường dẫn khởi tạo
+
+ 
+ <a href="https://tailieu.123host.vn/kb/vps/kiem-tra-luu-luong-mang-tren-vps-linux-voi-iftop.html">Xem thêm cách sử dụng lệnh df</a>
  
  ## Network traffic
  
