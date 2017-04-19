@@ -1,6 +1,7 @@
 # Mô hình 
 
 <img src="http://i.imgur.com/Td5OyHw.png">
+
 # Kịch bản 
 
 - Từ máy client tạo ra 1 cặp key sử dụng thuật toán rsa 
@@ -44,8 +45,8 @@ PermitEmptyPasswords no /cho phép đăng nhập vào hệ thống mà không c�
 
 ## Note 
 
-Nếu 2 máy cùng sử dụng hệ điều hành Ubuntu thì ta sử dụng câu lệnh 
-
+- Nếu 2 máy cùng sử dụng hệ điều hành Ubuntu thì ta sử dụng câu lệnh để từ máy client copy public key sang máy server
+- Trên máy client sử dụng lệnh: 
 ```ssh-copy-id user@IP_hostname```
 
 
