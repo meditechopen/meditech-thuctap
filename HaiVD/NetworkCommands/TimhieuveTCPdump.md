@@ -20,7 +20,6 @@
   - Packet capture: số lượng gói tin bắt được và xử lý.
   - Packet received by filter: số lượng gói tin được nhận bởi bộ lọc.
   - Packet dropped by kernel: số lượng packet đã bị dropped bởi cơ chế bắt gói tin của hệ điều hành.
-
 <a name=ddc></a>
 ## II. Định dạng chung của một dòng giao thức
   Một dòng giao thức trong TCPdump thường có định dạng sau :
