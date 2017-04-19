@@ -1,7 +1,7 @@
 # **Tìm hiểu về Linux Bridge**
 ------------------------------------------
 # Mục lục
-## [I. Giới thiệu Linux Brdge](#gt)
+## [I. Giới thiệu Linux Bridge](#gt)
 ### [1.1 Khái niệm](#11)
 ### [1.2 Chức năng](#12)
 ### [1.3 Cấu trúc](#13)
@@ -121,7 +121,7 @@ brctl setportprio bridgename Number_port Number_priority
 - Trường hợp 1: Tạo một switch ảo và gán interface eth1 vào switch đó, tạo một máy ảo bên trong máy host, gắn vào tap interface của switch và kiểm tra địa chỉ được cấp phát. (Có thể tạo 2 VM trong host cùng gắn vào tap interface của switch, ping kiểm tra kết nối).
 - Trường hợp 2: Gắn cả 2 card mạng eth1, eth2 của host vào switch ảo, set priority cho hai port ứng với 2 card. Kiểm tra xem máy ảo (gắn vào tap interface của switch ảo) nhận ip cùng dải với card mạng vật lý nào.
 
-** Trường hợp 1 :**
+**Trường hợp 1 :**
  - Bước 1: Tạo switch ảo tên là haikma
  ```
  brctl addbr haikma
@@ -152,7 +152,7 @@ lxcbr0		8000.000000000000	no
 virbr0		8000.000000000000	yes
 ```
 
-** Trường hợp 2 :**  gắn thêm cổng eth0 vào bridge haikma. Đông thời thiết lập mức độ ưu tiên cho cả 2 port :
+**Trường hợp 2 :**  gắn thêm cổng eth0 vào bridge haikma. Đông thời thiết lập mức độ ưu tiên cho cả 2 port :
 
 
  ```
