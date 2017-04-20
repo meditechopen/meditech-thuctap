@@ -107,5 +107,9 @@ Phần ở dưới cùng của màn hình hiển thị số liệu thống kê l
 - Tài khoản đang đăng nhập vào hệ thống 
 	+ Sử dụng câu lệnh ``who`` để kiểm tra
 	+ Sử dụng tùy chọn ``who | wc -l`` để kiểm tra số người đang đăng nhập
-- Checksum of /etc/passwd	
+- Checksum of /etc/passwd
+
+# Tài liệu tham khảo
+- http://acegik.net/blog/java/performance/theo-doi-hieu-nang-cua-he-dieu-hanh.html
+- https://saungon.com/thong-so-trong-lenh-top/
 
