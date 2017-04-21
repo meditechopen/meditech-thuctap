@@ -139,6 +139,7 @@ Như chúng ta thế dòng tasks nằm ở vị trí thứ 2 hiển thị có 11
 	+ Sử dụng câu lệnh ``who`` để kiểm tra
 	+ Sử dụng tùy chọn ``who | wc -l`` để kiểm tra số người đang đăng nhập
 - Checksum of /etc/passwd: Checksum được sử dụng để đảm bảo tính toàn vẹn của một tập tin sau khi nó đã được truyền từ một thiết bị lưu trữ khác.
+
 VD: Cách checksum 1 file với mã MD5
 
 ``md5sum [địa chỉ file]``
