@@ -142,6 +142,29 @@ Thông tin trên đỉnh màn hình cho băng thông mỗi kết nối mạng đ
 
 <a href="https://tailieu.123host.vn/kb/vps/kiem-tra-luu-luong-mang-tren-vps-linux-voi-iftop.html">Cách sử dụng iftop</a>
 
+- Sử dụng lệnh ``sysstat``
+
+`` sar -n ALL 1 1 ``
+
+```sh
+[root@localhost ~]# sar -n ALL 1 1
+Linux 3.10.0-514.el7.x86_64 (localhost.localdomain)     04/21/2017      _x86_64_        (1 CPU)
+
+03:45:15 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s
+03:45:16 PM      ens3      3.00      1.00      0.13      0.09      0.00      0.00      0.00
+03:45:16 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+```
+
+	+ IFACE: tên của giao diện mạng mà thống kê được báo cáo.
+	+ Rxpck/s: tổng số gói tin nhận được mỗi giây.
+	+ Txpck/s: tổng số gói được truyền mỗi giây.
+	+ RxkB/s: tổng số kilobyte nhận được mỗi giây.
+	+ TxkB/s: tổng số kilobyt truyền qua mỗi giây.
+	+ Rxcmp/s: số lượng gói tin nén nhận được mỗi giây.
+	+ Txcmp/s: số lượng gói tin nén được truyền đi mỗi giây.
+	+ Rxmcst/s: số lượng các gói tin Multicast nhận được mỗi giây.
+
 <a name="processes"></a>
 ## Processes
 
