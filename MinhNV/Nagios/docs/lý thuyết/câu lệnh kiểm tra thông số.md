@@ -1,4 +1,13 @@
 # Thông số về hệ thống 
+
+- [RAM](#ram)
+- [CPU](#cpu)
+- [DISK](#disk)
+- [NETWORK TRAFIC](#network)
+- [PROCESSES](#processes)
+- [SECUIRITY](#security)
+
+<a name="ram"></a>
 ## RAM
 
 Lệnh kiểm tra thông số RAM
@@ -21,6 +30,7 @@ Lệnh kiểm tra thông số RAM
 
 ``sync; echo 1 > /proc/sys/vm/drop_caches``
 
+<a name="cpu"></a>
 ## CPU 
 
 Sử dụng lệnh ``top`` hoặc sysstat
@@ -29,17 +39,7 @@ Sử dụng lệnh ``top`` hoặc sysstat
 
 <img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/Nagios/image/top.PNG?raw=true">
 
-Cài đặt chương trình sysstat
-
-``yum install sysstat``
-
-Kiểm tra tài nguyên CPU được sử dụng ở đâu
-
-``sar -u 3 10``
-
-<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/Nagios/image/sar%20-u.PNG?raw=true">
-
-Trước hết với lệnh sar -u 3 10, bạn có thể hiểu là: với lệnh này server sẽ tiến hành kiểm tra 10 lần, mỗi lần cách nhau 3s, bên cạnh đó còn cần chú ý thêm các thông số quan trọng khác ở đây, đó là:
+ bên cạnh đó còn cần chú ý thêm các thông số quan trọng khác ở đây, đó là:
  - %user(user cpu time) : đây là lượng chiếm dụng CPU khi một user khởi tạo tiến trình
  - %nice: đây là lượng chiếm dụng CPU khi tiến trình được tạo bởi user với độ ưu tiên là nice
  - %system (system cpu time): đây là lượng chiếm dụng CPU khi tiến trình được tạo ra bởi kernel (hệ thống)
@@ -53,17 +53,33 @@ Trước hết với lệnh sar -u 3 10, bạn có thể hiểu là: với lện
  
  ``uptime``
  
-– load average được thể hiện trong ba khoảng thời gian khác nhau: trong 1, 5 và 15 phút. Giá trị lớn nhất của load average phụ thuộc vào số lõi (core) của CPU, nếu CPU có:
+ – load average được thể hiện trong ba khoảng thời gian khác nhau: trong 1, 5 và 15 phút. Giá trị lớn nhất của load average phụ thuộc vào số lõi (core) của CPU, nếu CPU có:
 
 	 + 1 lõi: thì load average có giá trị lớn nhất là 1.00
 	 + 2 lõi: là 2.00
 	 + 8 lõi: là 8.00
+	 
+Hoặc cài đặt chương trình sysstat
+
+``yum install sysstat``
+
+Kiểm tra tài nguyên CPU được sử dụng ở đâu
+
+``sar -u 3 10``
+
+lệnh sar -u 3 10, bạn có thể hiểu là: với lệnh này server sẽ tiến hành kiểm tra 10 lần, mỗi lần cách nhau 3s
+
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/Nagios/image/sar%20-u.PNG?raw=true">
+
+	
 
 Context switch	 
 
 - Voluntary context switch: Tiến trình tự nguyện nhường lại CPU sau khi chạy hết thời gian dự kiến của nó hoặc nó yêu cầu sử dụng tài nguyên hiện không khả dụng.
 - Involuntary context switch: Tiến trình bị gián đoạn và nhường lại CPU trước khi hoàn tất thời gian chạy theo lịch trình của nó do hệ thống xác định một tiến trình ưu tiên cao hơn cần thực thi. 
- 
+
+
+ <a name="disk"></a>
  ## Disk 
  
  
@@ -82,6 +98,7 @@ Context switch
  
  <a href="https://tailieu.123host.vn/kb/vps/kiem-tra-luu-luong-mang-tren-vps-linux-voi-iftop.html">Xem thêm cách sử dụng lệnh df</a>
  
+ <a name="network"></a>
  ## Network traffic
  
  Tải iftop về centos 
@@ -106,12 +123,27 @@ Phần ở dưới cùng của màn hình hiển thị số liệu thống kê l
 
 <a href="https://tailieu.123host.vn/kb/vps/kiem-tra-luu-luong-mang-tren-vps-linux-voi-iftop.html">Cách sử dụng iftop</a>
 
+<a name="processes"></a>
+## Processes
+
+Dùng lệnh top để hiển thị lên màn hình 
+
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/Nagios/image/top.PNG?raw=true">
+
+Như chúng ta thế dòng tasks nằm ở vị trí thứ 2 hiển thị có 110 tiến trình, 1 tiến trình đang chạy, 109 tiến trình đang ngủ đông.
+
+<a name="security"></a>
 ## Sercurity
 
 - Tài khoản đang đăng nhập vào hệ thống 
 	+ Sử dụng câu lệnh ``who`` để kiểm tra
 	+ Sử dụng tùy chọn ``who | wc -l`` để kiểm tra số người đang đăng nhập
-- Checksum of /etc/passwd
+- Checksum of /etc/passwd: Checksum được sử dụng để đảm bảo tính toàn vẹn của một tập tin sau khi nó đã được truyền từ một thiết bị lưu trữ khác.
+VD: Cách checksum 1 file với mã MD5
+
+``md5sum [địa chỉ file]``
+
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/Nagios/image/checksum.PNG?raw=true">
 
 # Tài liệu tham khảo
 - http://acegik.net/blog/java/performance/theo-doi-hieu-nang-cua-he-dieu-hanh.html
