@@ -163,4 +163,5 @@ VD: Cách checksum 1 file với mã MD5
 # Tài liệu tham khảo
 - http://acegik.net/blog/java/performance/theo-doi-hieu-nang-cua-he-dieu-hanh.html
 - https://saungon.com/thong-so-trong-lenh-top/
-
+- http://sebastien.godard.pagesperso-orange.fr/man_pidstat.html
+- http://www.tecmint.com/clear-ram-memory-cache-buffer-and-swap-space-on-linux/
