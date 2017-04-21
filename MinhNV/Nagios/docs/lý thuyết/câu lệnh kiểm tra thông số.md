@@ -53,7 +53,8 @@ Sử dụng lệnh ``top`` hoặc sysstat
  
  ``uptime``
  
- – load average được thể hiện trong ba khoảng thời gian khác nhau: trong 1, 5 và 15 phút. Giá trị lớn nhất của load average phụ thuộc vào số lõi (core) của CPU, nếu CPU có:
+ #### load average
+ load average được thể hiện trong ba khoảng thời gian khác nhau: trong 1, 5 và 15 phút. Giá trị lớn nhất của load average phụ thuộc vào số lõi (core) của CPU, nếu CPU có:
 
 	 + 1 lõi: thì load average có giá trị lớn nhất là 1.00
 	 + 2 lõi: là 2.00
@@ -73,11 +74,24 @@ lệnh sar -u 3 10, bạn có thể hiểu là: với lệnh này server sẽ ti
 
 	
 
-Context switch	 
+#### Context switch	 
 
 - Voluntary context switch: Tiến trình tự nguyện nhường lại CPU sau khi chạy hết thời gian dự kiến của nó hoặc nó yêu cầu sử dụng tài nguyên hiện không khả dụng.
 - Involuntary context switch: Tiến trình bị gián đoạn và nhường lại CPU trước khi hoàn tất thời gian chạy theo lịch trình của nó do hệ thống xác định một tiến trình ưu tiên cao hơn cần thực thi. 
 
+lệnh hiển thị context switch
+
+``pidstat -w 10 1``
+
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/Nagios/image/pidstat.PNG?raw=true">
+
+- cswch/s
+
+Total number of voluntary context switches the task made per second. A voluntary context switch occurs when a task blocks because it requires a resource that is unavailable.
+
+- nvcswch/s
+
+Total number of non voluntary context switches the task made per second. A involuntary context switch takes place when a task executes for the duration of its time slice and then is forced to relinquish the processor.
 
  <a name="disk"></a>
  ## Disk 
