@@ -193,3 +193,4 @@ VD: Cách checksum 1 file với mã MD5
 - https://saungon.com/thong-so-trong-lenh-top/
 - http://sebastien.godard.pagesperso-orange.fr/man_pidstat.html
 - http://www.tecmint.com/clear-ram-memory-cache-buffer-and-swap-space-on-linux/
+- https://www.server-world.info/en/note?os=Ubuntu_14.04&p=sysstat&f=2
