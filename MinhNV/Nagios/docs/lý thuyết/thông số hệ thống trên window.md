@@ -70,7 +70,7 @@ Tiếp theo, nhấp hoặc chạm vào tab Memory. Ở trên cùng, bạn sẽ t
 
 - Cột Commit cho thấy bạn có bao nhiêu không gian bộ nhớ Windows allots cho mỗi chương trình theo mặc định. Chương trình có thể hoặc không thể sử dụng tất cả các không gian đó. (Nếu các cột của bạn chưa được sắp xếp, hãy nhấp vào cột này để hiển thị cho bạn những gì đang sử dụng bộ nhớ nhất). Cột Làm việc hiển thị số lượng bộ nhớ mà mỗi chương trình đang sử dụng tại thời điểm này.
 
-- Cột Chia sẻ cho bạn thấy bộ nhớ được phân bổ cho mỗi chương trình có thể được chia sẻ bởi các chương trình khác như thế nào và cột Private hiển thị số lượng bộ nhớ được phân bổ cho mỗi chương trình chỉ có thể được sử dụng bởi chương trình đó. Nếu một chương trình xuất hiện khi sử dụng quá nhiều bộ nhớ, bạn có thể quyết định đóng nó.
+- Cột shareable cho bạn thấy bộ nhớ được phân bổ cho mỗi chương trình có thể được chia sẻ bởi các chương trình khác như thế nào và cột Private hiển thị số lượng bộ nhớ được phân bổ cho mỗi chương trình chỉ có thể được sử dụng bởi chương trình đó. Nếu một chương trình xuất hiện khi sử dụng quá nhiều bộ nhớ, bạn có thể quyết định đóng nó.
 
 <a name="disk"></a>
 ## Disk
@@ -167,7 +167,9 @@ Tại phần này, chương trình sẽ cung cấp thêm một số thông tin h
 
 Biểu đồ Network sẽ đưa ra toàn bộ lưu lượng bandwidth được sử dụng trong vòng 60 giây gần nhất đối với tất cả các chương trình. Cụ thể hơn, các thành phần TCP Connections chỉ ra bao nhiêu kết nối TCP mới vừa được thiết lập, và nếu số lượng này cao quá mức bình thường, thì có nghĩa là hệ thống của bạn đang gặp vấn đề, không thể kiểm soát được, bị spyware xâm nhập... Biểu đồ Local Area Connection chỉ ra toàn bộ lượng dữ liệu đang được sử dụng, hiển thị theo %.
 
+## Tài liệu tham khảo
 
+- http://www.digitalcitizen.life/how-use-resource-monitor-windows-7
 
 
 
