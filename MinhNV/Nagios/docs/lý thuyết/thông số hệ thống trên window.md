@@ -140,7 +140,7 @@ Tuy nhiên, những thông tin được đưa ra tại đây chưa thực sự h
 
 Tại phần này, chương trình sẽ cung cấp thêm một số thông tin hữu ích hơn dành cho người sử dụng:
 
-- Network I/O: tổng dung lượng dữ liệu đang được sử dụng tính bằng Mbps.
+- Network I/O: tổng dung lượng dữ liệu đang được sử dụng tính bằng Kbps.
 - Network Utilization: toàn bộ dữ liệu của hệ thống sẽ được hiển thị qua 1 thành phần duy nhất, qua đó giúp người sử dụng dễ dàng giám sát chính xác những thông số này. Nếu con số này thường xuyên đạt mức 100% thì có nghĩa là bạn đang gặp vấn đề, và giải pháp duy nhất là tăng lưu lượng băng thông.
 - Address: đây là tên hoặc địa chỉ IP của chương trình, ứng dụng đang làm việc.
 
