@@ -107,7 +107,8 @@
 `echo "proxy=http://x.x.x.x:3142" >> /etc/yum.conf`
 
 **Link tham khảo**
-https://github.com/hocchudong/ghichep-repos/blob/master/ghichu-repos.md#apt-cache-ng-server
-http://www.tecmint.com/apt-cache-server-in-ubuntu/
-https://www.pitt-pladdy.com/blog/_20150720-132951_0100_Home_Lab_Project_apt-cacher-ng_with_CentOS/
-https://blog.packagecloud.io/eng/2015/05/05/using-apt-cacher-ng-with-ssl-tls/
+
+1. https://github.com/hocchudong/ghichep-repos/blob/master/ghichu-repos.md#apt-cache-ng-server
+2. http://www.tecmint.com/apt-cache-server-in-ubuntu/
+3. https://www.pitt-pladdy.com/blog/_20150720-132951_0100_Home_Lab_Project_apt-cacher-ng_with_CentOS/
+4. https://blog.packagecloud.io/eng/2015/05/05/using-apt-cacher-ng-with-ssl-tls/
