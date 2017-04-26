@@ -12,7 +12,7 @@
   <li>Tiết kiệm băng thông</li>
   <li>Người dùng có thể tích hợp dữ liệu từ file ISO hoặc DVD vào apt-cacher-ng bằng cách sử dụng tùy chọn "import"</li>
   </ul>
-  
+
 ### Hướng dẫn cài đặt và sử dụng
 
 #### 1. Mô hình
@@ -23,7 +23,7 @@
   <li>Ubuntu 16.04, 1 NIC</li>
   <li>Máy server cài gói apt-caher-ng để trở thành caching proxy server</li>
   </ul>
-  
+
 - Máy Clients:
   <ul>
   <li>Sử dụng hệ điều hành Ubuntu và CentOS</li>
@@ -105,3 +105,9 @@
 - Đối với những máy sử dụng hệ điều hành CentOS: 
 
 `echo "proxy=http://x.x.x.x:3142" >> /etc/yum.conf`
+
+**Link tham khảo**
+https://github.com/hocchudong/ghichep-repos/blob/master/ghichu-repos.md#apt-cache-ng-server
+http://www.tecmint.com/apt-cache-server-in-ubuntu/
+https://www.pitt-pladdy.com/blog/_20150720-132951_0100_Home_Lab_Project_apt-cacher-ng_with_CentOS/
+https://blog.packagecloud.io/eng/2015/05/05/using-apt-cacher-ng-with-ssl-tls/
