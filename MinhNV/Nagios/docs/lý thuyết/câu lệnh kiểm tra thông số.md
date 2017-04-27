@@ -50,7 +50,14 @@ Sử dụng lệnh ``top`` hoặc sysstat
 
 <img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/Nagios/image/top.PNG?raw=true">
 
+Ấn phím 1 để hiện thị thông số trên từng cpu
+
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/Nagios/image/top%203.PNG?raw=true">
+
+Nếu gộp thì nó sẽ lấy trung bình cộng của từng thông số 
+ 
  bên cạnh đó còn cần chú ý thêm các thông số quan trọng khác ở đây, đó là:
+ 
  - %user(user cpu time) : đây là lượng chiếm dụng CPU khi một user khởi tạo tiến trình
  - %nice: đây là lượng chiếm dụng CPU khi tiến trình được tạo bởi user với độ ưu tiên là nice
  - %system (system cpu time): đây là lượng chiếm dụng CPU khi tiến trình được tạo ra bởi kernel (hệ thống)
@@ -79,10 +86,11 @@ Sử dụng lệnh ``top`` hoặc sysstat
 	
 Các trạng thái này có liên quan đến thống kê số lượng các tác vụ ở phần trên.
 
-%CPU: Phần trăm CPU do tiến trình sử dụng (trong lần cập nhật cuối – không phải thời gian thực).
-%MEM: Phần trăm RAM do tiến trình sử dụng (trong lần cập nhật cuối – không phải thời gian thực).
-TIME+: Thời gian cộng dồn mà tiến trình (gồm cả tiến trình con) đã chạy.
-COMMAND: Tên của tiến trình hoặc đường dẫn đến lệnh dùng để khởi động tiến trình đó.
+- %CPU: Phần trăm CPU do tiến trình sử dụng (trong lần cập nhật cuối – không phải thời gian thực).
+- %MEM: Phần trăm RAM do tiến trình sử dụng (trong lần cập nhật cuối – không phải thời gian thực).
+- TIME+: Thời gian cộng dồn mà tiến trình (gồm cả tiến trình con) đã chạy.
+- COMMAND: Tên của tiến trình hoặc đường dẫn đến lệnh dùng để khởi động tiến trình đó.
+ 
  Sử dụng câu lệnh uptime để hiển thị mức tải trung bình 
  
  ``uptime``
