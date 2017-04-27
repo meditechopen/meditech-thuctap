@@ -1,7 +1,7 @@
 # Thông số hệ thống trong Resource Monitor trên Window
 ## Mục lục
 
-- 1.[CPU](#cpu)
+- [1. CPU](#cpu)
 - 2. [RAM](#ram)
 - 3. [Disk](#disk)
 - 4. [Network](#network)
