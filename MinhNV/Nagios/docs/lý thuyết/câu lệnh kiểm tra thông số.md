@@ -49,6 +49,29 @@ Sử dụng lệnh ``top`` hoặc sysstat
  - %hi(hardware irq): phần trăm để xử lý gián đoạn phần cứng
  - %si(software irq): phần trăm để xử lý gián đoạn phần mềm
  
+ <img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/Nagios/image/top%202.PNG?raw=true">
+ 
+- PID (process ID): ID của tiến trình.
+- USER: Chủ nhân (owner) của tiến trình.
+- PR (priority): Mức độ ưu tiên của tiến trình, từ -20 (rất quan trọng) đến 19 (không quan trọng).
+- NI (nice value): Giá trị sửa đổi mức độ ưu tiên của tiến trình, giá trị này được gọi là nice bởi vì nó được coi là tốt hơn giá trị cũ ở cột PR.
+- VIRT (virtual memory): Bộ nhớ ảo đã sử dụng, bộ nhớ ảo này là sự kết hợp giữa RAM và swap.
+- RES (resident memory): Bộ nhớ vật lý (RAM) do tiến trình sử dụng, tính theo KB.
+- SHR (shared memory): Bộ nhớ chia sẻ do tiến trình sử dụng, bộ nhớ chia sẻ là bộ nhớ dùng chung với các tiến trình khác.
+- S: Trạng thái của tiến trình:
+
+	+ R (running): đang chạy
+	+ D (sleeping): đang tạm nghỉ, có thể không bị gián đoạn (interrupted)
+	+ S (sleeping): đang tạm nghỉ, có thể bị gián đoạn (interrupted)
+	+ T: đã dừng hẳn
+	+ Z (zombie): chưa dừng hẳn (hoặc bị treo)
+	
+Các trạng thái này có liên quan đến thống kê số lượng các tác vụ ở phần trên.
+
+%CPU: Phần trăm CPU do tiến trình sử dụng (trong lần cập nhật cuối – không phải thời gian thực).
+%MEM: Phần trăm RAM do tiến trình sử dụng (trong lần cập nhật cuối – không phải thời gian thực).
+TIME+: Thời gian cộng dồn mà tiến trình (gồm cả tiến trình con) đã chạy.
+COMMAND: Tên của tiến trình hoặc đường dẫn đến lệnh dùng để khởi động tiến trình đó.
  Sử dụng câu lệnh uptime để hiển thị mức tải trung bình 
  
  ``uptime``
