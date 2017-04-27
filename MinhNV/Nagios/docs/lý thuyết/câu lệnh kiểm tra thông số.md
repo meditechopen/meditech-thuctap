@@ -26,9 +26,20 @@ Lệnh kiểm tra thông số RAM
 	+ Cached có thể là một phần của đĩa (đĩa có tốc độ cao) hoặc RAM trong khi buffers chỉ là một phần của RAM (không thể dùng đĩa để tạo ra buffers)
 - shared: Đây là bộ nhớ chia sẻ giữa các tiến trình, bộ nhớ đang được sử dụng như các bộ đệm (lưu trữ tạm thời) bởi hạt nhân 
 - Swap Space: được sử dụng khi dung lượng bộ nhớ vật lý (RAM) đầy. Nếu hệ thống cần nhiều tài nguyên bộ nhớ hơn và bộ nhớ RAM đầy
-- Cách xóa cache: Sử dụng câu lệnh
+
+### Cách xóa cache: Sử dụng câu lệnh
+
+- Chỉ xóa cached
 
 ``sync; echo 1 > /proc/sys/vm/drop_caches``
+
+- Xóa dentries và inodes.
+
+``sync; echo 2 > /proc/sys/vm/drop_caches``
+
+- Xóa PageCache, dentries và inodes.
+
+``sync; echo 3 > /proc/sys/vm/drop_caches`` 
 
 <a name="cpu"></a>
 ## CPU 
