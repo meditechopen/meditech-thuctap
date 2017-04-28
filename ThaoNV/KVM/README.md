@@ -14,3 +14,7 @@
 - [6. Hướng dẫn tạo template và snapshot trên KVM](https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/KVM/template-va-snapshot.md)
 
 - [7. Tìm hiểu file XML trong KVM](https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/KVM/file-XML.md)
+
+- [8. Tìm hiểu file network xml trong KVM](https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/KVM/file-network-xml.md)
+
+- [9. Hướng dẫn cài đặt KVM trên CentOS 7](https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/KVM/install-kvm-CentOS.md)
