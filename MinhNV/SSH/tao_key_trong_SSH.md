@@ -7,11 +7,20 @@ Tại đây ta đặt tên file và mật khẩu cho người thứ nhất muố
 
 <img src="http://i.imgur.com/X5rLthO.png">
 
-và cấp quyền cho 2 file 
+key sẽ được lưu trong thư mục /home/meditech/.ssh
 
-<img src ="http://i.imgur.com/4uxo0fF.png">
+Trong file cấu hình ta cài đặt như sau :
 
-Sau đó copy file meditech ra ngoài máy that (dùng winSPC)
+```sh
+RSAAuthentication yes
+PubkeyAuthentication yes
+AuthorizedKeysFile     %h/.ssh/authorized_keys
+UsePAM no
+PermitEmptyPasswords no
+```
+
+
+Sau đó copy file meditech ra ngoài máy remote (dùng winSPC)
 **SCP là gì?**
 
 - SCP (Secure Copy – Sao chép an toàn) là một ứng dụng sử dụng SSH để mã hóa toàn bộ quá trình chuyển tập tin.
@@ -23,11 +32,22 @@ và dùng mobaxterm để load file để tạo key đăng nhập.
 
 <img src="http://i.imgur.com/VG4044w.png">
 
+**note**
+
+- Trong file sshd_config bỏ comment đường dẫn đến nơi lưu key public 
+- Trong đường dẫn mặc định là /.ssh/authorized_key nên chúng ta cần phải tạo thêm thư mục ~/.ssh/authorized để copy đoạn mã hóa của file pulic vào.
+
+```sh
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_key
+```
+- Chú ý độ dài bit mặc định trong file sshd_config 
 vào tool trong mobaxterm chọn 
 
 <img src="http://i.imgur.com/rASGWIe.png">
 
-chọn đường link đến file minh vừa copy từ máy ảo ra và nhập pass của file đó. Sau khi load xong ta lưu lại private key với đuôi .ppk
+- Chọn file chứa key private ra và nhập pass của file đó. Sau khi load xong ta lưu lại private key với đuôi .ppk
+- Copy đoạn mã file public vào thư mục ~/ssh/authorized_key trong server. 
 
 <img src="http://i.imgur.com/euAve5p.png">
 
@@ -37,5 +57,6 @@ Mở mobaxterm lên chọn các thông số như địa chỉ host và chọn đ
 
 Kết quả:
 
-<img src="http://i.imgur.com/DDOMddb.png">
+<img src="http://i.imgur.com/V50xrHt.png">
+
 

@@ -1,14 +1,31 @@
+# Mục lục
+
+[Tổng quan](#tongquan)
+
+[1. Lịch sử hình thành](#history)
+
+[2. Kiến trúc](#kientruc)
+
+- [2.1 Kiến trúc KVM](#kientruc)
+ - [2.2 Mô hình thực hiện](#mohinh)
+ - [2.3 Kvm stack](#stack)
+
+[3. KVM-qemu](#qemu)
+
+[4. Tính năng của KVM](#tinhnang)
+
 # Tìm hiểu về Kernel-based Virtual Machine (KVM)
 
 KVM (Kernel-based virtual machine) là giải pháp ảo hóa cho hệ thống linux trên nền tảng phần cứng x86 có các module mở rộng hỗ trợ ảo hóa (Intel VT-x hoặc AMD-V). 
 Về bản chất, KVM không thực sự là một hypervisor có chức năng giải lập phần cứng để chạy các máy ảo. Chính xác KVM chỉ là một module của kernel linux hỗ trợ cơ chế mapping các chỉ dẫn trên CPU ảo (của guest VM) sang chỉ dẫn trên CPU vật lý (của máy chủ chứa VM). Hoặc có thể hình dung KVM giống như một driver cho hypervisor để sử dụng được tính năng ảo hóa của các vi xử lý như Intel VT-x hay AMD-V, mục tiêu là tăng hiệu suất cho guest VM.
-
+<a name=tongquan></a>
 ## Tổng quan.
+<a name=history></a>
 ### 1. Lịch sử hình thành.
 KVM ban đầu được phát triển bởi Qumranet – một công ty nhỏ, sau đó dduwwcj Redhat mua lại vào tháng 9 năm 2008. Ta có thể thấy KVM là thế hệ tiếp theo của công nghệ ảo hóa. KVM được sử dụng mặc định từ bản RHEL (Redhat Enterprise Linux) từ phiên bản 5.4 và phiên bản Redhat Enterprise Virtualization dành cho Server.
 
 Qumranet phát hành mã của KVM cho cộng đồng mã nguồn mở. Hiện nay, các coog ty nổi tiếng như IBM, Intel và ADM cũng đã cộng tác với dự án. Từ phiên bản 2.6.20, KVM trở thành một phần của hạt nhân Linux.
-
+<a name=kientruc></a>
 ### 2. Kiến trúc
 
 #### 2.1 Kiến trúc KVM
@@ -35,7 +52,7 @@ Một khi modul nhân KVM được load vào, node /dev/kvm sẽ được sinh r
 
 Để cung cấp phần cứng như ổ đĩa cứng, ổ đĩa CD hay card mạng cho máy ảo, KVM sử dụng QEMU. Đây là tên gọi của một công cụ nền tảng ảo hóa, cho phép giả lập toàn bộ một nền tảng máy tính bao gồm đồ họa, mạng, ổ đĩa và nhiều hơn nữa. Mỗi một máy ảo khởi động một process QEMU được bắt đầu dưới chế độ user và kèm theo đó là các thiết bị được mô phỏng. Khi một máy ảo thực hiện I/O, nó bị chặn bởi KVM và chuyển hướng đến các quá trình liên quan đến QEMU cho khách.
 
-
+<a name=mohinh></a>
 #### 2.2 Mô hình thực hiện.
 
 Hình dưới đây mô tả mô hình thực hiện của KVM. Đây là một vòng lặp của các hành động diễn ra để vận hành các máy ảo. Những hành động này được phân cách bằng 3 phương thức chúng ta đã đề cập trước đó: user-mode, kernel-mode, guest-mode.
@@ -55,7 +72,7 @@ Như ta thấy:
 
 
 Khi một máy ảo chạy, có rất nhiều chuyển đổi giữa các chế độ. Từ kernel-mode tới guest-mode và ngược lại rất nhanh, bởi vì chỉ có mã nguồn gốc được thực hiện trên phần cứng cơ bản. Khi I/O hoạt động diễn ra các luồng thực thi tới user-mode, rất nhiều thiết bị ảo I/O được tạo ra, do vậy rất nhiều I/O thoát ra và chuyển sang chế độ user-mode chờ. Hãy tưởng tượng mô phỏng một đĩa cứng và 1 guest đang đọc các block từ nó. Sau đó QEMU mô phỏng các hoạt động bằng cách giả lập các hoạt động bằng các mô phỏng hành vi của các ổ đĩa cứng và bộ điều khiển nó được kết nối. Để thực hiện các hoạt động đọc, nó đọc các khối tương ứng từ một tập tin lớp và trả về dữ liệu cho guest. Vì vậy, user-mode giả lập I/O có xu hướng xuất hiện một nút cổ chai làm chậm việc thực hiện máy ảo.
-
+<a name=stack></a>
 #### 2.3 KVM stack
 
 
@@ -67,7 +84,7 @@ Trên đây là KVM Stack bao gồm 4 tầng:
 - Management layer: Lớp này là thư viện libvirt cung cấp API để các công cụ quản lý máy ảo hoặc các hypervisor tương tác với KVM thực hiện các thao tác quản lý tài nguyên ảo hóa, vì tự thân KVM không hề có khả năng giả lập và quản lý tài nguyên như vậy.
 - Virtual machine: Chính là các máy ảo người dùng tạo ra. Thông thường, nếu không sử dụng các công cụ như virsh hay virt-manager, KVM sẽ sử được sử dụng phối hợp với một hypervisor khác điển hình là QEMU.
 - Kernel support: Chính là KVM, cung cấp một module làm hạt nhân cho hạ tầng ảo hóa (kvm.ko) và một module kernel đặc biệt hỗ trợ các vi xử lý VT-x hoặc AMD-V (kvm-intel.ko hoặc kvm-amd.ko)
-
+<a name=qemu></a>
 ### 3. KVM-QEMU
 Nhắc đến các phần mềm máy ảo, người ta thường nhắc đến VMWare và Virtual PC. Có một phần mềm nhỏ gọn và miễn phí và tính năng không kém là qemu.
 
@@ -80,7 +97,7 @@ Do KVM hỗ trợ ánh xạ CPU vật lý sang CPU ảo, cung cấp khả năng 
 
 
 
-
+<a name=tinhnang></a>
 ### 4. Các tính năng của KVM
 
 #### 4.1. Security
