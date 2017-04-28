@@ -135,6 +135,11 @@ Total number of voluntary context switches the task made per second. A voluntary
 
 Total number of non voluntary context switches the task made per second. A involuntary context switch takes place when a task executes for the duration of its time slice and then is forced to relinquish the processor.
 
+- Để có một cái nhìn rõ nét nhất, tôi dùng phần mềm iperf trên 3 máy client để đẩy băng thông về 1 máy server. Điều này ép server phải sử lý nhiều thông tin hơn giúp chúng ta có 1 cái nhìn rõ hơn
+
+<img src="https://github.com/nguyenminh12051997/meditech-thuctap/blob/master/MinhNV/Nagios/image/iper%20cpu.PNG?raw=true">
+
+Như chúng ta thấy ứng dụng iperf đang chiếm 87.1 %CPU 
  <a name="disk"></a>
  ## Disk 
  
