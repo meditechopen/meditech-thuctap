@@ -272,3 +272,7 @@ Tạo một thư mục để mount Logical Volume đã tạo vào thư mục đ�
 <img src=http://i.imgur.com/XgIMmtb.png>
 
 - Tiếp theo, nhóm thêm 1 partition vào Volume Group:
+
+```
+# vgextend /dev/vg-demo1 /dev/sdb3
+```
