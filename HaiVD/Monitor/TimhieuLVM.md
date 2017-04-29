@@ -175,4 +175,82 @@ Trong đó :
 <ul>
 <li>L: Chỉ ra dung lượng của logical volume</li>
 <li>-n Chỉ ra tên logical volume</li>
+<li>lv-demo1 là tên Logical Volume</li>
+<li>vg-demo1 là Volume Group mà mình vừa tạo ở bước trước</li>
 </ul>
+
+- Lưu ý là chúng ta có thể tạo nhiều Logical Volume từ 1 Volume Group
+
+- Có thể sử dụng câu lệnh sau để kiểm tra lại các Logical Volume đã tạo :
+
+```
+# lvs
+# lvdisplay
+```
+
+<img src=http://i.imgur.com/UsqIfzK.png>
+
+- B6. Định dạng Logical Volume :
+
+Để format các Logical Volume thành các định dạng như ext2, ext3, ext4, ta có thể làm như sau:
+
+```
+# mkfs -t ext4 /dev/vg-demo1/lv-demo1
+```
+
+<img src=http://i.imgur.com/n0Qbh0J.png>
+
+- B7. Mount và sử dụng
+
+Tạo một thư mục để mount Logical Volume đã tạo vào thư mục đó.Sau đó tiến hành mount logical volume.
+
+```
+# mkdir demo1
+# mount /dev/vg-demo1/lv-demo1 demo1
+
+```
+
+- Kiểm tra lại dung lượng của thư mục đã được mount:
+
+```
+# df -h
+```
+
+<img src=http://i.imgur.com/QzHHYUS.png>
+
+<a name=23></a>
+### 2.3 Thay đổi dung lượng Logical Volume trên LVM
+
+- Trước khi thay đổi dung lượng thì chúng ta nên kiểm tra lại một lần :
+
+```
+# vgs
+# lvs
+# pvs
+```
+
+<img src=http://i.imgur.com/jUSpHmk.png>
+
+- Để tăng kích thước Logical Volume ta sử dụng câu lệnh sau:
+
+```
+# lvextend -L +50M /dev/vg-demo1/lv-demo1
+```
+
+- Với -L là tùy chọn để tăng kích thước.
+- Sau khi tăng kích thước cho Logical Volume thì Logical Volume đã được tăng nhưng file system trên volume này vẫn chưa thay đổi, bạn phải sử dụng lệnh sau để thay đổi.
+
+```
+# resize2fs /dev/vg-demo1/lv-demo1
+```
+
+<img src=http://i.imgur.com/zypYSSh.png>
+
+- Để giảm kích thước của Logical Volume, trước hết các bạn phải umount Logical Volume mà mình muốn giảm
+
+```
+# lvreduce -L 20M /dev/vg-demo1/lv-demo1
+# mkfs.ext4 /dev/vg-demo1/lv-demo1
+```
+
+- Kiểm tra kết quả : 
