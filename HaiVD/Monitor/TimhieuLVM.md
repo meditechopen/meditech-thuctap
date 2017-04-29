@@ -8,6 +8,10 @@
 #### [1.3 Vai trò của LVM](#13)
 #### [1.4 Các thành phần trong LVM](#14)
 ## [II. Lab LVM trên Ubuntu Server](#lab)
+### [2.1 Chuẩn bị](#21)
+### [2.2 Tạo Logical Volume trên LVM](#22)
+### [2.3 Thay đổi dung lượng Logical Volume trên LVM](#23)
+### [2.4 Thay đổi dung lượng Volume Group trên LVM](#24)
 
 
 ----------------------------------------------
@@ -253,4 +257,18 @@ Tạo một thư mục để mount Logical Volume đã tạo vào thư mục đ�
 # mkfs.ext4 /dev/vg-demo1/lv-demo1
 ```
 
-- Kiểm tra kết quả : 
+<a name=24></a>
+## 2.4 Thay đổi dung lượng Volume Group trên LVM
+
+- Phần này sẽ tiến hành thêm dung lượng Volume Group bằng cách thêm một ổ cứng mới, sau đó thêm dung lượng ổ cứng đó vào Lolume Group.
+
+- Trước tiên, các bạn cần kiểm tra lại các partition và Volume Group
+
+```
+# vgs
+# lsblk
+```
+
+<img src=http://i.imgur.com/XgIMmtb.png>
+
+- Tiếp theo, nhóm thêm 1 partition vào Volume Group:
