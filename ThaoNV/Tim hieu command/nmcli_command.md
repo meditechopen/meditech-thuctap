@@ -2,13 +2,13 @@
 
 ## Mục lục
 
-### 1. NetworkManager
+- [1. NetworkManager](#nwm)
 
-### 2. Câu lệnh nmcli
+- [2. Câu lệnh nmcli](#nmcli)
 
 -----
 
-### <a name=""> 1. NetworkManager </a>
+### <a name="nwm"> 1. NetworkManager </a>
 
 - Ở phiên bản gần đây của CentOS và  Red Hat Enterprise Linux (7), networking service mặc định được cung cấp bởi NetworkManager, đây là một công cụ quản lí network tự động và rất hữu ích. Bên cạnh đó, phương thức cấu hình truyền thống vẫn được giữ nguyên.
 - Ở những phiên bản trước đó, phương thức cấu hình network mặc định là sử dụng `network script`.
@@ -49,7 +49,7 @@ NetworkManager.service - Network Manager
 
 - Người dùng sẽ không tương tác trực tiếp với dịch vụ hệ thống này. Thay vào đó, ta sẽ sử dụng 2 công cụ đó là giao diện và command-line: `nmtui` và `nmcli`.
 
-### <a name=""> 2. Câu lệnh nmcli </a>
+### <a name="nmcli"> 2. Câu lệnh nmcli </a>
 
 - Là một công cụ của NetworkManager, nó cho phép người dùng quản lí và cấu hình network thông qua command-line.
 - nmcli được dùng để tạo, hiển thị, xóa, sửa, active hay deactive các kết nối mạng cũng như điều khiển và hiển thị trạng thái các thiết bị mạng thay thế các công cụ truyền thống.
