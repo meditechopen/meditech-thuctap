@@ -1,6 +1,6 @@
 # Bài nói chuyện của Edward Snowden về cloud, open source và "nỗi sợ hãi" tại OpenStack Summit
 
-"Chúng ta không làm việc cho chính phủ, chúng ta không làm việc cho các tiểu bang và các tập đoàn. Chúng ta nên làm việc theo tinh thần của công nghệ, đưa con người tới gần hơn với một tương lai mang lại nhiều cảm hứng hơn". 
+`Chúng ta không làm việc cho chính phủ, chúng ta không làm việc cho các tiểu bang và các tập đoàn. Chúng ta nên làm việc theo tinh thần của công nghệ, đưa con người tới gần hơn với một tương lai mang lại nhiều cảm hứng hơn` 
 
 Đó là những lời mà Snowden đã chia sẻ trong cuộc đối thoại mới đây với COO của OpenStack - Mark Collier.
 
