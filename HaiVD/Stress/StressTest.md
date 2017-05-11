@@ -31,7 +31,7 @@ Mặc dù công cụ này là tốt cho việc kiểm tra hệ thống nhưng h�
 
 Quan trọng : Chúng tôi khuyên bạn nên sử dụng công cụ này với quyền root, vì nó có thể cân bằng thiết bị Linux của bạn nhanh hơn và tránh được các lỗi thiết kế kém trên phần cứng.
 
-## làm thế nào để cài đặt công cụ Stress trên Linux :
+## Làm thế nào để cài đặt công cụ Stress trên Linux :
 
 ```
 $ sudo apt-get install stress
@@ -189,7 +189,7 @@ Một số tùy chọn bạn có thể dùng cùng với stress-ng :
 - Sử dụng tuỳ chọn -dd N để bắt đầu quá trình thực hiện các luyện tập trên đĩa cứng.
 - Để dừng quá trình stress hdd  sau khi hoạt động N bogo, hãy sử dụng tùy chọn -hdd-ops N.
 - Bạn có thể đặt thời gian chờ sau N giây bằng cách sử dụng tùy chọn timeout N.
-- Để tạo ra một báo cáo tóm tắt sau khi hoạt động bogo, bạn có thể sử dụng -metrics hoặc -metrics-brief tùy chọn. The-metrics-tóm tắt hiển thị không số liệu.
+- Để tạo ra một báo cáo tóm tắt sau khi hoạt động bogo, bạn có thể sử dụng -metrics hoặc -metrics-brief tùy chọn.
 - Bạn cũng có thể bắt đầu các tiến trình N sẽ tạo và xóa các thư mục sử dụng mkdir và rmdir bằng cách sử dụng tùy chọn -dir N.
 - Để dừng quá trình hoạt động của thư mục sử dụng tùy chọn -dir-ops N.
 - Bạn có thể dừng các thao tác chmod bằng tùy chọn -chmod-ops N.
