@@ -31,7 +31,7 @@ Mặc dù công cụ này là tốt cho việc kiểm tra hệ thống nhưng h�
 
 Quan trọng : Chúng tôi khuyên bạn nên sử dụng công cụ này với quyền root, vì nó có thể cân bằng thiết bị Linux của bạn nhanh hơn và tránh được các lỗi thiết kế kém trên phần cứng.
 
-## làm thế nào để cài đặt công cụ Stress trên Linux :
+## Làm thế nào để cài đặt công cụ Stress trên Linux :
 
 ```
 $ sudo apt-get install stress
