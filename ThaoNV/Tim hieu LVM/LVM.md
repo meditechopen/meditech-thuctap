@@ -84,7 +84,7 @@ Trong quá trình phát, đầu từ đọc lướt qua bề mặt đĩa dọc t
 - Các chip điều khiển SATA đều hỗ trợ chuẩn giao tiếp AHCI (Advanced Host Controller Interface) làm giao tiếp chuẩn, hỗ trợ các tính năng nâng cao. Tháo lắp nóng. Tính năng này chỉ hỗ trợ khi thiết bị chạy chế độ AHCI. Những hệ điều hành từ windows Vista or mới hơn thì mới hỗ trợ AHCI. Bạn có thể enable tính năng này trong BIOS.
 - Thường sử dụng cho các thiết bị máy tính cá nhân. Sử dụng cable 7 chân và chỉ có 7 sợi nên gọn hơn nhiều so với ATA. Điều này giúp ích rất nhiều đến khía cạnh tỏa nhiệt của máy tính, vì sử dụng nhiều cáp mỏng hơn sẽ làm cho không khí lưu thông bên trong case của máy tính được dễ dàng hơn.
 
-** SCSI**
+**SCSI**
 
 - Trước tiên SCSI còn được gọi là parallel SCSI. Là chuẩn sử dụng phương thức truyền tải dữ liệu song song.
 - Thường sử dụng trong các server lưu trữ và truyền dữ liệu với tốc độ cao
@@ -289,7 +289,7 @@ Ngoài ra thì bạn cũng có thể dùng mkfs với nhiều loại định d�
 
 **Mount phân vùng mới tạo**
 
-- Nếu không sử dụng LVM thì bạn sẽ phải mount các phân vùng ra thư mục thì mới có thể sử dụng nó:
+- Bạn sẽ phải mount các phân vùng ra thư mục thì mới có thể sử dụng nó:
 
 `#mount /dev/sdb2 /ketoan`
 
