@@ -2,20 +2,17 @@
 
 ## Mục lục
 
-- [1. Các câu lệnh sử dụng trong LVM](#commands)
-  <ul>
-  <li>[1.1 Physical volume](#physical)</li>
-  <li>[1.2 Volume group](#group)</li>
-  <li>[1.3 Logical volume](#logical)</li>
-  </ul>
+[1. Các câu lệnh sử dụng trong LVM](#commands)
 
-- [2. Lab LVM](#lab)
-  <ul>
-  <li>[2.1. Tạo Logical Volume trên LVM](#create)</li>
-  <li>[2.2 Thay đổi dung lượng Logical Volume trên LVM][#change-group]</li>
-  <li>[2.3 Thay đổi dung lượng Volume Group trên LVM][#change-logical]</li>
-  </ul>
+- [1.1 Physical volume](#physical)
+- [1.2 Volume group](#group)
+- [1.3 Logical volume](#logical)
 
+[2. Lab LVM](#lab)
+ 
+- [2.1. Tạo Logical Volume trên LVM](#create)
+- [2.2 Thay đổi dung lượng Logical Volume trên LVM](#change-logical)
+- [2.3 Thay đổi dung lượng Volume Group trên LVM](#change-group)
 
 ## <a name = "commands"> 1. Các câu lệnh sử dụng trong LVM </a>
 
@@ -129,12 +126,12 @@ Từ các Hard Drives trên hệ thống, bạn tạo các partition. Ở đây,
 
 - Trong đó :
   <ul>
-  <li>Chọn **n** để bắt đầu tạo partition</li>
-  <li>Chọn **p** để tạo partition primary</li>
-  <li>Chọn **1** để tạo partition primary 1</li>
-  <li>Tại **First sector (2048-20971519, default 2048)** để mặc định</li>
-  <li>Tại **Last sector, +sectors or +size{K,M,G} (2048-20971519, default 20971519)** bạn chọn **+10G** để partition bạn tạo ra có dung lượng 10G</li>
-  <li>chọn **w** để lưu lại và thoát</li>
+  <li>Chọn "n" để bắt đầu tạo partition</li>
+  <li>Chọn "p" để tạo partition primary</li>
+  <li>Chọn "1" để tạo partition primary 1</li>
+  <li>Tại "First sector (2048-20971519, default 2048)"" để mặc định</li>
+  <li>Tại "Last sector, +sectors or +size{K,M,G} (2048-20971519, default 20971519)"" bạn chọn "+10G" để partition bạn tạo ra có dung lượng 10G</li>
+  <li>chọn "w" để lưu lại và thoát</li>
   </ul>
 
 
@@ -144,9 +141,9 @@ Tiếp theo bạn thay đổi định dạng của partition vừa mới tạo t
 
 - Trong đó:
   <ul>
-  <li>Bạn chọn **t** để thay đổi định dạng partition</li>
-  <li>Bạn chọn **8e** để đổi thành LVM</li>
-  <li>chọn **w** để lưu lại và thoát.</li>
+  <li>Bạn chọn "t" để thay đổi định dạng partition</li>
+  <li>Bạn chọn "8e" để đổi thành LVM</li>
+  <li>chọn "w" để lưu lại và thoát.</li>
   </ul>
 
 Tương tự, thay đổi ở cả sdc, ta có như sau :
@@ -180,7 +177,6 @@ Có thể sử dụng câu lệnh sau để kiểm tra lại các Volume Group �
 
 ``` sh
 # vgs
-
 # vgdisplay
 ```
 
