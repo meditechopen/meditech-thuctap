@@ -163,7 +163,7 @@ tham khảo thêm tài liệu ở đây <a href="https://www.zabbix.com/document
 <a name=coche></a>
 ## 2. Các cơ chế hoạt động 
 <a name=giaothuc></a>
-### 2.1 Các giao thức sử dụng zabbix 
+### 2.1 Các giao thức sử dụng trong zabbix 
 
 - Giao thức UDP được sử dụng khi check SNMP
 - Giao thức giữa web interface và zabbix server là http
