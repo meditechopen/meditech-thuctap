@@ -73,7 +73,7 @@ Cần hiểu thoáng và nhanh gọn hình này, ở đây OpenStack đã bao tr
 - Tháng 10/2010 Racksapce và NASA công bố phiên bản đầu tiên của OpenStack, có tên là OpenStack Austin, với 2 thành phần chính ( project con) : Compute (tên mã là Nova) và Object Storage (tên mã là Swift)
 - Tên các phiên bản được bắt đầu theo thứ tự A, B, C, D …trong bảng chữ cái.
 
-### < a name ="com"> 2. Thành phần </a>
+### <a name ="com"> 2. Thành phần </a>
 
 OpenStack không phải là một dự án đơn lẻ mà là một nhóm các dự án nguồn mở nhằm mục đích cung cấp các dịch vụ cloud hoàn chỉnh. OpenStack chứa nhiều thành phần:
 
@@ -92,5 +92,7 @@ OpenStack không phải là một dự án đơn lẻ mà là một nhóm các d
 **Link tham khảo:**
 
 https://vietstack.wordpress.com/2014/02/15/openstack-la-gi-va-de-lam-gi/
+
 https://viblo.asia/le.cong.phuc/posts/ZabG9zZ5vzY6
+
 https://www.slideshare.net/lanhuonga3/tm-hiu-v-openstack
