@@ -63,7 +63,6 @@ Nếu bạn sử dụng VMWare, hãy nhớ bật chức năng ảo hóa Intel VT
   <li>virt-manager: cung cấp giao diện đồ họa để quản lí máy ảo</li>
   </ul>
   
-
 - Đối với bản Minimal, người dùng phải cài đặt gói x-window thì mới có thể sử dụng được công cụ đồ họa virt-manager. Cài x-window bằng câu lệnh
 
 `yum install "@X Window System" xorg-x11-xauth xorg-x11-fonts-* xorg-x11-utils -y`
@@ -122,7 +121,7 @@ systemctl enable libvirtd
 - Tiến hành download image và đặt tại thư mục `/var/lib/libvirt/images` :
 
 ``` sh
-yum wget -y
+yum install wget -y
 cd /var/lib/libvirt/images
 wget https://ncu.dl.sourceforge.net/project/gns-3/Qemu%20Appliances/linux-microcore-3.8.2.img
 ```
