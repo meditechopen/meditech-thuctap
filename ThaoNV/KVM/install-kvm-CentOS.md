@@ -116,7 +116,7 @@ systemctl enable libvirtd
 
 ### <a name ="create"> 3. Cách tạo và quản lí máy ảo bằng virt-manager </a>
 
-#### < a name = "image"> 3.1. Cách tạo máy ảo bằng file image </a>
+#### <a name = "image"> 3.1. Cách tạo máy ảo bằng file image </a>
 
 - Tiến hành download image và đặt tại thư mục `/var/lib/libvirt/images` :
 
