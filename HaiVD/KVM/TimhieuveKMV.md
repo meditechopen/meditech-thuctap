@@ -18,7 +18,6 @@
 ### [5.2 Cấu hình và cài đặt máy webvirt](#maywebvirt)
 ### [5.3 Cấu hình và cài đặt máy KVM](#maykvm)
 ### [VI. Sử dụng Webvirt](#sd)
-#### [
 ## [VII. Các chế độ card mạng KVM](#network)
 ### [7.1 NAT](#nat)
 ### [7.2 Public Bridging](#pubbr)
@@ -249,7 +248,7 @@ Các tùy chọn giám sát và khắc phục sự cố :
   - dumpxml : thông tin domain trong XML
   - noteinfo : thông tin về note
 
-<a name=webvirt)></a>
+<a name=webvirt></a>
 ## V. Hướng dẫn cài đặt webvirt
 
 <a name=mohinh></a>
