@@ -206,4 +206,197 @@ Thực hiện các bước sau để kích hoạt SSH và ICMP (ping) cho máy �
 **Add a key pair**
 
 1. Đăng nhập vào máy ảo
-2. 
+2. Chọn project
+3. Tại tab Compute, click `Access & Security`
+4. Click `Key Pairs`, màn hình sẽ hiện một vài key pairs có sẵn
+5. Click `Create Key Pair`
+6. Trong hộp thoại mới mở, điền tên key pair, Click `Create Key Pair`
+7. Confirm để download keypair
+
+**Import a key pair**
+
+1. Đăng nhập vào máy ảo
+2. Chọn project
+3. Tại tab Compute, click `Access & Security`
+4. Click `Key Pairs`, màn hình sẽ hiện một vài key pairs có sẵn
+5. Click `Import Key Pair`
+6. Trong hộp thoại mới mở, điền tên key pair, copy public key vào `Public Key` box sau đó click `Import Key Pair`
+7. Lưu file `*.pem`
+8. Thay đổi quyền cho phép chỉ mình bạn có thể đọc và viết file ấy, chạy câu lệnh
+
+`$ chmod 0600 yourPrivateKey.pem`
+
+Note: Nếu sử dụng dashboard từ Windows, sử dụng Putty gen để load file `*.pem`, convert và lưu nó lại dưới dạng `*.ppk`
+
+9. Để key pair biết SSH, chạy câu lệnh
+
+`$ ssh-add yourPrivateKey.pem`
+
+Compute database sẽ lưu lại public key. Dashboard sẽ có danh sách các key pair trong phần `Access & Security`.
+
+**Allocate a floating IP address to an instance**
+
+1. Đăng nhập vào máy ảo
+2. Chọn project
+3. Tại tab Compute, click `Access & Security`
+4. Click `Floating IPs`
+5. Click `Allocate IP To Project.`
+6. Chọn pool để lấy địa chỉ IP
+7. Trong danh sách `Floating IPs`, chọn `Associate`.
+8. Điền thông tin trong hộp thoại mới mở  và click `Associate`
+
+**Launch and manage instances**
+
+Bạn có thể tạo các máy ảo (instances) từ những nguồn sau:
+
+- Image được upload qua image service
+- Image bạn vừa copy vào volume. Máy ảo sẽ được tạo từ volume.
+- Snapshot mà bạn đã tạo.
+
+**Launch an instance**
+
+1. Đăng nhập vào máy ảo
+2. Chọn project
+3. Tại tab Compute, click `Instances`
+4. Click `Launch Instance.`
+5. Trong hộp thoại mới mở, điền các thông tin sau:
+- Instance Name: Tên máy ảo
+- Availability Zone: Thông thường đây sẽ là các vùng được đưa ra bởi những nhà cung cấp cloud. Trong một vài trường hợp, nó là nova.
+- Count: Số lượng các máy ảo tạo nên. Giá trị mặc định là 1
+- Instance Boot Source: Có 4 lựa chọn
+	- Boot from image
+	- Boot from snapshot
+	- Boot from volume
+	- Boot from image (creates a new volume)
+	- Boot from volume snapshot (creates a new volume)
+
+- Image Name: Nếu bạn chọn boot từ image ở bước trước, một danh sách image sẽ hiện ra để bạn lựa chọn.
+- Instance Snapshot: Giống với image nhưng danh sách hiện ra sẽ là các snapshot.
+- Volume: Giống với image nhưng danh sách hiện ra sẽ là các volume.
+- Flavor: Kích thước của máy ảo
+- Selected Network: Chọn network cho máy ảo
+- Ports 
+- Security Groups: Kích hoạt security groups mà bạn muốn gán cho máy ảo
+
+Security Groups là một dạng firewall trong cloud. Nó quy định những traffic nào được phép forward tới máy ảo. Nếu bạn chưa tạo bất cưa một security group nào, bạn chỉ cần gán security group mặc định cho máy ảo.
+
+- Key Pair
+- Customization Script Source : Scripts chạy sau khi máy ảo được tạo
+- Available Metadata
+
+6. Click `Launch Instance.`
+
+Khi tạo máy ảo từ image, OpenStack sẽ tạo ra 1 bản copy của file image. 
+Note: Khi chạy QEMU mà không có sự hỗ trợ của phần cứng sẽ gây lỗi:
+
+`libvirtError: unsupported configuration: CPU mode 'host-model'
+for ``x86_64`` qemu domain on ``x86_64`` host is not supported by hypervisor`
+
+Sửa file nova.conf, thay cpu_mode="none" và virt_type=qemu in /etc/nova/nova-compute.conf để sửa lỗi.
+
+**Connect to your instance by using SSH**
+
+Để SSH tới máy ảo sử dụng file keypair đã download
+
+1. Copy địa chỉ IP cho máy ảo của bạn
+2. sử dụng câu lệnh để kết nối thông qua ssh
+
+`$ ssh -i MyKey.pem ubuntu@10.0.0.2`
+
+3. Confirm bằng cách type `yes`
+
+Bạn cũng có thể SSH tới máy ảo mà không cần SSH keypair, nếu người quản trị đã kích hoạt root password.
+
+**Track usage for instances**
+
+Bạn có thể theo dõi mức độ sử dụng của các máy ảo trong mỗi một project từ đó đưa ra những tính toán cụ thể về mức phí mà khác hàng phải trả.
+
+1. Đăng nhập vào máy ảo
+2. Chọn project
+3. Tại tab Compute, click `Overview`
+4. Để truy vấn mức độ sử dụng trong 1 tháng, lựa chọn tháng và click `Submit`
+5. Để download bản tóm tắt, click `Download CSV Summary`
+
+**Create an instance snapshot**
+
+1. Đăng nhập vào máy ảo
+2. Chọn project
+3. Tại tab Compute, click `Instances`
+4. Lựa chọn máy ảo muốn tạo snapshot
+5. click Create Snapshot.
+6. Điền tên và click `Create Snapshot`
+
+**Manage an instance**
+
+1. Đăng nhập vào máy ảo
+2. Chọn project
+3. Tại tab Compute, click `Instances`
+4. Chọn máy ảo
+5. Trong danh sách menu list các action, bạn có thể resize, rebuild hoặc truy cập console, sửa instance...
+
+**Create and manage networks**
+
+**Create a network**
+
+1. Đăng nhập vào máy ảo
+2. Chọn project
+3. Tại tab Network, click `Networks`
+4. Click `Create Network.`
+5. Trong hộp thoại mới mở, điền những thông tin sau
+
+- Network Name: Tên network
+- Shared: Chia sẻ network với các projects khác, chỉ admin mới có quyền lựa chọn
+- Admin State: Trạng thái để bắt đầu kích hoạt network
+- Create Subnet: Tích vào để tạo subnet
+	- Subnet Name: Tên subnet
+	- Network Address: Địa chỉ IP cho subnet
+	- IP Version: IPv4 hoặc IPv6
+	- Gateway IP: Địa chỉ gateway
+	- Disable Gateway: Không sử dụng gateway
+	- Enable DHCP: Kích hoạt DHCP
+	- Allocation Pools: Lựa chọn IP pools
+	- DNS Name Servers: Địa chỉ DNS
+	- Host Routes: Địa chỉ định tuyến
+
+6. Click Create.
+
+**Create a router**
+
+1. Đăng nhập vào máy ảo
+2. Chọn project
+3. Tại tab Network, click `Routers`
+4. Click Create Router.
+5. Tại hộp thoại mới mở, chọn tên cho router và External Network sau đó click Create Router.
+6. Để kết nối private network với router vừa tạo, thực hiện một vài bước sau:
+- Tại tab `Routers`, click vào tên của router
+- Trong phần `Router Details`, click `Interfaces` -> `Add Interface`
+- Tại phần `Add Interface`, lựa chọn Subnet
+
+7. Click Add Interface.
+
+**Create and manage volumes**
+
+Volume là thiết bị block storage được gán vào các máy ảo. Bạn có thẻ gán nó vào máy ảo đang chạy hoặc gỡ nó ra rồi gán vào máy ảo khác vào bất cứ thời điểm nào. Bạn cũng có thể tạo snapshot hoặc xóa volume.
+
+**Create a volume**
+
+1. Đăng nhập vào máy ảo
+2. Chọn project
+3. Tại tab Compute, click `Volume`
+4. Click Create Volume.
+5. Điền những thông tin sau
+- Volume Name: Tên volume
+- Description: Mô tả
+- Volume Source:
+	- No source, empty volume: Tạo một volume trắng, không chứa bất cứ file nào.
+	- Snapshot: Một danh sách các snapshot sẽ hiện lên để bạn lựa chọn.
+	- Image: Một danh sách các image sẽ hiện lên để bạn lựa chọn.
+	- Volume: Một danh sách các volume sẽ hiện lên để bạn lựa chọn.
+
+- Type: Để trống
+- Size (GB): Kích thước của Volume, được tính bằng gibibytes (GiB)
+- Availability Zone
+
+5. Click Create Volume.
+
+**
