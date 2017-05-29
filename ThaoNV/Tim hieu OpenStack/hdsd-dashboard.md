@@ -170,3 +170,40 @@ Một khi đã xóa, bạn sẽ không thể lấy lại được image, chỉ n
 4. Chọn image muốn xóa và click `Delete Images`
 5. Xác nhận
 
+**Configure access and security for instances**
+
+Trước khi chạy máy ảo, bạn nên add security group rules để cho phép user ping hoặc SSH tới máy ảo. Security groups là một danh sách các IP rules được định nghĩa để điều khiển truy cập và nó được áp dụng với tất cả các máy ảo trong 1 project. Để làm được điều này thì bạn có thể add rules cho security group mặc định hoặc add mới một  security group.
+
+Key pairs là thông tin SSH được "bơm" vào máy ảo khi nó được khởi chạy. Để sử dụng key pairs, file image để chạy máy ảo phải chứa package cloud init. Mỗi một project nên có ít nhất 1 key pair.
+
+Nếu bạn đã tạo key pair bằng một công cụ  bên ngoài, bạn có thể import nó vào OpenStack. Key pair có thể được dùng cho nhiều máy ảo khác nhau trong 1 project.
+
+Khi máy ảo được tạo, nó sẽ tự động được gán địa chỉ IP. Địa chỉ IP này sẽ theo máy ảo cho tới khi nó bị hủy bỏ. Bên cạnh đó, bạn cũng có thể gán floating IP cho máy ảo. Địa chỉ này có thể được thay đổi bất cứ lúc nào, nó không phụ thuộc vào trạng thái của máy ảo.
+
+**Add a rule to the default security group**
+
+Thực hiện các bước sau để kích hoạt SSH và ICMP (ping) cho máy ảo.
+
+1. Đăng nhập vào dashboard
+2. Chọn project
+3. Trong `Project tab` click `Access & Security`.
+4. Chọn  security group mặc định và click `Manage Rules.`
+5. Để cho phép SSH, click `Add Rule`.
+6. Trong hộp thoại được mở ra, điền những thông tin sau
+- Rule: SSH
+- Remote: CIDR
+- CIDR: 0.0.0.0/0
+7. Click `Add`.
+8. Để thêm ICMP rule, click `Add Rule`
+9. Trong hộp thoại được mở ra, điền những thông tin sau
+- Rule: All ICMP
+- Direction: Ingress
+- Remote: CIDR
+- CIDR: 0.0.0.0/0
+
+10. Click `Add`.
+
+**Add a key pair**
+
+1. Đăng nhập vào máy ảo
+2. 
