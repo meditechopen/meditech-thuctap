@@ -264,11 +264,11 @@ Bạn có thể tạo các máy ảo (instances) từ những nguồn sau:
 - Availability Zone: Thông thường đây sẽ là các vùng được đưa ra bởi những nhà cung cấp cloud. Trong một vài trường hợp, nó là nova.
 - Count: Số lượng các máy ảo tạo nên. Giá trị mặc định là 1
 - Instance Boot Source: Có 4 lựa chọn
-	- Boot from image
-	- Boot from snapshot
-	- Boot from volume
-	- Boot from image (creates a new volume)
-	- Boot from volume snapshot (creates a new volume)
+  - Boot from image
+  - Boot from snapshot
+  - Boot from volume
+  - Boot from image (creates a new volume)
+  - Boot from volume snapshot (creates a new volume)
 
 - Image Name: Nếu bạn chọn boot từ image ở bước trước, một danh sách image sẽ hiện ra để bạn lựa chọn.
 - Instance Snapshot: Giống với image nhưng danh sách hiện ra sẽ là các snapshot.
@@ -348,15 +348,15 @@ Bạn có thể theo dõi mức độ sử dụng của các máy ảo trong m�
 - Shared: Chia sẻ network với các projects khác, chỉ admin mới có quyền lựa chọn
 - Admin State: Trạng thái để bắt đầu kích hoạt network
 - Create Subnet: Tích vào để tạo subnet
-	- Subnet Name: Tên subnet
-	- Network Address: Địa chỉ IP cho subnet
-	- IP Version: IPv4 hoặc IPv6
-	- Gateway IP: Địa chỉ gateway
-	- Disable Gateway: Không sử dụng gateway
-	- Enable DHCP: Kích hoạt DHCP
-	- Allocation Pools: Lựa chọn IP pools
-	- DNS Name Servers: Địa chỉ DNS
-	- Host Routes: Địa chỉ định tuyến
+  - Subnet Name: Tên subnet
+  - Network Address: Địa chỉ IP cho subnet
+  - IP Version: IPv4 hoặc IPv6
+  - Gateway IP: Địa chỉ gateway
+  - Disable Gateway: Không sử dụng gateway
+  - Enable DHCP: Kích hoạt DHCP
+  - Allocation Pools: Lựa chọn IP pools
+  - DNS Name Servers: Địa chỉ DNS
+  - Host Routes: Địa chỉ định tuyến
 
 6. Click Create.
 
@@ -388,10 +388,10 @@ Volume là thiết bị block storage được gán vào các máy ảo. Bạn c
 - Volume Name: Tên volume
 - Description: Mô tả
 - Volume Source:
-	- No source, empty volume: Tạo một volume trắng, không chứa bất cứ file nào.
-	- Snapshot: Một danh sách các snapshot sẽ hiện lên để bạn lựa chọn.
-	- Image: Một danh sách các image sẽ hiện lên để bạn lựa chọn.
-	- Volume: Một danh sách các volume sẽ hiện lên để bạn lựa chọn.
+  - No source, empty volume: Tạo một volume trắng, không chứa bất cứ file nào.
+  - Snapshot: Một danh sách các snapshot sẽ hiện lên để bạn lựa chọn.
+  - Image: Một danh sách các image sẽ hiện lên để bạn lựa chọn.
+  - Volume: Một danh sách các volume sẽ hiện lên để bạn lựa chọn.
 
 - Type: Để trống
 - Size (GB): Kích thước của Volume, được tính bằng gibibytes (GiB)
@@ -399,4 +399,49 @@ Volume là thiết bị block storage được gán vào các máy ảo. Bạn c
 
 5. Click Create Volume.
 
-**
+**Attach a volume to an instance**
+
+Sau khi bạn tạo volume, bạn có thể gán chúng vào với các instances.
+
+1. Đăng nhập vào dashboard
+2. Chọn project
+3. Tại compute tab, click `Volumes`
+4. Chọn Volume muốn gán và click vào `Manage Attachments.`
+5. Trong hộp thoại `Manage Volume Attachments`, chọn instance
+6. Click Attach Volume.
+
+**Detach a volume from an instance**
+
+1. Đăng nhập vào dashboard
+2. Chọn project
+3. Tại compute tab, click `Volumes`
+4. Chọn Volume muốn gán và click vào `Manage Attachments.`
+5. Click Detach Volume và confirm
+
+**Create a snapshot from a volume**
+
+1. Đăng nhập vào dashboard
+2. Chọn project
+3. Tại compute tab, click `Volumes`
+4. Chọn volume muốn tạo snapshot
+5. Tại cột `Actions`, click Create Snapshot.
+6. Nhập vào tên  và mô tả
+7. Confirm thay đổi
+
+**Edit a volume**
+
+1. Đăng nhập vào dashboard
+2. Chọn project
+3. Tại compute tab, click `Volumes`
+4. Chọn volume muốn sửa
+5. Tại cột `Actions`, click Edit Volume.
+6. Update tên và mô tả.
+7. Click Edit Volume
+
+**Delete a volume**
+
+1. Đăng nhập vào dashboard
+2. Chọn project
+3. Tại compute tab, click `Volumes`
+4. Chọn volume muốn xóa
+5. Click Delete Volumes và confirm lại thay đổi
