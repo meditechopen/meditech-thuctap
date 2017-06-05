@@ -14,12 +14,33 @@ Một số  chức năng của SNMP :
 
 SNMP có 4 phiên bản : SNMPv1, SNMPv2c, SNMPv2u và SNMPv3. Các phiên bản này khác nhau một chút ở định dạng bản tin và phương thức hoạt động.
 
-- Có 2 nhân tố chính trong SNMP: Manager và Agent. Các SNMP agent sẽ giữ một sơ sở dữ liệu, được gọi là Management Information Base (MIB), trong đó chứa các thông tin khác nhau về hoạt động của thiết bị mà agent đang giám sát. Phần mềm quản trị SNMP Manager sẽ thu thập thông tin này qua giao thức SNMP.
+Theo RFC1157, kiến trúc của SNMP bao gồm 2 thành phần : các trạm quản lý mạng (network management station) và các thành tố mạng (network element). Trong đó :
+- Network management station thường là một máy tính chạy phần mềm quản lý SNMP (SNMP management application), dùng để giám sát và điều khiển tập trung các network element.
+- Network element là các thiết bị, máy tính, hoặc phần mềm tương thích SNMP và được quản lý bởi
+network management station. Như vậy element bao gồm device, host và application.
+
+<img src=http://i.imgur.com/xyxZsLF.png>
+
+- SNMP agent là một tiến trình (process) chạy trên network element, có nhiệm vụ cung cấp thông tin của element cho station, nhờ đó station có thể quản lý đượcelement. Chính xác hơn là application chạy trên station và agent chạy trên element mới là 2 tiến trình SNMP trực tiếp liên hệ với nhau
+
+<img src=http://i.imgur.com/ov57Xhb.png>
+
 
 ## SNMP - sâu hơn về MIBs và OIDs :
-- MIB - Management Information Base : thu thập các thông tin được tổ chức theo thứ bậc. Các mẫu thông tin khác nhau được truy cập bởi giao thức SMNP. Có 2 loại MIB : Scaler ones và Tabular ones . Các đối tượng Scalar xác định một thể hiện của đối tượng duy nhất, trong khi Tabular xác định được nhiều thể hiện trên cùng một đối tượng.
-- OID - Object Identiflers các đối tượng xác định được quản lý trong MIB. Nó có thể được miêu tả như là một cái cây có nhiều nút,được quản lý bởi các tổ chức khác nhau.Nói chung OID là một dãy số dài, mã hóa các nút,được phân tách với phần khác bằng dấu chấm.
-- SNMP hoat động cơ bản theo nguyên tắc là : hệ thống quản lý mạng gửi yêu cầu và các thiết bị được quản lý sẽ trả về các phản hồi. Nó thực hiện bằng cách sử dụng một trong bốn hoạt động : Get, GetNext, Set, Trap.
+
+**OID - Objec ID :**
+
+- Một thiết bị hỗ trợ SNMP có thể cung cấp nhiều thông tin khác nhau, mỗi thông tin đó gọi là một object.
+- Mỗi object có một tên gọi và một mã số để nhận dạng object đó, mã số gọi là Object ID (OID).
+- Một object chỉ có một OID, chẳng hạn tên của thiết bị là một object. Tuy nhiên nếu một thiết bị lại có
+nhiều tên, vậy để phân biệt các thiết bị đó với nhau, chúng ta cần tính thêm Sub ID đặt ngay sau OID nữa.
+- OID của các object phổ biến có thể được chuẩn hóa, OID của các object do bạn tạo ra thì bạn phải tự mô tả chúng. Để lấy một thông tin có OID đã chuẩn hóa thì SNMP application phải gửi một bản tin SNMP có chứa OID của object đó cho SNMP agent, SNMP agent khi nhận được thì nó phải trả lời bằng thông tin ứng với OID đó.
+
+**MIB-Management Information Base :**
+
+- MIB (cơ sở thông tin quản lý) là một cấu trúc dữ liệu gồm các đối tượng được quản lý (managed object), được dùng cho việc quản lý các thiết bị chạy trên nền TCP/IP. MIB là kiến trúc chung mà các giao thức quản lý trên TCP/IP nên tuân theo, trong đó có SNMP. MIB được thể hiện thành 1 file (MIB file), và có thể biểu diễn thành 1 cây (MIB tree). MIB có thể được chuẩn hóa hoặc tự tạo.
+- Các objectID trong MIB được sắp xếp thứ tự nhưng không phải là liên tục, khi biết một OID thì không chắc chắn có thể xác định được OID tiếp theo trong MIB.
+- MIB  : thu thập các thông tin được tổ chức theo thứ bậc. Các mẫu thông tin khác nhau được truy cập bởi giao thức SMNP. Có 2 loại MIB : Scaler ones và Tabular ones . Các đối tượng Scalar xác định một thể hiện của đối tượng duy nhất, trong khi Tabular xác định được nhiều thể hiện trên cùng một đối tượng.
 
 ## Giao thức SNMP
 
