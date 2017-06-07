@@ -69,7 +69,7 @@ Môi trường cloud theo mô hình dịch vụ Infrastructure-as-a-Service laye
 - Hiện tại, keystone đang sử dụng cơ chế bearer token. Có nghĩa là bất cứ ai có token thì sẽ có khả năng truy cập vào tài nguyên của cloud. Vì vậy việc giữ bí mật token rất quan trọng.
 
 
-**<a name="#authorization"> Access Management (Authorization) </a>**
+<a name="#authorization"> **1.3 Access Management (Authorization)** </a>
 
 - Access Management hay còn được gọi là Authorization là quá trình xác định những tài nguyên mà user được phép truy cập tới.
 
