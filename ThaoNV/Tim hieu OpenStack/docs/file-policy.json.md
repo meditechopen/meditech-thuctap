@@ -3,7 +3,9 @@
 ## Mục lục
 
 [1. Giới thiệu và ví dụ về file policy.json](#intro)
+
 [2. Cấu trúc](#syntax)
+
 [3. Các câu lệnh để quản lí role trong keystone](#manage)
 
 ------------
