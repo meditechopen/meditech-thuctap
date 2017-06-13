@@ -96,7 +96,16 @@ Alias là tên ngắn gọn của những rule phức tạp hoặc khó hiểu. 
 
 Ví dụ ở đây mình muốn tạo role thaonv-test
 
-`openstack role create thaonv-test`
+``` sh
+[root@controller ~]# openstack role create thaonv-test
++-----------+----------------------------------+
+| Field     | Value                            |
++-----------+----------------------------------+
+| domain_id | None                             |
+| id        | bbb5e17acdfe4046922a7a049032a5d1 |
+| name      | thaonv-test                      |
++-----------+----------------------------------+
+```
 
 - Để tạo một user mới ta dùng câu lệnh:
 
@@ -104,7 +113,17 @@ Ví dụ ở đây mình muốn tạo role thaonv-test
 
 Ví dụ ở đây mình muốn tạo user thaonv với password meditech2017 trên domain default.
 
-`openstack user create thaonv --domain default --password meditech2017`
+``` sh
+[root@controller ~]# openstack user create thaonv --domain default --password meditech2017
++-----------+----------------------------------+
+| Field     | Value                            |
++-----------+----------------------------------+
+| domain_id | default                          |
+| enabled   | True                             |
+| id        | c596c961d87a4cb89a9589024a54abf8 |
+| name      | thaonv                           |
++-----------+----------------------------------+
+```
 
 - Để gán role cho user vào project, ví dụ ở đây mình muốn gán role thaonv-test cho user thaonv vào project mặc định là admin trong domain default.
 
@@ -128,6 +147,22 @@ export OS_IDENTITY_API_VERSION=3
 
 Giờ ta thử tạo domain bằng user thaonv bằng câu lệnh:
 
-`openstack domain create test`
+``` sh
+[root@controller ~]# openstack domain create test
++-------------+----------------------------------+
+| Field       | Value                            |
++-------------+----------------------------------+
+| description |                                  |
+| enabled     | True                             |
+| id          | f2aa7560019e4c66aa577fd64c770163 |
+| name        | test                             |
++-------------+----------------------------------+
+```
 
-Vì ta mới chỉ cho user thaonv quyền tạo domain nên nó sẽ không có quyền xóa domian.
+Vì ta mới chỉ cho user thaonv quyền tạo domain nên nó sẽ không có quyền list các domain:
+
+``` sh
+[root@controller ~]# openstack domain list
+You are not authorized to perform the requested action: identity:list_domains (HTTP 403) (Request-ID: req-dfc92e4e-fcda-40b3-a5f4-5d7b23f0be39)
+[root@controller ~]#
+```
