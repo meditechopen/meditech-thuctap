@@ -280,14 +280,14 @@ max_active_keys = (token_expiration / rotation_frequency) + 2
 <img src="http://i.imgur.com/9Ds3E2Y.png">
 
 Với key và message nhận được, quá trình tạo fernet token như sau:
-- 1. Ghi thời gian hiện tại vào trường timestamp
-- 2. Lựa chọn một IV duy nhất
-- 3. Xây dựng ciphertext:
+- Ghi thời gian hiện tại vào trường timestamp
+- Lựa chọn một IV duy nhất
+- Xây dựng ciphertext:
   - Padd message với bội số là 16 bytes (thao tác bổ sung một số bit cho văn bản trong mã hóa khối AES)
   - Mã hóa padded message sử dụng thuật toán AES 128 trong chế độ CBC với IV đã chọn và encryption-key được cung cấp
-- 4. Tính toán trường HMAC theo mô tả trên sử dụng signing-key mà người dùng được cung cấp
-- 5. Kết nối các trường theo đúng format token ở trên
-- 6. Mã hóa base64 toàn bộ token
+- Tính toán trường HMAC theo mô tả trên sử dụng signing-key mà người dùng được cung cấp
+- Kết nối các trường theo đúng format token ở trên
+- Mã hóa base64 toàn bộ token
 
 **Token validation workflow**
 
