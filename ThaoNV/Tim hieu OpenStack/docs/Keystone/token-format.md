@@ -209,7 +209,7 @@ Hoàn toàn tương tự như tiến trình thu hồi UUID token
 
 PKI và PKIz không thực sự support mutiple data centers. Các backend database ở hai datacenter phải có quá trình đồng bộ hoặc tạo bản sao các PKI/PKIz token thì mới thực hiện xác thực và ủy quyền được.
 
-### <a name="fernet:> 4. Fernet Tokens </a>
+### <a name="fernet"> 4. Fernet Tokens </a>
 
 Đây là loại token mới nhất, nó được tạo ra để khắc phục những hạn chế của các loại token trước đó. Thứ nhất, nó khá nhỏ với khoảng 255 kí tự, lớn hơn UUID nhưng nhỏ hơn rất nhiều so với PKI. Token này cũng chứa vừa đủ thông tin để cho phép nó không cần phải được lưu trên database.
 
