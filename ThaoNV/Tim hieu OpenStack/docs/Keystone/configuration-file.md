@@ -52,21 +52,21 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
 | [DEFAULT] | |
-| admin_token = none | Giá trị của tùy chọn này là một đoạn mã dùng để khởi động Keystone thông qua API. Token này không được hiểu là user và nó có thể vượt qua hầu hết các phần check ủy quyền. |
-| public_endpoint = none | Đầu mối liên lạc gốc của Keystone cho clients. Chỉ nên set option này trong trường hợp giá trị của base URL chứa đường dẫn mà Keystone không thể tự suy luận hoặc endpoint ở server khác |
-| admin_endpoint = none | Chỉ nên set option này trong trường hợp giá trị của base URL chứa đường dẫn mà Keystone không thể tự suy luận hoặc endpoint ở server khác |
+| admin_token = \<None> | Giá trị của tùy chọn này là một đoạn mã dùng để khởi động Keystone thông qua API. Token này không được hiểu là user và nó có thể vượt qua hầu hết các phần check ủy quyền. |
+| public_endpoint = \<None> | Đầu mối liên lạc gốc của Keystone cho clients. Chỉ nên set option này trong trường hợp giá trị của base URL chứa đường dẫn mà Keystone không thể tự suy luận hoặc endpoint ở server khác |
+| admin_endpoint = \<None> | Chỉ nên set option này trong trường hợp giá trị của base URL chứa đường dẫn mà Keystone không thể tự suy luận hoặc endpoint ở server khác |
 | max_project_tree_depth = 5 | Số lượng tối đa của cây project. Lưu ý: đặt giá trị cao có thể ảnh hưởng đến hiệu suất. |
 | max_param_size = 64 | Giới hạn của user và project ID/names |
 | max_token_size = 8192 | Giống max_param_size nhưng là cho token. Với PKI/PKIz giá trị là 8192, fernet là 255 và uuid là 32 |
 | member_role_id = 9fe2ff9ee4384b1894a90878d3e92bab | Giống với member_role_name, diễn tả role mặc định được gán vào user với default projects trong v2 API. |
 | member_role_name = _member_ | đi kèm với member_role_id |
-| list_limit = \<None>\ | Số lượng entities lớn nhất có thể được trả lại trong một collection. Với những hệ thống lớn nên set option này để tránh những câu lệnh hiển thị danh sách users, projects cho ra quá nhiều dữ liệu không cần thiết |
+| list_limit = \<None> | Số lượng entities lớn nhất có thể được trả lại trong một collection. Với những hệ thống lớn nên set option này để tránh những câu lệnh hiển thị danh sách users, projects cho ra quá nhiều dữ liệu không cần thiết |
 | domain_id_immutable = true | Set option này là false nếu bạn muốn cho phép users, projects, groups được di chuyển giữa các domains bằng cách update giá trị domain_id (không được khuyến khích) |
 | strict_password_check = false | Nếu được set thành true, Keystone sẽ kiểm soát nghiêm ngặt thao tác với mật khẩu, nếu mật khẩu quá chiều dài tối đa, nó sẽ không được chấp nhận |
 | [endpoint_filter] | |
 | driver = sql | backend driver cho dịch vụ của Keystone |
 | return_all_endpoints_if_no_filter = True | Trả lại roàn bộ active endpoints nếu không có endpoints nào được tìm thấy theo yêu cầu |
-| [eventlet_server | |
+| [eventlet_server] | |
 | admin_bind_host = 0.0.0.0 | Địa chỉ IP của cổng mạng cho admin service lắng nghe |
 | admin_port = 35357 | port mà admin service lắng nghe |
 | admin_workers = None | Số lượng CPU phục vụ công việc quản trị |
@@ -93,13 +93,193 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
 | [assignment] | |
-| driver = None | nếu không được specified thì mặc định sẽ sử dụng SQL |
-| prohibited_implied_role = admin | danh sách các role bị cấm trở thành implied role |
+| driver = None | (String) nếu không được specified thì mặc định sẽ sử dụng SQL |
+| prohibited_implied_role = admin | (List) danh sách các role bị cấm trở thành implied role |
 
 **Authorization configuration options**
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
 | [auth] | |
-| external = None | Entrypoint cho auth plugin module, driver mặc định sẽ là DefaultDomain |
-| methods = external, password, token, oauth1 | danh sách các
+| external = None | (String) Entrypoint cho auth plugin module, driver mặc định sẽ là DefaultDomain |
+| methods = external, password, token, oauth1 | (List) danh sách các phương thức được cho phép sử dụng để xác thực |
+| oauth1 = None | (String) Entrypoint cho oAuth1.0 auth plugin module |
+| password = None | (String) Entrypoint cho the password auth plugin module |
+| token = None | (String) Entrypoint cho token auth plugin module |
+
+**CA and SSL configuration options**
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [eventlet_server_ssl] | |
+| ca_certs = /etc/keystone/ssl/certs/ca.pem | (String) đường dẫn tới file CA cert cho SSL |
+| cert_required = False | (boolean) yêu cầu client certificate. |
+| certfile = /etc/keystone/ssl/certs/keystone.pem | (String) đường dẫn tới certfile cho SSL |
+| enable=False | (boolean) nút kích hoạt SSL support trên Keystone eventlet servers |
+| keyfile = /etc/keystone/ssl/private/keystonekey.pem | (String) Đường dẫn keyfile cho SSL |
+| [signing] | |
+| ca_certs = /etc/keystone/ssl/certs/ca.pem | (String) Đường dẫn của CA cho token signing |
+| ca_key = /etc/keystone/ssl/private/cakey.pem | (String) Đường dẫn của CA key cho token signing |
+| cert_subject = /C=US/ST=Unset/L=Unset/O=Unset/CN=www.example.com | (String) Certificate subject (auto generated certificate) cho token signing |
+| certfile = /etc/keystone/ssl/certs/signing_cert.pem | (String) Đường dẫn tới certfile cho token signing |
+| key_size = 2048 | (integer) Kích cỡ của key (bits) cho token  signing cert (auto generated certificate) |
+| keyfile = /etc/keystone/ssl/private/signing_key.pem | (String) Đường dẫn tới keyfile cho token signing |
+| valid_days = 3650 | (Integer) Số ngày mà token signing cert có hiệu lực |
+| [ssl] | |
+| ca_key = /etc/keystone/ssl/private/cakey.pem | (String) Đường dẫn tới CA key file cho SSL |
+| cert_subject = /C=US/ST=Unset/L=Unset/O=Unset/CN=localhost | (String) SSL certificate subject (auto generated certificate) |
+| key_size = 1024 | (Integer) kích cỡ ssl key |
+| valid_days = 3650 | (Integer) số ngày mà certificate có hiệu lực cho một lần sign |
+
+**Catalog configuration options**
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [catalog] | |
+| cache_time = None | (Integer) thời gian để cache dữ liệu catalog (theo giây). Tùy chọn này sẽ không có hiệu lực cho đến khi global và catalog caching được kích hoạt |
+| caching = True | (Boolean) Nút kích hoạt catalog caching, nó sẽ không có tác dụng cho tới khi global caching được kích hoạt |
+| driver = sql | (String) Entrypoint cho catalog backend driver. Các driver hỗ trợ là kvs, sql, templated, and endpoint_filter.sql |
+| list_limit = None | (Integer) Số lượng giới hạn của entities trả lại trong catalog collection |
+| template_file = default_catalog.templates	 | (String) Catalog template file name để sử dụng với template catalog backend. |
+
+**Common configuration options**
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [DEFAULT] | |
+| executor_thread_pool_size = 64	| (Integer) Kích thước của executor thread pool. |
+| insecure_debug = False | (Boolean) Nếu là true, server sẽ trả lại thông tin bằng HTTP responses cho phép cả user đã được hoặc chưa xác thực có thể biết thêm thông tin chi tiết hơn bình thường. Điều này giúp ích hơn cho việc debug nhưng lại kém bảo mật |
+
+**Credential configuration options**
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [credential] | |
+| driver = sql | (String) Entrypoint cho credential backend driver |
+
+**Logging configuration options**
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [audit] | |
+| namespace = openstack | (String) namespace prefix cho generated id |
+
+**Domain configuration options**
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [domain_config] | |
+| cache_time = 300 | (Integer) TTL để cache domain config data |
+| caching = True | (Boolean) Nút kích hoạt domain config caching |
+| driver = sql | (String) Entrypoint cho domain config backend driver |
+
+**Federation configuration options**
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [federation] | |
+| assertion_prefix = | Giá trị được sử dụng trong quá trình filtering assertion parameters từ môi trường |
+| driver = sql |  |
+| federated_domain_name = Federated | Domain name được dành riêng để cho phép các federated ephemeral users có chung một domain concept. Admin sẽ không thể tạo dmain với tên này hoặc sửa các domain khác sang tên này |
+| remote_id_attribute = None | (String) Giá trị được dùng để lấy ID của Identity Provider |
+| sso_callback_template = /etc/keystone/sso_callback_template.html | (String) Nơi chứ Single Sign-On callback handler, sẽ trả lại token cho dashboard |
+| trusted_dashboard = \[] | (Multi-valued) Danh sách trusted dashboard hosts. |
+
+**Fernet tokens configuration options**
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [fernet_tokens] | |
+| key_repository = /etc/keystone/fernet-keys/ | (String) Thư mục chứa Fernet token keys |
+| max_active_keys = 3 | (Integer) Số lượng keys cho phép để rotate |
+
+**identity configuration options**
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [identity] | |
+| cache_time = 600 | (Integer) Thời gian để cache identity data (giây). |
+| caching = True | |
+| default_domain_id = default | (String) Domain để sử dụng cho tất cả identity API v2 requests. Domain với ID này sẽ được tạo bằng keystone-manage db_sync. Nó không thể bị xóa trên v3 API. |
+| domain_config_dir = /etc/keystone/domains | (String) Đường dẫn cho Keystone lưu domain configuration files nếu domain_specific_drivers_enabled được thiết lập là true |
+| domain_configurations_from_database = False | (Boolean) Thực thi các tùy chọn cấu hình cho domain được lưu trong backend. Mặc định nó sẽ không được kích hoạt |
+| domain_specific_drivers_enabled = False | (Boolean) Một tập hợp các domains có riêng identity driver, mỗi một domain trong số ấy có những tùy chọn cấu hình riêng, được lưu tại resource backend hoặc trong file tại thư mục chưa file cấu hình (phụ thuộc vào domain_configurations_from_database) |
+| driver = sql | |
+| list_limit = None |
+| max_password_length = 4096 | |
+
+**KVS configuration options**
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [kvs] | |
+| backends = | (List) |
+| config_prefix = keystone.kvs | (String) Không nên thay đổi trừ khi có một dogpile.cache region khác với cùng configuration name. |
+| default_lock_timeout = 5 | (Integer) Thời gian khóa mặc định |
+| enable_key_mangler = True | Vì mục đích debug, tùy chọn này được luôn được recommend set true |
+
+**Mapping configuration options**
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [identity_mapping] | |
+| backward_compatible_ids = True | (Boolean) Chỉ nên set nó là False khi cấu hình fresh installation |
+| driver = sql | |
+| generator = sha256 | (String) ID generator |
+
+**Memcache configuration options**
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [memcache] | |
+| servers = localhost:11211 | (String) Memcache servers |
+| socket_timeout = 3 | (Integer) Timeout cho mỗi lần call tới server |
+
+**OAuth configuration options**
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [oauth1] | |
+| access_token_duration = 86400 | Thời gian (giây) cho việc tiếp nhận Token. |
+| driver = sql | |
+| request_token_duration = 28800 | Thời gian (giây) cho việc request Token. |
+
+**Policy configuration options**
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [policy] | |
+| driver = sql | |
+| list_limit = None | |
+
+**Revoke configuration options**
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [revoke] | |
+| cache_time = 3600 | |
+| caching = True | |
+| driver = sql | |
+| expiration_buffer = 1800 | Giá trị này (theo giây) được thêm vào thơi gian token hết hiệu lực trước khi revocation event bị remove ra khỏi backend |
+
+**Role configuration options**
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [role] | |
+| cache_time = None | |
+| caching = True | |
+| driver = None | |
+| list_limit = None | |
+
+**Token configuration options**
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [token] | |
+| allow_rescope_scoped_token = True | (Boolean) Cho phép tái sử dụng scoped token |
+| bind = | (List) Cơ chế xác thực bên ngoài thêm bind information vào token vd kerberos,x509. |
+| cache_time = None | |
+| caching = True | |
+| driver = sql | |
+| enforce_token_bind = permissive | |
