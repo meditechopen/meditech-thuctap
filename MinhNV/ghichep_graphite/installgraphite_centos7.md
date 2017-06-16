@@ -213,9 +213,9 @@ sudo chmod +x /etc/init.d/carbon-*
 
 - Chỉnh sửa file cấu hình collectD để metric ghi thông tin vào filesystem trong graphite-server
 
-``vi vi /etc/collectd.conf`` trên centos7
+``vi /etc/collectd.conf`` trên centos7
 
-``/etc/collectd/collectd.conf`` trên Ubuntu14
+``vi /etc/collectd/collectd.conf`` trên Ubuntu14
 
 Thêm plugin write_graphite
 
