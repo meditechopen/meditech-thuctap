@@ -87,6 +87,7 @@ File config hỗ trợ variable substitution. Sau khi thiết lập, tùy chọn
 
 Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đặt file cấu hình, thêm tùy chọn `--config-file FILE` vào khi bạn start dịch vụ hoặc dùng câu lệnh `*-manage`
 
+<a name = "api"></a>
 ### 2. API configuration options
 
 | Configuration option = Default value | Description |
@@ -127,7 +128,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | caching = True | Không có tác dụng cho tới khi global caching được kích hoạt |
 | domain_name_url_safe = off |
 
-
+<a name = assignment></a>
 ### 3. Assignment configuration options
 
 | Configuration option = Default value | Description |
@@ -136,6 +137,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | driver = None | (String) nếu không được specified thì mặc định sẽ sử dụng SQL |
 | prohibited_implied_role = admin | (List) danh sách các role bị cấm trở thành implied role |
 
+<a name = "authorization"></a>
 ### 4. Authorization configuration options
 
 | Configuration option = Default value | Description |
@@ -147,6 +149,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | password = None | (String) Entrypoint cho the password auth plugin module |
 | token = None | (String) Entrypoint cho token auth plugin module |
 
+<a name = "ca"></a>
 ### 5. CA and SSL configuration options
 
 | Configuration option = Default value | Description |
@@ -171,6 +174,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | key_size = 1024 | (Integer) kích cỡ ssl key |
 | valid_days = 3650 | (Integer) số ngày mà certificate có hiệu lực cho một lần sign |
 
+<a name = "catalog"></a>
 ### 6. Catalog configuration options
 
 | Configuration option = Default value | Description |
@@ -182,6 +186,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | list_limit = None | (Integer) Số lượng giới hạn của entities trả lại trong catalog collection |
 | template_file = default_catalog.templates	 | (String) Catalog template file name để sử dụng với template catalog backend. |
 
+<a name = "common"></a>
 ### 7. Common configuration options
 
 | Configuration option = Default value | Description |
@@ -190,6 +195,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | executor_thread_pool_size = 64	| (Integer) Kích thước của executor thread pool. |
 | insecure_debug = False | (Boolean) Nếu là true, server sẽ trả lại thông tin bằng HTTP responses cho phép cả user đã được hoặc chưa xác thực có thể biết thêm thông tin chi tiết hơn bình thường. Điều này giúp ích hơn cho việc debug nhưng lại kém bảo mật |
 
+<a name = "credential"></a>
 ### 8. Credential configuration options
 
 | Configuration option = Default value | Description |
@@ -197,6 +203,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | [credential] | |
 | driver = sql | (String) Entrypoint cho credential backend driver |
 
+<a name = "logging"></a>
 ### 9. Logging configuration options
 
 | Configuration option = Default value | Description |
@@ -204,6 +211,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | [audit] | |
 | namespace = openstack | (String) namespace prefix cho generated id |
 
+<a name = "domain"></a>
 ### 10. Domain configuration options
 
 | Configuration option = Default value | Description |
@@ -213,6 +221,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | caching = True | (Boolean) Nút kích hoạt domain config caching |
 | driver = sql | (String) Entrypoint cho domain config backend driver |
 
+<a name = "federation"></a>
 ### 11. Federation configuration options
 
 | Configuration option = Default value | Description |
@@ -225,6 +234,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | sso_callback_template = /etc/keystone/sso_callback_template.html | (String) Nơi chứ Single Sign-On callback handler, sẽ trả lại token cho dashboard |
 | trusted_dashboard = \[] | (Multi-valued) Danh sách trusted dashboard hosts. |
 
+<a name = "fernet"></a>
 ### 12. Fernet tokens configuration options
 
 | Configuration option = Default value | Description |
@@ -233,6 +243,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | key_repository = /etc/keystone/fernet-keys/ | (String) Thư mục chứa Fernet token keys |
 | max_active_keys = 3 | (Integer) Số lượng keys cho phép để rotate |
 
+<a name = "identity"></a>
 ### 13. Identity configuration options
 
 | Configuration option = Default value | Description |
@@ -248,6 +259,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | list_limit = None |
 | max_password_length = 4096 | |
 
+<a name = "kvs"></a>
 ### 14. KVS configuration options
 
 | Configuration option = Default value | Description |
@@ -258,6 +270,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | default_lock_timeout = 5 | (Integer) Thời gian khóa mặc định |
 | enable_key_mangler = True | Vì mục đích debug, tùy chọn này được luôn được recommend set true |
 
+<a name = "mapping"></a>
 ### 15. Mapping configuration options
 
 | Configuration option = Default value | Description |
@@ -267,6 +280,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | driver = sql | |
 | generator = sha256 | (String) ID generator |
 
+<a name = "memcache"></a>
 ### 16. Memcache configuration options
 
 | Configuration option = Default value | Description |
@@ -275,6 +289,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | servers = localhost:11211 | (String) Memcache servers |
 | socket_timeout = 3 | (Integer) Timeout cho mỗi lần call tới server |
 
+<a name = "oauth"></a>
 ### 17. OAuth configuration options
 
 | Configuration option = Default value | Description |
@@ -284,6 +299,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | driver = sql | |
 | request_token_duration = 28800 | Thời gian (giây) cho việc request Token. |
 
+<a name = "policy"></a>
 ### 18. Policy configuration options
 
 | Configuration option = Default value | Description |
@@ -292,6 +308,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | driver = sql | |
 | list_limit = None | |
 
+<a name = "revoke"></a>
 ### 19. Revoke configuration options
 
 | Configuration option = Default value | Description |
@@ -302,6 +319,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | driver = sql | |
 | expiration_buffer = 1800 | Giá trị này (theo giây) được thêm vào thơi gian token hết hiệu lực trước khi revocation event bị remove ra khỏi backend |
 
+<a name = "role"></a>
 ### 20. Role configuration options
 
 | Configuration option = Default value | Description |
@@ -312,6 +330,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | driver = None | |
 | list_limit = None | |
 
+<a name = "token"></a>
 ### 21. Token configuration options
 
 | Configuration option = Default value | Description |
@@ -329,6 +348,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | provider = uuid | (String) Kiểm soát các cơ chế tạo, xác thực, gỡ bỏ token. Hiện tại có 4 provider đó là [fernet|pkiz|pki|uuid]. |
 | revoke_by_id = True | (Boolean) Cho phép hủy token bằng token id |
 
+<a name = "trust"></a>
 ### 22. Trust configuration options
 
 | Configuration option = Default value | Description |
