@@ -106,7 +106,7 @@ Graphite-Web là ứng dụng web Django chạy dưới Apache / mod_wsgi.
 ```sh
 SECRET_KEY = 'enter_your_unique_secret_key_here'
 TIME_ZONE = 'Asia/Ho_Chi_Minh'
-``
+```
 
 - Dùng script khời tạo một database mới:
 
