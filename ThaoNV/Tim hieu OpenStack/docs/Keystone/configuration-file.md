@@ -2,13 +2,53 @@
 
 ## Mục lục
 
-1. Cấu trúc file config
+[1. Cấu trúc file config](#structure)
 
-2. API configuration options
+[2. API configuration options](#api)
+
+[3. Assignment configuration options](#assignment)
+
+[4. Authorization configuration options](#authorization)
+
+[5. CA and SSL configuration options](#ca)
+
+[6. Catalog configuration options](#atalog)
+
+[7. Common configuration options](#common)
+
+[8. Credential configuration options](#credential)
+
+[9. Logging configuration options](#logging)
+
+[10. Domain configuration options](#domain)
+
+[11. Federation configuration options](#federation)
+
+[12. Fernet tokens configuration options](#fernet)
+
+[13. Identity configuration options](#identity)
+
+[14. KVS configuration options](#kvs)
+
+[15. Mapping configuration options](#mapping)
+
+[16. Memcache configuration options](#memcache)
+
+[17. OAuth configuration options](#oauth)
+
+[18. Policy configuration options](#policy)
+
+[19. Revoke configuration options](#revoke)
+
+[20. Role configuration options](#role)
+
+[21. Token configuration options](#token)
+
+[22. Trust configuration options](#trust)
 
 
 --------
-
+<a name = "structure"></a>
 ### 1. Cấu trúc file config
 
 OpenStack sử dụng INI file format cho file config. INI file là một file text đơn giản thể hiện các options theo các cặp giá trị `key = value`, chúng được nhóm lại thành các section.
@@ -88,7 +128,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | domain_name_url_safe = off |
 
 
-**Assignment configuration options**
+### 3. Assignment configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
@@ -96,7 +136,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | driver = None | (String) nếu không được specified thì mặc định sẽ sử dụng SQL |
 | prohibited_implied_role = admin | (List) danh sách các role bị cấm trở thành implied role |
 
-**Authorization configuration options**
+### 4. Authorization configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
@@ -107,7 +147,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | password = None | (String) Entrypoint cho the password auth plugin module |
 | token = None | (String) Entrypoint cho token auth plugin module |
 
-**CA and SSL configuration options**
+### 5. CA and SSL configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
@@ -131,7 +171,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | key_size = 1024 | (Integer) kích cỡ ssl key |
 | valid_days = 3650 | (Integer) số ngày mà certificate có hiệu lực cho một lần sign |
 
-**Catalog configuration options**
+### 6. Catalog configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
@@ -142,7 +182,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | list_limit = None | (Integer) Số lượng giới hạn của entities trả lại trong catalog collection |
 | template_file = default_catalog.templates	 | (String) Catalog template file name để sử dụng với template catalog backend. |
 
-**Common configuration options**
+### 7. Common configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
@@ -150,21 +190,21 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | executor_thread_pool_size = 64	| (Integer) Kích thước của executor thread pool. |
 | insecure_debug = False | (Boolean) Nếu là true, server sẽ trả lại thông tin bằng HTTP responses cho phép cả user đã được hoặc chưa xác thực có thể biết thêm thông tin chi tiết hơn bình thường. Điều này giúp ích hơn cho việc debug nhưng lại kém bảo mật |
 
-**Credential configuration options**
+### 8. Credential configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
 | [credential] | |
 | driver = sql | (String) Entrypoint cho credential backend driver |
 
-**Logging configuration options**
+### 9. Logging configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
 | [audit] | |
 | namespace = openstack | (String) namespace prefix cho generated id |
 
-**Domain configuration options**
+### 10. Domain configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
@@ -173,7 +213,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | caching = True | (Boolean) Nút kích hoạt domain config caching |
 | driver = sql | (String) Entrypoint cho domain config backend driver |
 
-**Federation configuration options**
+### 11. Federation configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
@@ -185,7 +225,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | sso_callback_template = /etc/keystone/sso_callback_template.html | (String) Nơi chứ Single Sign-On callback handler, sẽ trả lại token cho dashboard |
 | trusted_dashboard = \[] | (Multi-valued) Danh sách trusted dashboard hosts. |
 
-**Fernet tokens configuration options**
+### 12. Fernet tokens configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
@@ -193,7 +233,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | key_repository = /etc/keystone/fernet-keys/ | (String) Thư mục chứa Fernet token keys |
 | max_active_keys = 3 | (Integer) Số lượng keys cho phép để rotate |
 
-**identity configuration options**
+### 13. Identity configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
@@ -208,7 +248,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | list_limit = None |
 | max_password_length = 4096 | |
 
-**KVS configuration options**
+### 14. KVS configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
@@ -218,7 +258,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | default_lock_timeout = 5 | (Integer) Thời gian khóa mặc định |
 | enable_key_mangler = True | Vì mục đích debug, tùy chọn này được luôn được recommend set true |
 
-**Mapping configuration options**
+### 15. Mapping configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
@@ -227,7 +267,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | driver = sql | |
 | generator = sha256 | (String) ID generator |
 
-**Memcache configuration options**
+### 16. Memcache configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
@@ -235,7 +275,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | servers = localhost:11211 | (String) Memcache servers |
 | socket_timeout = 3 | (Integer) Timeout cho mỗi lần call tới server |
 
-**OAuth configuration options**
+### 17. OAuth configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
@@ -244,7 +284,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | driver = sql | |
 | request_token_duration = 28800 | Thời gian (giây) cho việc request Token. |
 
-**Policy configuration options**
+### 18. Policy configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
@@ -252,7 +292,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | driver = sql | |
 | list_limit = None | |
 
-**Revoke configuration options**
+### 19. Revoke configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
@@ -262,7 +302,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | driver = sql | |
 | expiration_buffer = 1800 | Giá trị này (theo giây) được thêm vào thơi gian token hết hiệu lực trước khi revocation event bị remove ra khỏi backend |
 
-**Role configuration options**
+### 20. Role configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
@@ -272,7 +312,7 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | driver = None | |
 | list_limit = None | |
 
-**Token configuration options**
+### 21. Token configuration options
 
 | Configuration option = Default value | Description |
 |--------------------------------------|-------------|
@@ -282,4 +322,19 @@ Hầu hết các service sẽ load file cấu hình. Để thay đổi nơi đ�
 | cache_time = None | |
 | caching = True | |
 | driver = sql | |
-| enforce_token_bind = permissive | |
+| enforce_token_bind = permissive | (String) Sử dụng cho các token có bind information. Các tùy chọn đó là disabled, permissive, strict, required hoặc bind mode cụ thể ví dụ như kerberos hoặc x509 |
+| expiration = 3600 | (Integer) Thời gian token có hiệu lực (theo giây) |
+| hash_algorithm = md5 | (String) thuật toán sử dụng cho PKI token. Những algorithm trong hashlib đều được hỗ trợ. |
+| infer_roles = True | (Boolean) Thêm role vào token chưa được thêm |
+| provider = uuid | (String) Kiểm soát các cơ chế tạo, xác thực, gỡ bỏ token. Hiện tại có 4 provider đó là [fernet|pkiz|pki|uuid]. |
+| revoke_by_id = True | (Boolean) Cho phép hủy token bằng token id |
+
+### 22. Trust configuration options
+
+| Configuration option = Default value | Description |
+|--------------------------------------|-------------|
+| [trust] | |
+| allow_redelegation = False | (Boolean) Kích hoạt tính năng redelegation |
+| driver = sql | |
+| enabled = True | (Boolean) Kích hoạt các tính năng delegation và impersonation |
+| max_redelegation_count = 3 | |
