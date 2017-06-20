@@ -2,14 +2,16 @@
 
 ## Mục lục
 
-1. File glance-api.conf
+[1. File glance-api.conf](#api)
 
-2. File glance-registry.conf
+[2. File glance-registry.conf](#registry)
 
+[3. File log của glance](#log)
 --------
 
 Glance có 2 daemon chạy ẩn đó là glance-api và glance-registry.
 
+<a name="api"></a>
 ### 1. File glance-api.conf
 
 - Nằm tại thư mục `/etc/glance/glance-api.conf`
@@ -70,6 +72,7 @@ filesystem_store_datadirs = /var/glance/store1:100
 filesystem_store_datadirs = /var/glance/store2:200
 ```
 
+<a name="registry"></a>
 ### 2. File glance-registry.conf
 
 - Tương tự như file `glance-api.conf`, file `glance-registry.conf` cũng được lưu tại thư mục `/etc/glance`. Đồng thời nó cũng chứa cấu hình để access database cũng như identity service:
@@ -98,6 +101,7 @@ flavor = keystone
 
 **Lưu ý:** Trên đây chỉ là những cấu hình cơ bản tối thiểu mà người dùng cần thực hiện trong quá trình cài đặt glance, xem thêm về các tùy chọn cấu hình có thể thực hiện [tại đây](https://docs.openstack.org/developer/glance/configuring.html).
 
+<a name="log"></a>
 ### 3. File log của glance
 
 - Section [DEFAULT] chứa đường dẫn tới file và thư mục log của glance:

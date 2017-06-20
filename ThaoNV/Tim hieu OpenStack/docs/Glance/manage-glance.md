@@ -2,11 +2,11 @@
 
 ## Mục lục
 
-1. Sử dụng glance command line
+[1. Sử dụng glance command line](#glance)
 
-2. Sử dụng OpenStack client
+[2. Sử dụng OpenStack client](#client)
 
-3. Sử dụng cURL
+[3. Sử dụng cURL](#curl)
 
 -----------
 
@@ -199,13 +199,13 @@ https://docs.openstack.org/developer/python-openstackclient/command-objects/imag
 
 Một image bị xóa sẽ vẫn được lưu thông tin trong database, đây là cấu trúc của glance database :
 
-<img src="">
+<img src="http://i.imgur.com/eHLu2Ss.png">
 
 Bạn có thể connect rồi query ra để xem hoặc dùng GUI tool để hiển thị nội dung database:
 
-<img src = "">
+<img src = "http://i.imgur.com/ial7BD8.png">
 
-<img src="">
+<img src="http://i.imgur.com/vQNQQMx.png">
 
 
 ## 3. Sử dụng cURL
