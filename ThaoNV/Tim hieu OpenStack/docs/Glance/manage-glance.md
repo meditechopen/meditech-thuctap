@@ -4,15 +4,29 @@
 
 [1. Sử dụng glance command line](#glance)
 
+- [1.1 Hiển thị danh sách image](#list)
+
+- [1.2 Show image](#show)
+
+- [1.3 Tạo image](#create)
+
+- [1.4 Upload image](#upload)
+
+- [1.5 Xóa image](#delete)
+
+- [1.6 Thay đổi trạng thái máy ảo](#update)
+
 [2. Sử dụng OpenStack client](#client)
 
 [3. Sử dụng cURL](#curl)
 
 -----------
 
+<a name ="glance"></a>
 ## 1. Sử dụng glance command line
 
-### 1.1 List image
+<a name="list"></a>
+### 1.1 Hiển thị danh sách image
 
 Sử dụng câu lệnh sau để lấy danh sách các image được phép truy cập
 
@@ -28,6 +42,7 @@ Sử dụng câu lệnh sau để lấy danh sách các image được phép tru
 +--------------------------------------+--------+
 ```
 
+<a name="show"></a>
 ### 1.2 Show image
 
 Để hiển thị thông tin chi tiết 1 image, sử dụng câu lệnh
@@ -59,7 +74,8 @@ Sử dụng câu lệnh sau để lấy danh sách các image được phép tru
 +------------------+--------------------------------------+
 ```
 
-### 1.3 Create image
+<a name="create"></a>
+### 1.3 Tạo image
 
 Để upload image lên thư mục của glance từ file image có sẵn, sử dụng lệnh `glance image-create`
 
@@ -89,6 +105,7 @@ Sử dụng câu lệnh sau để lấy danh sách các image được phép tru
 +------------------+------------------------------------------------------+
 ```
 
+<a name="upload"></a>
 ### 1.4 Upload image
 
 Trong trường hợp ta tạo ra một image mới và rỗng, ta cần upload dữ liệu cho nó, sử dụng câu lệnh `glance image-upload --file file_name image_id`
@@ -118,6 +135,7 @@ Trong trường hợp ta tạo ra một image mới và rỗng, ta cần upload 
 [root@controller ~(keystone_admin)]# glance image-upload --file /tmp/cirros-0.3.4-x86_64-disk.img 47f7bcb2-55e0-490e-920d-48f09d29e4e7
 ```
 
+<a name="delete"></a>
 ### 1.5 Xóa image
 
 Để xóa image, ta sử dụng câu lệnh `glance image-delete image_id`
@@ -139,6 +157,7 @@ Trong trường hợp ta tạo ra một image mới và rỗng, ta cần upload 
 +--------------------------------------+-------+
 ```
 
+<a name="update"></a>
 ### 1.6 Thay đổi trạng thái máy ảo
 
 Như ta đã biết một image upload thành công sẽ ở trạng thái active, người dùng có thể đưa nó về trạng thái deactivate cũng như thay đổi qua lại giữa hai trạng thái bằng câu lệnh `glance image-deactivate <IMAGE_ID>>` và `glance image-reactivate <IMAGE_ID>`
@@ -174,6 +193,7 @@ Như ta đã biết một image upload thành công sẽ ở trạng thái activ
 
 https://docs.openstack.org/cli-reference/glance.html
 
+<a name="client"></a>
 ## 2. Sử dụng OpenStack client
 
 Giống với glance command line, OpenStack client sử dụng câu lệnh để quản lí glance. Bảng sau đây thể hiện mối quan hệ tương tác giữa hai câu lệnh trên:
@@ -207,7 +227,17 @@ Bạn có thể connect rồi query ra để xem hoặc dùng GUI tool để hi�
 
 <img src="http://i.imgur.com/vQNQQMx.png">
 
+- Lưu ý: Nếu bạn sử dụng Navicat, bạn cần tạo thêm một tài khoản trong database và cấp quyền truy cập cho nó thì mới có thể connect được:
 
+``` sh
+CREATE USER 'newuser'@'%' IDENTIFIED BY 'password';
+
+GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'%';
+
+FLUSH PRIVILEGES;
+```
+
+<a name="curl"></a>
 ## 3. Sử dụng cURL
 
 - Tham khảo về API cũng như nhiệm vụ của các API trong Glance tại link sau:
@@ -286,4 +316,151 @@ Kết quả:
 {"status": "active", "virtual_size": null, "description": "", "tags": [], "container_format": "bare", "created_at": "2017-06-05T01:36:42Z", "size": 305001984, "disk_format": "qcow2", "updated_at": "2017-06-20T11:06:05Z", "visibility": "public", "self": "/v2/images/8867a307-8e2a-4c17-ac07-3bb126681ff5", "min_disk": 0, "protected": false, "id": "8867a307-8e2a-4c17-ac07-3bb126681ff5", "file": "/v2/images/8867a307-8e2a-4c17-ac07-3bb126681ff5/file", "checksum": "af3cdec809e0c9376023dec7716e6102", "owner": "b47e8a9d5d88439dadc4f849c0424e8c", "schema": "/v2/schemas/image", "min_ram": 0, "name": "cent6"}
 ```
 
-### 3.4
+### 3.4 Tạo mới image (chưa upload dữ liệu)
+
+`curl -i -X POST -H "X-Auth-Token: $OS_AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{"name": "curl-test", "tags": ["cirros"]}' \
+    http://controller:9292/v2/images`
+
+
+Kết quả trả về:
+
+``` sh
+HTTP/1.1 201 Created
+Content-Length: 557
+Content-Type: application/json; charset=UTF-8
+Location: http://controller:9292/v2/images/2049b252-dc7b-48d6-8b54-12ebd9779a15
+X-Openstack-Request-Id: req-ec4ac436-48be-4704-9d84-30532b169c6e
+Date: Wed, 21 Jun 2017 01:57:03 GMT
+
+{"status": "queued", "name": "curl-test", "tags": ["cirros"], "container_format": null, "created_at": "2017-06-21T01:57:03Z", "size": null, "disk_format": null, "updated_at": "2017-06-21T01:57:03Z", "visibility": "private", "self": "/v2/images/2049b252-dc7b-48d6-8b54-12ebd9779a15", "min_disk": 0, "protected": false, "id": "2049b252-dc7b-48d6-8b54-12ebd9779a15", "file": "/v2/images/2049b252-dc7b-48d6-8b54-12ebd9779a15/file", "checksum": null, "owner": "b47e8a9d5d88439dadc4f849c0424e8c", "virtual_size": null, "min_ram": 0, "schema": "/v2/schemas/image"}
+```
+
+### 3.5 Cập nhật các thuộc tính của image
+
+- Để cập nhật các thuộc tính của image, ta sử dụng phương thức PATCH gửi tới API dành riêng cho từng image (Mỗi image được tự động tạo ra một API riêng theo form sau: http://controller:9292/v2/images/<IMAGE_ID> )
+- Ví dụ: cập nhật thuộc tính container_format và disk_format của image vừa tạo ta làm như sau:
+
+``` sh
+curl -i -X PATCH -H "X-Auth-Token: $OS_AUTH_TOKEN" \
+-H "Content-Type: application/openstack-images-v2.1-json-patch" \
+-d '
+[
+    {
+        "op": "add",
+        "path": "/disk_format",
+        "value": "qcow2"
+    },
+    {
+        "op": "add",
+        "path": "/container_format",
+        "value": "bare"
+    }
+]' http://controller:9292/v2/images/2049b252-dc7b-48d6-8b54-12ebd9779a15
+```
+
+- Kết quả trả về:
+
+``` sh
+HTTP/1.1 200 OK
+Content-Length: 562
+Content-Type: application/json; charset=UTF-8
+X-Openstack-Request-Id: req-0418a8a8-50f7-4cd8-ba6e-857fb7590abd
+Date: Wed, 21 Jun 2017 02:15:51 GMT
+
+{"status": "queued", "name": "curl-test", "tags": ["cirros"], "container_format": "bare", "created_at": "2017-06-21T01:57:03Z", "size": null, "disk_format": "qcow2", "updated_at": "2017-06-21T02:15:50Z", "visibility": "private", "self": "/v2/images/2049b252-dc7b-48d6-8b54-12ebd9779a15", "min_disk": 0, "protected": false, "id": "2049b252-dc7b-48d6-8b54-12ebd9779a15", "file": "/v2/images/2049b252-dc7b-48d6-8b54-12ebd9779a15/file", "checksum": null, "owner": "b47e8a9d5d88439dadc4f849c0424e8c", "virtual_size": null, "min_ram": 0, "schema": "/v2/schemas/image"}
+```
+
+### 3.6 Upload dữ liệu lên image
+
+- Để upload dữ liệu cho image, sử dụng phương thức PUT tới API của từng image.
+
+- Ví dụ: upload file .img lên image vừa tạo:
+
+`curl -i -X PUT -H "X-Auth-Token: $OS_AUTH_TOKEN" \
+	-H "Content-Type: application/octet-stream" \
+	-d @/tmp/cirros-0.3.4-x86_64-disk.img \
+	http://controller:9292/v2/images/2049b252-dc7b-48d6-8b54-12ebd9779a15/file`
+
+- Kết quả:
+
+``` sh
+HTTP/1.1 204 No Content
+Content-Type: text/html; charset=UTF-8
+Content-Length: 0
+X-Openstack-Request-Id: req-e193a06c-cd7c-4009-89d8-741b0d1a3ade
+Date: Wed, 21 Jun 2017 02:22:49 GMT
+```
+
+Lúc này trạng thái image sẽ từ `queued` sang `active`.
+
+### 3.7 Xóa image
+
+- Để xóa image vừa tạo, sử dụng phương thức DELETE gửi request tới API của image đó.
+- VÍ dụ: xóa image curl-test vừa tạo:
+
+`curl -i -X DELETE -H "X-Auth-Token: $OS_AUTH_TOKEN" \
+	-H "Content-Type: application/octet-stream" \
+	http://controller:9292/v2/images/2049b252-dc7b-48d6-8b54-12ebd9779a15`
+
+- Kết quả trả về:
+
+``` sh
+[root@controller ~(keystone_admin)]# openstack image list
++--------------------------------------+-----------+--------+
+| ID                                   | Name      | Status |
++--------------------------------------+-----------+--------+
+| 2049b252-dc7b-48d6-8b54-12ebd9779a15 | curl-test | active |
+| 8867a307-8e2a-4c17-ac07-3bb126681ff5 | cent6     | active |
++--------------------------------------+-----------+--------+
+[root@controller ~(keystone_admin)]# curl -i -X DELETE -H "X-Auth-Token: $OS_AUTH_TOKEN" \
+> -H "Content-Type: application/octet-stream" \
+> http://controller:9292/v2/images/2049b252-dc7b-48d6-8b54-12ebd9779a15
+HTTP/1.1 204 No Content
+Content-Type: text/html; charset=UTF-8
+Content-Length: 0
+X-Openstack-Request-Id: req-3444f8fd-a4d4-4d31-82a8-693ecba70fd6
+Date: Wed, 21 Jun 2017 02:26:43 GMT
+
+[root@controller ~(keystone_admin)]# openstack image list
++--------------------------------------+-------+--------+
+| ID                                   | Name  | Status |
++--------------------------------------+-------+--------+
+| 8867a307-8e2a-4c17-ac07-3bb126681ff5 | cent6 | active |
++--------------------------------------+-------+--------+
+```
+
+### 3.8 Sử dụng REST client
+
+Ta có thể sử dụng tiện ích trên Google chrome và Firefox là Advanced REST client:
+
+**Lấy token**
+
+<img src="http://i.imgur.com/NbuLr1I.png">
+
+Kết quả trả về:
+
+<img src="http://i.imgur.com/zdOf2bg.png">
+
+**Liệt kê danh sách các image**
+
+<img src="http://i.imgur.com/xH6HeRU.png">
+
+Kết quả trả về:
+
+<img src="http://i.imgur.com/vL1jvFr.png">
+
+**Các thao tác khác thực hiện tương tự. (Chú ý các tham số của URI, method, header và payload của request)**
+
+**Tham khảo thêm về glance API tại link sau:**
+
+https://developer.openstack.org/api-ref/image/v2/index.html
+
+**Tham khảo:**
+
+https://github.com/hocchudong/thuctap012017/blob/master/TamNT/Openstack/Glance/docs/3.Cac_thao_tac_su_dung_Glance.md
+
+https://github.com/vietstacker/texbook-openstack-VN/blob/master/02.Glance/02.GlanceAPI.md
+
+https://docs.openstack.org/developer/glance/glanceapi.html

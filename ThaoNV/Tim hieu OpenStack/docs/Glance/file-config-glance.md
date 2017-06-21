@@ -7,6 +7,7 @@
 [2. File glance-registry.conf](#registry)
 
 [3. File log của glance](#log)
+
 --------
 
 Glance có 2 daemon chạy ẩn đó là glance-api và glance-registry.
