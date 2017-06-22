@@ -70,3 +70,9 @@ Nếu bạn muốn lịch sử không được hiển thị, hãy sử dụng c�
 ### Xóa tất cả lịch sử
 
 Dùng câu lệnh sau `history -c`
+
+**Link tham khảo:**
+
+https://www.tecmint.com/history-command-examples/
+
+http://www.thegeekstuff.com/2008/08/15-examples-to-master-linux-command-line-history
