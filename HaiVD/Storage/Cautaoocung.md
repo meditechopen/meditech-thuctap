@@ -30,7 +30,7 @@
 
 ## Truy cập dữ liệu
 
-![oc](/HaiVD/Storage/HaiVD/images/access.png)
+![oc](/HaiVD/Storage/images/access.png)
 
 Trong ổ cứng có 2 cách truy nhập dữ liệu :
 - Sequential access :  là thuật ngữ dùng để miêu tả việc đọc hoặc ghi các bit dữ liệu liên tiếp nhau. Đối với ổ cứng thông tường, các bit dữ liệu được lưu trữ trên các sector, nếu dữ liệu được lưu trữ trên các sector liên tiếp, việc đọc dữ liệu sẽ nhanh hơn vì thời gian tìm kiếm (seek time) sẽ giảm đi. Tương tự, nếu dữ liệu được ghi liên tiếp thì sẽ nhanh hơn vì chỉ tốn một vòng quay để ghi các sector liên tiếp.
