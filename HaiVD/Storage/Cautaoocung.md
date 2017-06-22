@@ -2,7 +2,7 @@
 
 Ổ cứng HDD (Hard Disk Driver) là loại lưu trữ cơ bản và sẽ không thay đổi trên máy tính. Nghĩa là nó không mất đi như các dữ liệu lưu trên bộ nhớ hệ thống khi bạn tắt máy tính. Ổ cứng HDD có cấu tạo cơ bản là đĩa kim loại được phủ một lớp từ tính. Khi ổ cứng HDD hoạt động, một đầu đọc / ghi trên một thanh kim loại sẽ truy cập vào dữ liệu trong khi phần đĩa cứng được quay trong một khay chứa đĩa.
 
-![oc](/images/ocung.jpg)
+![oc](/HaiVD/Storage/images/ocung.jpg)
 
 
 - Đĩa từ : thường được làm bằng nhôm, thủy tinh, sứ,... bề mặt được phủ một vật liệu từ tính,là nơi chứa dữ liệu. Sau khi được hoàn tất và đánh bóng, các đĩa này được xếp chồng lên nhau,ghép nối với mô tơ quay,chúng được gắn song song và quay đồng trục,cùng tốc độ với nhau khi hoạt động. Số lượng đĩa có thể nhiều hơn 1, phụ thuộc vào dung lượng và công nghệ của nhà sản xuất. Trước khi các đĩa từ được lắp vào khung, các dầu từ được ghép vào giữa các đĩa. Dữ liệu được ghi vào các đường tròn đồng tâm.
@@ -10,7 +10,7 @@
 
 ## Cấu tạo đĩa từ
 
-![oc](/images/cylinder.png)
+![oc](/HaiVD/Storage/images/cylinder.png)
 
 - Track : mỗi vòng tròn đồng tâm trên đĩa được gọi là track.Track trên ổ đĩa cứng không cố định từ khi sane xuất, chúng có thể thay đổi vị trí khi định dạng ổ đĩa cấp thấp.Thông thường một đĩa có từ 312 đến 2048 rãnh.
 - Sector : mỗi trạc được chia thành những phần nhỏ bắn các đoạn hướng tâm tạo thành các Sector (cung từ). Sector là đơn vị chứa dữ liệu nhỏ nhất.Theo các chuẩn thông thường thì một sector chưa 512 byte,Số sector trên các track từ phần rìa đĩa đến trung tâm đĩa là khác nhau và giảm dần về tâm.Các ổ đĩa được chia thành 10 vùng mà trong mỗi vùng có số Sector/ track là bằng nhau.
@@ -30,7 +30,7 @@
 
 ## Truy cập dữ liệu
 
-![oc](/images/access.png)
+![oc](/HaiVD/Storage/HaiVD/images/access.png)
 
 Trong ổ cứng có 2 cách truy nhập dữ liệu :
 - Sequential access :  là thuật ngữ dùng để miêu tả việc đọc hoặc ghi các bit dữ liệu liên tiếp nhau. Đối với ổ cứng thông tường, các bit dữ liệu được lưu trữ trên các sector, nếu dữ liệu được lưu trữ trên các sector liên tiếp, việc đọc dữ liệu sẽ nhanh hơn vì thời gian tìm kiếm (seek time) sẽ giảm đi. Tương tự, nếu dữ liệu được ghi liên tiếp thì sẽ nhanh hơn vì chỉ tốn một vòng quay để ghi các sector liên tiếp.
@@ -39,7 +39,7 @@ Trong ổ cứng có 2 cách truy nhập dữ liệu :
 ## IOPS,Latency và Throughput
 - IOPS, Latency và Throughput là ba khái niệm mà bất cứ Sys Admin nào cũng cần quan tâm, khi bắt đầu xây dựng hệ thống Storage.
 
-![oc](/images/io.png)
+![oc](/HaiVD/Storage/images/io.png)
 
 Hiểu nôm na
 - IOPS là số lượng chuyến đi thực hiện được trong 1 khoảng thời gian.
@@ -60,7 +60,7 @@ Cách tính IOPS và số lượng ổ cứng :
 
 **Latency - Thông số quan trọng nhất trong hệ thống lưu trữ**
 
-![oc](/images/latency.png)
+![oc](/HaiVD/Storage/images/latency.png)
 
 - Latency là khái niệm về tốc độ xử lý một request I/O của hệ thống. Khái niệm này rất quan trọng bởi vì một hệ thống lưu trữ mặc dù chỉ có 1000 IOPS với Latency 10ms , vẫn có thể tốt hơn 1 hệ thống 5000 IOPS nhưng Latency 50ms.Đặc biệt là đối với các ứng dụng nhạy cảm như Database.
 - Khi một ổ cứng tăng IOPS thì tốn nhiều Latency hơn .
