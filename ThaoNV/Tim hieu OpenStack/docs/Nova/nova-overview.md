@@ -2,14 +2,15 @@
 
 ## Mục lục
 
-1. Giới thiệu về Compute Service - Nova
+[1. Giới thiệu về Compute Service - Nova](#intro)
 
-2. Các thành phần của Nova
+[2. Các thành phần của Nova](#component)
 
-3. Kiến trúc của Nova
+[3. Kiến trúc của Nova](#architecture)
 
 --------
 
+<a name="intro"></a>
 ## 1. Giới thiệu về Compute Service - Nova
 
 - Là service chịu trách nhiệm chứa và quản lí các hệ thống cloud computing. OpenStack Compute chính là phần chính quan trọng nhất trong kiến trúc hệ thống  Infrastructure-as-a-Service (IaaS). Phần lớn các modules của Nova được viết bằng Python.
@@ -18,6 +19,7 @@
 
 - Nova cho phép bạn điều khiển các máy ảo và networks, bạn cũng có thể quản lí các truy cập tới cloud từ users và projects. OpenStack Compute không chứa các phần mềm ảo hóa. Thay vào đó, nó sẽ định nghĩa các drivers để tương tác với các kĩ thuật ảo hóa khác chạy trên hệ điều hành của bạn và cung cấp các chức năn thông qua một web-based API.
 
+<a name="component"></a>
 ## 2. Các thành phần của Nova
 
 - **nova-api** : Là service tiếp nhận và phản hồi các compute API calls từ user. Service hỗ trợ OpenStack Compute API, Amazon EC2 API và Admin API đặc biệt được dùng để user thực hiện các thao tác quản trị. Nó cũng có một loạt các policies và thực hiện hầu hết các orchestration activities ví dụ như chạy máy ảo.
@@ -55,7 +57,7 @@ Quá trình xử lí khá phức tạp, về cơ bản, daemon tiếp nhận cá
 
 Theo lý thuyết, Nova hỗ trợ tất cả các database mà SQLAlchemy support ví dụ như  SQLite3, MySQL, MariaDB, và PostgreSQL.
 
-
+<a name="architecture"></a>
 ## 3. Kiến trúc của Nova
 
 <img src="http://i.imgur.com/SWgKmDp.png">
