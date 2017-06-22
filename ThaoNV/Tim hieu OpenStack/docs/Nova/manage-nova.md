@@ -25,7 +25,8 @@ Instance flavor là template của máy ảo và nó chỉ ra máy ảo thuộc 
 
 Để hiển thị danh sách các flavor, dùng câu lệnh `openstack flavor list` hoặc `nova flavor-list`
 
-`[root@controller ~(keystone_admin)]# openstack flavor list
+``` sh
+[root@controller ~(keystone_admin)]# openstack flavor list
 +----+-----------+-------+------+-----------+-------+-----------+
 | ID | Name      |   RAM | Disk | Ephemeral | VCPUs | Is Public |
 +----+-----------+-------+------+-----------+-------+-----------+
@@ -34,11 +35,13 @@ Instance flavor là template của máy ảo và nó chỉ ra máy ảo thuộc 
 | 3  | m1.medium |  4096 |   40 |         0 |     2 | True      |
 | 4  | m1.large  |  8192 |   80 |         0 |     4 | True      |
 | 5  | m1.xlarge | 16384 |  160 |         0 |     8 | True      |
-+----+-----------+-------+------+-----------+-------+-----------+`
++----+-----------+-------+------+-----------+-------+-----------+
+```
 
 Để hiển thị thông tin chi tiết của 1 flavor, sử dụng câu lệnh `openstack flavor show`
 
-`[root@controller ~(keystone_admin)]# openstack flavor show m1.tiny
+``` sh
+[root@controller ~(keystone_admin)]# openstack flavor show m1.tiny
 +----------------------------+---------+
 | Field                      | Value   |
 +----------------------------+---------+
@@ -53,25 +56,30 @@ Instance flavor là template của máy ảo và nó chỉ ra máy ảo thuộc 
 | rxtx_factor                | 1.0     |
 | swap                       |         |
 | vcpus                      | 1       |
-+----------------------------+---------+`
++----------------------------+---------+
+```
 
 Mặc định chỉ có admin mới có thể list ra toàn bộ và tạo mới flavor. Để tạo mới flavor với tên `m10.tiny` có 3GB disk, 400MB RAM và 1 vCPU, sử dụng câu lệnh sau:
 
-`[root@controller ~(keystone_admin)]# nova flavor-create --is-public true m10.tiny auto 400 3 1
+``` sh
+[root@controller ~(keystone_admin)]# nova flavor-create --is-public true m10.tiny auto 400 3 1
 +--------------------------------------+----------+-----------+------+-----------+------+-------+-------------+-----------+
 | ID                                   | Name     | Memory_MB | Disk | Ephemeral | Swap | VCPUs | RXTX_Factor | Is_Public |
 +--------------------------------------+----------+-----------+------+-----------+------+-------+-------------+-----------+
 | a0b2da8f-0ad2-4ecd-b9ed-6a4c5adad0b8 | m10.tiny | 400       | 3    | 0         |      | 1     | 1.0         | True      |
-+--------------------------------------+----------+-----------+------+-----------+------+-------+-------------+-----------+`
++--------------------------------------+----------+-----------+------+-----------+------+-------+-------------+-----------+
+```
 
 Để xóa flavor, sử dụng câu lệnh `nova flavor-delete`. Ví dụ ở đây mình muốn xóa flavor m10.tiny vừa tạo:
 
-`[root@controller ~(keystone_admin)]# nova flavor-delete m10.tiny
+``` sh
+[root@controller ~(keystone_admin)]# nova flavor-delete m10.tiny
 +--------------------------------------+----------+-----------+------+-----------+------+-------+-------------+-----------+
 | ID                                   | Name     | Memory_MB | Disk | Ephemeral | Swap | VCPUs | RXTX_Factor | Is_Public |
 +--------------------------------------+----------+-----------+------+-----------+------+-------+-------------+-----------+
 | a0b2da8f-0ad2-4ecd-b9ed-6a4c5adad0b8 | m10.tiny | 400       | 3    | 0         |      | 1     | 1.0         | True      |
-+--------------------------------------+----------+-----------+------+-----------+------+-------+-------------+-----------+`
++--------------------------------------+----------+-----------+------+-----------+------+-------+-------------+-----------+
+```
 
 **Lưu ý**: Trên dashboard, để thực hiện các thao tác quản lí với flavor, vào System -> Flavors.
 
@@ -84,31 +92,37 @@ OpenStack có thể lưu public key và đưa nó vào bên trong instance ở t
 
 Để tạo keypair, chạy câu lệnh sau:
 
-` nova keypair-add apresskey1 > ~/apresskey`
+`nova keypair-add apresskey1 > ~/apresskey`
 
 Private key sẽ được lưu tại file `~/apresskey1` trong máy tính của bạn.
 
-`[root@controller ~(keystone_admin)]# cat ~/apresskey1
+``` sh
+[root@controller ~(keystone_admin)]# cat ~/apresskey1
 -----BEGIN RSA PRIVATE KEY-----
 MIIEqAIBAAKCAQEAhsJfqKRynQl17KQe/uG+M02WhAdenct/i1nDcoRKelEgjEtK
 ..............
 MvBytQJEJkkWWTjzw8lb2Y5AI2e+b+BpT3S6wnYdf85NPkpvH7LRyGMd3g4=
------END RSA PRIVATE KEY-----`
+-----END RSA PRIVATE KEY-----
+```
 
 Public key được lưu trên OpenStack cloud và đã sẵn sàng để sử dụng. Bạn có thể check danh sách public keys bằng câu lệnh sau:
 
-`[root@controller ~(keystone_admin)]# nova keypair-list
+``` sh
+[root@controller ~(keystone_admin)]# nova keypair-list
 +------------+-------------------------------------------------+
 | Name       | Fingerprint                                     |
 +------------+-------------------------------------------------+
 | apresskey1 | f3:22:69:ae:e7:35:24:34:7f:3a:f4:6f:d7:8c:81:29 |
-+------------+-------------------------------------------------+`
++------------+-------------------------------------------------+
+```
 
 Trước khi SSH client có thể dùng private key, bạn cần chắc chắn đã cấp quyền truy cập cho nó:
 
-`[root@controller ~(keystone_admin)]# chmod 600 apresskey1
+``` sh
+[root@controller ~(keystone_admin)]# chmod 600 apresskey1
 [root@controller ~(keystone_admin)]# ls -l apresskey1
--rw-------. 1 root root 1684 Jun 22 16:41 apresskey1`
+-rw-------. 1 root root 1684 Jun 22 16:41 apresskey1
+```
 
 Nếu bạn muốn tạo và xóa keypair trên dashboard, tìm tới Project -> Compute -> Access & Security -> Key Pairs
 
@@ -125,8 +139,10 @@ Tùy chọn -i dùng để chỉ tới private key.
 
 Dưới đây là câu lệnh để khởi rạo máy ảo:
 
-` nova boot --flavor FLAVOR_ID --image IMAGE_ID --key-name KEY_NAME \
- --user-data USER_DATA_FILE --security-groups SEC_GROUP_NAME --meta KEY=VALUE \ INSTANCE_NAME`
+``` sh
+nova boot --flavor FLAVOR_ID --image IMAGE_ID --key-name KEY_NAME \
+ --user-data USER_DATA_FILE --security-groups SEC_GROUP_NAME --meta KEY=VALUE \ INSTANCE_NAME
+```
 
 Ví dụ ở đây bạn muốn tạo máy ảo với tên `vm01` bằng flavor `m1.tiny` từ image `cirros-0.3.4-x86_64` và dùng extenal network:
 
@@ -169,12 +185,14 @@ Ví dụ ở đây bạn muốn tạo máy ảo với tên `vm01` bằng flavor 
 
 Kiểm tra trạng thái máy ảo, dùng câu lệnh `nova list`
 
-`[root@controller tmp(keystone_admin)]# nova list
+``` sh
+[root@controller tmp(keystone_admin)]# nova list
 +--------------------------------------+------+--------+------------+-------------+----------------------------------+
 | ID                                   | Name | Status | Task State | Power State | Networks                         |
 +--------------------------------------+------+--------+------------+-------------+----------------------------------+
 | 82a69aeb-97ee-4e52-89d4-1b1058f40526 | vm01 | ACTIVE | -          | Running     | external_network=192.168.100.183 |
-+--------------------------------------+------+--------+------------+-------------+----------------------------------+`
++--------------------------------------+------+--------+------------+-------------+----------------------------------+
+```
 
 Để kết nối máy ảo vừa tạo với console trên trình duyệt bằng noVNC client, chạy câu lệnh sau:
 
@@ -190,40 +208,48 @@ Trên dashboard, để tạo máy ảo, tìm đến Project -> Compute -> Instan
 
 Ví dụ để xóa vm01 vừa tạo:
 
-`[root@controller tmp(keystone_admin)]# nova delete vm01
+``` sh
+[root@controller tmp(keystone_admin)]# nova delete vm01
 Request to delete server vm01 has been accepted.
 [root@controller tmp(keystone_admin)]# nova list
 +----+------+--------+------------+-------------+----------+
 | ID | Name | Status | Task State | Power State | Networks |
 +----+------+--------+------------+-------------+----------+
-+----+------+--------+------------+-------------+----------+`
++----+------+--------+------------+-------------+----------+
+```
 
 Để reboot máy ảo, sử dụng `nova reboot`, đây là soft reboot, để sử dụng hard reboot, thêm tùy chọn `--hard`.
 
-`[root@controller tmp(keystone_admin)]# nova reboot vm01
-Request to reboot server <Server: vm01> has been accepted.`
+``` sh
+[root@controller tmp(keystone_admin)]# nova reboot vm01
+Request to reboot server <Server: vm01> has been accepted.
+```
 
 Để dừng máy ảo, sử dụng `nova stop`
 
-`[root@controller tmp(keystone_admin)]# nova stop vm01
+``` sh
+[root@controller tmp(keystone_admin)]# nova stop vm01
 Request to stop server vm01 has been accepted.
 [root@controller tmp(keystone_admin)]# nova list
 +--------------------------------------+------+---------+------------+-------------+----------------------------------+
 | ID                                   | Name | Status  | Task State | Power State | Networks                         |
 +--------------------------------------+------+---------+------------+-------------+----------------------------------+
 | 82a69aeb-97ee-4e52-89d4-1b1058f40526 | vm01 | SHUTOFF | -          | Shutdown    | external_network=192.168.100.183 |
-+--------------------------------------+------+---------+------------+-------------+----------------------------------+`
++--------------------------------------+------+---------+------------+-------------+----------------------------------+
+```
 
 Để start máy ảo, sử dụng `nova start`
 
-`[root@controller tmp(keystone_admin)]# nova start vm01
+``` sh
+[root@controller tmp(keystone_admin)]# nova start vm01
 Request to start server vm01 has been accepted.
 [root@controller tmp(keystone_admin)]# nova list
 +--------------------------------------+------+--------+------------+-------------+----------------------------------+
 | ID                                   | Name | Status | Task State | Power State | Networks                         |
 +--------------------------------------+------+--------+------------+-------------+----------------------------------+
 | 82a69aeb-97ee-4e52-89d4-1b1058f40526 | vm01 | ACTIVE | -          | Running     | external_network=192.168.100.183 |
-+--------------------------------------+------+--------+------------+-------------+----------------------------------+`
++--------------------------------------+------+--------+------------+-------------+----------------------------------+
+```
 
 <a name="snapshot"></a>
 ## 4. Quản lí snapshot
@@ -250,7 +276,8 @@ Kiểm tra xem có image hay máy ảo nào đang chạy không:
 
 Bạn có thể tạo snapshot từ máy ảo đang chạy (vm01):
 
-`[root@controller tmp(keystone_admin)]# nova image-create vm01 vm01_snap
+``` sh
+[root@controller tmp(keystone_admin)]# nova image-create vm01 vm01_snap
 [root@controller tmp(keystone_admin)]# nova image-list
 +--------------------------------------+---------------------+--------+--------------------------------------+
 | ID                                   | Name                | Status | Server                               |
@@ -258,7 +285,8 @@ Bạn có thể tạo snapshot từ máy ảo đang chạy (vm01):
 | 8867a307-8e2a-4c17-ac07-3bb126681ff5 | cent6               | ACTIVE |                                      |
 | 965552f0-6124-454e-8896-dcec78351bd0 | cirros-0.3.4-x86_64 | ACTIVE |                                      |
 | 264575c0-1034-40fe-b8c8-761a68cc34f1 | vm01_snap           | ACTIVE | 2e883f21-fb7e-44c5-b50c-9742fbfdceb7 |
-+--------------------------------------+---------------------+--------+--------------------------------------+`
++--------------------------------------+---------------------+--------+--------------------------------------+
+```
 
 Giờ bạn có thể tạo máy ảo từ snapshot này
 
@@ -334,7 +362,8 @@ quota_key_pairs=100
 
 User có thể lấy thông tin quota bằng câu lệnh:
 
-`[root@controller tmp(keystone_admin)]#  nova quota-show
+``` sh
+[root@controller tmp(keystone_admin)]#  nova quota-show
 +-----------------------------+-------+
 | Quota                       | Limit |
 +-----------------------------+-------+
@@ -352,7 +381,8 @@ User có thể lấy thông tin quota bằng câu lệnh:
 | security_group_rules        | 20    |
 | server_groups               | 10    |
 | server_group_members        | 10    |
-+-----------------------------+-------+`
++-----------------------------+-------+
+```
 
 Dùng `quota-defaults` để xem quotas mặc định. Trên dashboard, bạn có thể xem một phần của quotas ở page overview.
 
@@ -361,27 +391,32 @@ Dùng `quota-defaults` để xem quotas mặc định. Trên dashboard, bạn c�
 
 Để xem thông tin các hypervisor:
 
-`[root@controller tmp(keystone_admin)]# nova hypervisor-list
+``` sh
+[root@controller tmp(keystone_admin)]# nova hypervisor-list
 +----+---------------------+-------+---------+
 | ID | Hypervisor hostname | State | Status  |
 +----+---------------------+-------+---------+
 | 1  | meditech            | down  | enabled |
 | 2  | compute2            | up    | enabled |
 | 3  | compute1            | up    | enabled |
-+----+---------------------+-------+---------+`
++----+---------------------+-------+---------+
+```
 
 Để check xem máy ảo nào đang chạy trên host:
 
-`[root@controller tmp(keystone_admin)]# nova hypervisor-servers compute1
+``` sh
+[root@controller tmp(keystone_admin)]# nova hypervisor-servers compute1
 +--------------------------------------+-------------------+---------------+---------------------+
 | ID                                   | Name              | Hypervisor ID | Hypervisor Hostname |
 +--------------------------------------+-------------------+---------------+---------------------+
 | 2e883f21-fb7e-44c5-b50c-9742fbfdceb7 | instance-00000019 | 3             | compute1            |
-+--------------------------------------+-------------------+---------------+---------------------+`
++--------------------------------------+-------------------+---------------+---------------------+
+```
 
 Để lấy thông tin tóm tắt về mức độ sử dụng tài nguyên của máy ảo trên host:
 
-`[root@controller tmp(keystone_admin)]# nova host-describe compute1
+``` sh
+[root@controller tmp(keystone_admin)]# nova host-describe compute1
 +----------+----------------------------------+-----+-----------+---------+
 | HOST     | PROJECT                          | cpu | memory_mb | disk_gb |
 +----------+----------------------------------+-----+-----------+---------+
@@ -389,7 +424,8 @@ Dùng `quota-defaults` để xem quotas mặc định. Trên dashboard, bạn c�
 | compute1 | (used_now)                       | 1   | 1024      | 1       |
 | compute1 | (used_max)                       | 1   | 512       | 1       |
 | compute1 | b47e8a9d5d88439dadc4f849c0424e8c | 1   | 512       | 1       |
-+----------+----------------------------------+-----+-----------+---------+`
++----------+----------------------------------+-----+-----------+---------+
+```
 
 Trên dashboard, admin có thể xem tóm tắt thông số của hypervisor:
 
@@ -397,7 +433,8 @@ Trên dashboard, admin có thể xem tóm tắt thông số của hypervisor:
 
 Để lấy diagnostic information của một máy ảo nào đó:
 
-`[root@controller tmp(keystone_admin)]# nova diagnostics 2e883f21-fb7e-44c5-b50c-9742fbfdceb7
+``` sh
+[root@controller tmp(keystone_admin)]# nova diagnostics 2e883f21-fb7e-44c5-b50c-9742fbfdceb7
 +---------------------------+--------+
 | Property                  | Value  |
 +---------------------------+--------+
@@ -417,17 +454,20 @@ Trên dashboard, admin có thể xem tóm tắt thông số của hypervisor:
 | vda_read_req              | 0      |
 | vda_write                 | 0      |
 | vda_write_req             | 0      |
-+---------------------------+--------+`
++---------------------------+--------+
+```
 
 Để lấy tóm tắt thông số thống kê của các tenant:
 
-`[root@controller tmp(keystone_admin)]# nova usage-list
+``` sh
+[root@controller tmp(keystone_admin)]# nova usage-list
 Usage from 2017-05-25 to 2017-06-23:
 +----------------------------------+---------+--------------+-----------+---------------+
 | Tenant ID                        | Servers | RAM MB-Hours | CPU Hours | Disk GB-Hours |
 +----------------------------------+---------+--------------+-----------+---------------+
 | b47e8a9d5d88439dadc4f849c0424e8c | 13      | 451869.56    | 273.17    | 4132.62       |
-+----------------------------------+---------+--------------+-----------+---------------+`
++----------------------------------+---------+--------------+-----------+---------------+
+```
 
 <a name="verify"></a>
 ## 7. Kiểm tra hoạt động và Quản lí Nova Compute Servers
@@ -487,7 +527,8 @@ Check xem nova servers đã được start hết hay chưa:
 
 Để xem các dịch vụ nova chạy trên host nào:
 
-`[root@controller tmp(keystone_admin)]# nova host-list
+``` sh
+[root@controller tmp(keystone_admin)]# nova host-list
 +------------+-------------+----------+
 | host_name  | service     | zone     |
 +------------+-------------+----------+
@@ -497,11 +538,13 @@ Check xem nova servers đã được start hết hay chưa:
 | controller | conductor   | internal |
 | controller | cert        | internal |
 | controller | scheduler   | internal |
-+------------+-------------+----------+`
++------------+-------------+----------+
+```
 
 Để xem nova đã có trong Keystone services catalog chưa:
 
-`[root@controller tmp(keystone_admin)]# openstack service show nova
+``` sh
+[root@controller tmp(keystone_admin)]# openstack service show nova
 +-------------+----------------------------------+
 | Field       | Value                            |
 +-------------+----------------------------------+
@@ -510,11 +553,13 @@ Check xem nova servers đã được start hết hay chưa:
 | id          | 459d69614a254028b902da314ff5a22b |
 | name        | nova                             |
 | type        | compute                          |
-+-------------+----------------------------------+`
++-------------+----------------------------------+
+```
 
 Để phát hiện và sửa lỗi, có thể bạn sẽ cần biết tới địa chỉ của Compute service API endpoints::
 
-`[root@controller tmp(keystone_admin)]# openstack endpoint show nova
+``` sh
+[root@controller tmp(keystone_admin)]# openstack endpoint show nova
 +--------------+----------------------------------------------+
 | Field        | Value                                        |
 +--------------+----------------------------------------------+
@@ -527,13 +572,15 @@ Check xem nova servers đã được start hết hay chưa:
 | service_id   | 459d69614a254028b902da314ff5a22b             |
 | service_name | nova                                         |
 | service_type | compute                                      |
-+--------------+----------------------------------------------+`
++--------------+----------------------------------------------+
+```
 
 Nova service đang lắng nghe qua địa chỉ 192.168.100.171 và port 8774.
 
 Bạn cũng sẽ có thể cần phải check log, bằng câu lệnh `lsof`, bạn có thể xem danh sách log và service đang sử dụng chúng:
 
-`[root@controller tmp(keystone_admin)]# lsof /var/log/nova/*
+``` sh
+[root@controller tmp(keystone_admin)]# lsof /var/log/nova/*
 COMMAND    PID USER   FD   TYPE DEVICE SIZE/OFF     NODE NAME
 nova-novn 1083 nova    3w   REG  253,0   247320 34571249 /var/log/nova/nova-novncproxy.log
 nova-cons 1094 nova    3w   REG  253,0  3002537 34483056 /var/log/nova/nova-consoleauth.log
@@ -546,4 +593,9 @@ nova-cond 3173 nova    3w   REG  253,0  2772916 34483058 /var/log/nova/nova-cond
 nova-api  3210 nova    3w   REG  253,0  6495156 34571230 /var/log/nova/nova-api.log
 nova-api  3211 nova    3w   REG  253,0  6495156 34571230 /var/log/nova/nova-api.log
 nova-api  3220 nova    3w   REG  253,0  6495156 34571230 /var/log/nova/nova-api.log
-nova-api  3221 nova    3w   REG  253,0  6495156 34571230 /var/log/nova/nova-api.log`
+nova-api  3221 nova    3w   REG  253,0  6495156 34571230 /var/log/nova/nova-api.log
+```
+
+**Tham khảo:**
+
+Andrey Markelov-Certified OpenStack Administrator Study Guide-Apress (2016)
