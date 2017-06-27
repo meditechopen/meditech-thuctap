@@ -166,3 +166,73 @@ IgnoreSelected true|false
   HostnameFormat "name"
 </Plugin>
 ```
+# Một số Plugin khác
+
+## Plugin ping 
+
+- Plugin ping gửi các gói tin "ping" ICMP tới các host được định cấu hình theo định kỳ và đo độ trễ của mạng.
+- Các tùy chọn cấu hình có sẵn:
+	+ Host IP-address: Host để ping định kì. Tùy chọn này có thể được lặp lại nhiều lần để ping nhiều máy.
+	+ Interval Seconds: Thiết lập khoảng thời gian để gửi các gói tin ICMP echo tới các máy tính được định cấu hình. Default: 1.0
+	+ Timeout Seconds: Thời gian chờ phản hồi từ máy chủ mà gói tin ICMP đã được gửi đi. Default: 0.9
+	+ TTL: Đặt Time-To-Live cho gói ICMP
+	+ Size: Đặt kích thước của tải dữ liệu trong gói tin ICMP theo kích thước đã chỉ định (nó sẽ được lấp đầy với mẫu ASCII thông thường). Nếu không được thiết lập, mặc định chuỗi 56 byte được sử dụng để gói tin gói tin ICMPv4 là chính xác 64 byte, tương tự như hành vi của lệnh ping thông thường.
+	+ SourceAddress: Thiết lập địa chỉ nguồn để sử dụng. 
+	+ Device: Thiết lập thiết bị mạng gửi đi được sử dụng. Tên phải chỉ định tên giao diện (ví dụ: eth0). Điều này có thể không được hỗ trợ bởi tất cả các hệ điều hành.
+	
+## Plugin postgresql
+- Các plugin postgresql truy vấn số liệu thống kê từ cơ sở dữ liệu PostgreSQL. 	
+## Plugin powerdns
+- Dùng để thống kê truy vấn từ một  PowerDNS nameserver 
+## Plugin processes
+- Process name 
+Chọn thống kê chi tiết hơn về các tiến trình phù hợp với tên máy. Các thống kê được thu thập cho các quy trình được lựa chọn này là kích cỡ của user and system-time used, number of processes và number of threads, io data.
+- ProcessMatch name regex
+Tương tự với tùy chọn Process điều này cho phép bạn chọn các thống kê chi tiết hơn về các quy trình phù hợp với regex đã chỉ định 
+- CollectContextSwitch Boolean
+Collect context switch của một tiến trình.
+## Plugin protocols
+- Thu thập rất nhiều thông tin về các giao thức mạng khác nhau, chẳng hạn như IP, TCP, UDP, v.v .
+- option Value: 
+	+ Chọn có hoặc không chọn một giá trị cụ thể. Chuỗi được kết hợp có dạng "Protocol: ValueName" , ở đó Protocol sẽ được sử dụng như là cá thể plugin và ValueName sẽ được sử dụng như một cá thể kiểu. Một ví dụ của chuỗi đang được sử dụng sẽ là Tcp: RetransSegs.
+	+ Bạn có thể sử dụng biểu thức chính quy để khớp với một số lượng lớn các giá trị chỉ với một tùy chọn cấu hình. Để chọn tất cả các giá trị TCP "mở rộng", bạn có thể sử dụng câu lệnh sau: `Value "/^TcpExt:/"`
+## Plugin python
+Plugin này nhúng một trình thông dịch Python vào bộ sưu tập và cung cấp một giao diện cho hệ thống plugin của collectd.
+## Plugin AMQP
+Các plugin AMQP có thể được sử dụng để giao tiếp với các trường hợp khác của collectd hoặc ứng dụng của bên thứ ba bằng cách sử dụng thông báo AMQP. 
+## Plugin apache
+- Thu thập số liệu thống kê từ mod_status module của Apache
+- Để cấu hình apache-plugin, trước tiên bạn cần cấu hình chính xác Apache server. Apache-plugin mod_status cần phải được nạp và làm việc và các chỉ thị ExtendedStatus cần phải được kích hoạt. 
+## Plugin apcups 
+- Đọc các số liệu thống kê khác nhau về một nguồn điện liên tục không bị gián đoạn (UPS)
+## Plugin battery
+- Thu thập thông tin về pin, dòng điện ra và điện áp của pin
+## Plugin barometer
+- Plugin này đọc áp suất không khí tuyệt đối bằng cảm biến đo lưu lượng kỹ thuật số trên một bus I2C.
+## Plugin bind 
+- Bắt đầu với BIND 9.5.0, phần mềm máy chủ DNS được sử dụng rộng rãi nhất cung cấp số liệu thống kê phong phú về truy vấn, phản hồi và nhiều thông tin khác. Plugin bind lấy thông tin này được mã hoá trong XML và được cung cấp qua HTTP và gửi giá trị để collectd.
+## Plugin ceph
+- Plugin ceph thu thập các giá trị từ dữ liệu JSON được phân tích cú pháp bởi libyajl.
+## Plugin cgroups
+- Plugin này thu thập thời gian người dùng/hệ thống CPU cho mỗi cgroup bằng cách đọc các tệp tin cpuacct.stat trong cpuacct-mountpoint đầu tiên (thường là /sys/fs/cgroup/cpu.cpuacct trên các máy sử dụng systemd).
+## Plugin chrony
+- Plugin chrony thu thập dữ liệu ntp từ máy chủ chronyd, chẳng hạn như clock skew
+## Plugin conntrack
+- Plugin này thu thập số liệu thống kê IP conntrack.
+## Plugin cpufreq
+- Plugin này không có bất kỳ tùy chọn nào. Nó đọc /sys/devices /system/cpu/cpu0/cpufreq/scaling_cur_freq (dành cho CPU đầu tiên được cài đặt) để có được tần số CPU hiện tại. Nếu tập tin này không tồn tại hãy chắc chắn cpufreqd hoặc một công cụ tương tự đã được cài đặt
+## Plugin cpusleep 
+- Plugin này không có bất kỳ tùy chọn nào. Nó đọc CLOCK_BOOTTIME và CLOCK_MONOTONIC và báo cáo sự khác biệt giữa các đồng hồ này.
+## Plugin curl 
+- Plugin curl đọc các dòng bằng cách sử dụng net-misc/curl và sau đó phân tích chúng theo cấu hình
+## Plugin curl_json
+- Truy vấn dữ liệu đối tượng JavaScript (JSON) bằng cách sử dụng net-misc/curl và phân tích nó theo cấu hình của người dùng bằng cách sử dụng dev-libs/yajl
+## Plugin curl_xml
+- Đọc các tệp sử dụng net-misc / curl và phân tích nó như là Extensible Markup Language (XML)
+## Plugin exec
+- Các plugin Exec thực hiện các kịch bản / ứng dụng và đọc các giá trị trở lại được in đến STDOUTbởi chương trình đó. Điều này cho phép bạn mở rộng daemon một cách dễ dàng và linh hoạt.
+Nhược điểm là thực hiện các chương trình bên ngoài là rất không hiệu quả 
+## Plugin nfs
+- Thu thập thông tin về việc sử dụng Network File System (NFS)
+## Plugin nginx
+- Thu thập số yêu cầu xử lý và số lượng kết nối hiện tại bằng trạng thái kết nối bởi nginx daemon
