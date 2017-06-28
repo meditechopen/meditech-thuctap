@@ -7,9 +7,14 @@
 [2. Setup môi trường cài đặt](#set-up)
 
 - [2.1. Cài đặt trên controller](#controller)
-- [2.2. Cài đặt trên compute node](#compute)
+- [2.2. Cài đặt trên 2 compute node](#compute)
+- [2.3. Cài đặt trên node block storage](#storage)
 
 [3. Cài đặt identity service - keystone](#keystone)
+
+[4. Cài đặt image service - glance](#glance)
+
+
 
 --------
 
@@ -41,6 +46,8 @@ vi /etc/hosts
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 192.168.100.197    controller
 192.168.100.198    compute
+192.168.100.199    compute2
+192.168.100.200    block
 ```
 
 ``` sh
@@ -223,6 +230,8 @@ vi /etc/hosts
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 192.168.100.197    controller
 192.168.100.198    compute
+192.168.100.199    compute2
+192.168.100.200    block
 ```
 
 ``` sh
@@ -300,6 +309,10 @@ MS Name/IP address         Stratum Poll Reach LastRx Last sample
 **Cài đặt openstack-selinux**
 
 `yum install openstack-selinux`
+
+**Lưu ý**
+
+Thực hiện các bước cài đặt tương tự với node compute2 và block.
 
 ### <a name="keystone">3. Cài đặt và cấu hình Keystone </a>
 
@@ -531,3 +544,130 @@ Kiểm tra script
 
 openstack token issue
 ```
+
+### 4. Cài đặt image service - glance
+
+**Lưu ý:** Dịch vụ này thường chạy trên controller node và sử dụng file system làm backend lưu images.
+
+Tạo database
+
+``` sh
+mysql -u root -pWelcome123
+CREATE DATABASE glance;
+GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'localhost' IDENTIFIED BY 'Welcome123';
+GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY 'Welcome123';
+exit
+```
+
+Tạo glance user
+
+``` sh
+. admin-rc
+openstack user create glance --domain default --password Welcome123
+```
+
+Gán role admin cho user và service glance
+
+`openstack role add --project service --user glance admin`
+
+Tạo glance service entity
+
+`openstack service create --name glance --description "OpenStack Image" image`
+
+Tạo API endpoints cho Image service
+
+``` sh
+openstack endpoint create --region RegionOne image public http://controller:9292
+openstack endpoint create --region RegionOne image internal http://controller:9292
+openstack endpoint create --region RegionOne image admin http://controller:9292
+```
+
+Cài đặt package
+
+`yum install openstack-glance -y`
+
+Sao lưu cấu hình file config glance-api
+
+`cp /etc/glance/glance-api.conf /etc/glance/glance-api.conf.origin`
+
+Chỉnh sửa file config glance-api
+
+``` sh
+[database]
+connection = mysql+pymysql://glance:GLANCE_DBPASS@controller/glance
+
+[keystone_authtoken]
+auth_uri = http://controller:5000
+auth_url = http://controller:35357
+memcached_servers = controller:11211
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+project_name = service
+username = glance
+password = Welcome123
+
+[paste_deploy]
+flavor = keystone
+
+[glance_store]
+stores = file,http
+default_store = file
+filesystem_store_datadir = /var/lib/glance/images/
+```
+
+Sao lưu file config glance-registry
+
+`cp /etc/glance/glance-registry.conf /etc/glance/glance-registry.conf.origin`
+
+Chỉnh sửa file config glance-registry
+
+``` sh
+[database]
+connection = mysql+pymysql://glance:Welcome123@controller/glance
+
+[keystone_authtoken]
+auth_uri = http://controller:5000
+auth_url = http://controller:35357
+memcached_servers = controller:11211
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+project_name = service
+username = glance
+password = GLANCE_PASS
+
+[paste_deploy]
+flavor = keystone
+```
+
+Đồng bộ glance database
+
+`su -s /bin/sh -c "glance-manage db_sync" glance`
+
+Start dịch vụ glance-api và glance-registry, cho phép khởi động dịch vụ cùng hệ thống
+
+``` sh
+systemctl enable openstack-glance-api.service openstack-glance-registry.service
+systemctl start openstack-glance-api.service openstack-glance-registry.service
+```
+
+Kiểm tra lại cài đặt. Tải image
+
+``` sh
+. admin-openrc
+wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img
+```
+
+Upload image
+
+``` sh
+openstack image create "cirros" \
+  --file cirros-0.3.4-x86_64-disk.img \
+  --disk-format qcow2 --container-format bare \
+  --public
+```
+
+Kiểm tra lại image vừa upload
+
+`openstack image list`

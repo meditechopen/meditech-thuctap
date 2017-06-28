@@ -16,12 +16,27 @@
 
 [7. Kiểm tra hoạt động và Quản lí Nova Compute Servers](#verify)
 
+8. Quản lí volume
+
 ----------
 
 <a name="flavor"></a>
 ## 1. Quản lý flavor
 
 Instance flavor là template của máy ảo và nó chỉ ra máy ảo thuộc loại nào. Ngay sau khi cài đặt OpenStack cloud, người dùng sẽ có trước một vài các flavor. Bạn có thể thêm hoặc xóa các flavor có sẵn.
+
+Flavor cho biết các thông số sau:
+
+| Element | Description |
+|---------|-------------|
+| Name | Tên mô tả |
+| Memory MB | RAM máy ảo (megabytes) |
+| Disk | Ổ đĩa máy ảo (gigabytes). Đây là ephemeral disk mà base image được copy lên. Khi boot từ volume thì nó không được sử dụng |
+| Ephemeral | Kích thước của ephemeral data disk số 2. Đây là đĩa trống, chưa được format và chỉ tồn tại khi máy ảo chạy |
+| Swap | Đây là tùy chọn cho swap của máy ảo. Giá trị mặc định là 0 |
+| VCPUs | Số lượng CPUs ảo của máy ảo |
+| Is Public	| Quy định flavor có thể được dùng bởi tất cả các user hay chỉ những user trong project nào đó |
+| Extra Specs | Quy định flavor được dùng trên node compute nào |
 
 Để hiển thị danh sách các flavor, dùng câu lệnh `openstack flavor list` hoặc `nova flavor-list`
 
@@ -82,6 +97,8 @@ Mặc định chỉ có admin mới có thể list ra toàn bộ và tạo mới
 ```
 
 **Lưu ý**: Trên dashboard, để thực hiện các thao tác quản lí với flavor, vào System -> Flavors.
+
+- Flavor có thể bị giới hạn bởi hypervisor. Ví dụ libvirt driver có thể kích hoạt quotas để định mức số CPUs, disk, bandwith I/O ... trên máy ảo. Xem thêm [tại đây](https://docs.openstack.org/admin-guide/compute-flavors.html).
 
 <a name="keypair"></a>
 ## 2. Quản lí và truy cập máy ảo sử dụng keypair
@@ -595,6 +612,39 @@ nova-api  3211 nova    3w   REG  253,0  6495156 34571230 /var/log/nova/nova-api.
 nova-api  3220 nova    3w   REG  253,0  6495156 34571230 /var/log/nova/nova-api.log
 nova-api  3221 nova    3w   REG  253,0  6495156 34571230 /var/log/nova/nova-api.log
 ```
+
+## 8. Quản lí volume
+
+Câu lệnh dùng để quản lí volume:
+
+| Command | Description |
+|---------|-------------|
+| server add volume | Gán volume cho server |
+| volume create	| Thêm mới volume |
+| volume delete	| Xóa volume |
+| server remove volume | Gỡ hoặc remove volume từ server |
+| volume list	| hiển thị danh sách các volume |
+| volume show | Hiển thị thông tin chi tiết về volume |
+| snapshot create	| Tạo mới snapshot |
+| snapshot delete	| Xóa snapshot |
+| snapshot list	| Liệt kê danh sách snapshot |
+| snapshot show	| Hiển thị thông tin chi tiết về snapshot |
+| volume type create | Tạo mới loại volume |
+| volume type delete | Xóa flavor |
+| volume type list | Hiển thi các loại volume đang hỗ trợ |
+
+Ví dụ để hiển thi các loại volume đang được hỗ trợ:
+
+``` sh
+[root@controller ~(keystone_admin)]# openstack volume type list
++--------------------------------------+-------+
+| ID                                   | Name  |
++--------------------------------------+-------+
+| 121fd629-c73e-4db2-9a71-b35228be60d5 | iscsi |
++--------------------------------------+-------+
+```
+
+## 9.
 
 **Tham khảo:**
 
