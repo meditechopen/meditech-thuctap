@@ -31,7 +31,7 @@
   - [8.1 Cài đặt trên node controller](#8.1)
   - [8.2 Cài đặt trên node storage](#8.2)
 
-[9. Tạo máy ảo theo provider network](#launch)
+[9. Launch máy ảo](#launch)
 
 
 --------
@@ -1081,7 +1081,7 @@ nova_metadata_ip = 192.168.100.197
 metadata_proxy_shared_secret = Welcome123
 ```
 
-**Cấu hình Compute service sửa dụng Networking service**
+**Cấu hình Compute service sử dụng Networking service**
 
 Chỉnh sửa file cấu hình `/etc/nova/nova.conf`
 
@@ -1217,6 +1217,8 @@ Start Linux bridge agent và cho phép khởi động cùng hệ thống
 systemctl enable neutron-linuxbridge-agent.service
 systemctl start neutron-linuxbridge-agent.service
 ```
+
+Tiến hành cấu hình tương tự với node compute còn lại.
 
 Kiểm tra lại các cấu hình
 
@@ -1477,7 +1479,9 @@ openstack volume service list
 ```
 
 <a name="launch"></a>
-## 9. Tạo máy ảo theo provider network
+## 9. Launch máy ảo
+
+**Provider network**
 
 - Tạo provider network
 
@@ -1495,6 +1499,44 @@ openstack subnet create --network provider \
   --subnet-range 192.168.100.0/24 provider
 ```
 
+**Self-service network**
+
+- Tạo self-service network
+
+``` sh
+. demo-openrc
+openstack network create selfservice
+```
+
+- Tạo subnet
+
+``` sh
+openstack subnet create --network selfservice \
+  --dns-nameserver 8.8.8.8 --gateway 10.10.10.1 \
+  --subnet-range 10.10.10.0/24 selfservice
+```
+
+- Tạo router
+
+`openstack router create router`
+
+- Thêm self-service vào interface của router
+
+`neutron router-interface-add router selfservice`
+
+- Set gateway của router là provider network để ra ngoài internet
+
+`neutron router-gateway-set router provider`
+
+- Kiểm tra lại
+
+``` sh
+ip netns
+neutron router-port-list router
+```
+
+Tiến hành ping tới gateway của router để kiểm tra.
+
 - Tạo m1.nano flavor
 
 Flavor này chỉ dùng để test với CirrOS image
@@ -1508,12 +1550,12 @@ openstack security group rule create --proto icmp default
 openstack security group rule create --proto tcp --dst-port 22 default
 ```
 
-- Tạo máy ảo bằng provider network, bạn có thể truy cập vào dashboard hoặc dùng câu lệnh.
+- Bạn có thể truy cập vào dashboard hoặc dùng câu lệnh để tạo máy ảo
 
 ``` sh
 openstack server create --flavor m1.nano --image cirros \
-  --nic net-id=PROVIDER_NET_ID --security-group default \
+  --nic net-id=NET_ID --security-group default \
    provider-instance
 ```
 
-`PROVIDER_NET_ID` là id của provider network.
+Thay `NET_ID` bằng id của provider hoặc self-service network.
