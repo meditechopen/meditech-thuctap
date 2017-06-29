@@ -1,6 +1,57 @@
-# Plugin aggregation
-Plugin aggregation để tổng hợp nhiều giá trị vào một tập hợp các chức năng sử dụng như sum, average, min và max. iều này có thể được sử dụng rộng rãi, ví dụ: Trung bình và tổng số thống kê CPU cho toàn hệ thống.
-# Memory Plugin
+# Mục lục
+- [1. Một số tùy chọn trong file cấu hình collectd](#1)
+- [2. Một số plugin metric hệ thống](#2)
+- [3. Một số plugin khác](#3)
+
+<a name=1></a>
+# 1.Một số tùy chọn trong file cấu hình collectd
+## BaseDir <đường dẫn thư mục>
+- Thiết lập thư mục cơ sở. Đây là thư mục lưu các file RRD được tạo ra. Trong đó mỗi node được lưu thành 1 file, trong các file đó chia thành từ loại file theo tên của plugin thu thập metric. Đây cũng là thư mục làm việc cho daemon.
+## LoadPlugin <tên plugin>
+- LoadPlugin có thể là một câu lệnh cấu hình đơn giản hoặc một khối với các tùy chọn bổ sung, ảnh hưởng đến việc hoạt động của LoadPlugin
+- Ví dụ:
+	+ 1 câu lệnh đơn giản như : ``LoadPlugin cpu``, ``LoadPlugin email`` ...
+	+ 1 Khối các tùy chọn 
+	```sh
+	<LoadPlugin perl>
+		Interval 60
+	</LoadPlugin>
+	```
+``Interval Seconds``: Đặt khoảng thời gian cụ thể cho plugin để thu thập số liệu. Điều này sẽ ghi đè cài đặt Interval chung. Nếu plugin cung cấp hỗ trợ riêng cho việc xác định khoảng thời gian, cài đặt đó sẽ được ưu tiên.
+## AutoLoadPlugin
+Ở phiên bản 5.4 thì AutoLoadPlugin tùy chọn cho phép tự động tải các plugin mà có cấu hình được tìm thấy.
+## CollectInternalStats false|true
+- Nếu đặt là true, các thống kê khác nhau về daemon thu thập sẽ được thu thập với "collectd" như là tên của plugin. Mặc định là false
+- Số liệu sau đây được báo cáo:
+``collectd-write_queue/queue_length``
+Số lượng các số liệu hiện có trong write queue. Bạn có thể giới hạn chiều dài hàng đợi với các tùy chọn WriteQueueLimitLow và WriteQueueLimitHigh.
+``collectd-write_queue/derive-dropped``
+Số lượng chỉ số bị giảm do giới hạn độ dài hàng đợi. Nếu giá trị này không bằng không, hệ thống của bạn không thể xử lý tất cả các số liệu đến và tự bảo vệ chính mình trước tình trạng quá tải bằng cách giảm số liệu.
+``collectd-cache/cache_size``
+Số lượng các phần tử trong bộ nhớ cache chỉ số liệu
+## Include
+- Nếu Đường dẫn dẫn đến một tệp, hãy bao gồm tệp đó. Nếu Đường dẫn dẫn đến một thư mục, đệ quy bao gồm tất cả các tệp nằm trong thư mục đó và các thư mục con của nó. Nếu chức năng wordexp có sẵn trên hệ thống của bạn, các ký tự đại diện giống như vỏ được mở rộng trước khi các tệp được đưa vào. Điều này có nghĩa là bạn có thể sử dụng câu lệnh như sau:
+`` Include "/etc/collectd.d/*.conf"``
+- Ví dụ trường hợp cụ thể: Ngoài file collectd.conf bạn có thể thêm 1 file thresholds.conf trong đó khai báo khối các tùy chọn plugin.
+## PIDFile <File>
+- Đặt nơi để ghi tệp PID vào. Tập tin này sẽ bị ghi đè khi nó tồn tại và bị xóa khi chương trình dừng lại. Một số init-scripts có thể ghi đè cài đặt này bằng tùy chọn -P
+## PluginDir Directory
+- Đường dẫn đến các plugin (đối tượng chia sẻ) của collectd.
+## ReadThreads và WriteThreads 
+- Số luồng để bắt đầu để đọc các plugin. Giá trị mặc định là 5, nhưng bạn có thể muốn tăng giá trị này nếu bạn có nhiều hơn 5 plugin cần nhiều thời gian để đọc.
+## WriteQueueLimitHigh HighNum và WriteQueueLimitLow LowNum
+- Số liệu được đọc bởi các chủ đề đã đọc và sau đó đưa vào một hàng đợi để được xử lý bởi các chuỗi ghi. Nhưng khi số liệu trong hàng đợi phát triển sẽ ảnh hưởng đến hiệu suất hoạt động của máy chủ. Để tránh trường hợp như vậy, bạn có thể giới hạn kích thước của hàng đợi này.
+- Theo mặc định, không có giới hạn và bộ nhớ có thể phát triển vô hạn định. Đây không phải là vấn đề đối với client, nghĩa là các trường hợp chỉ xử lý các số liệu trên local. Đối với các máy chủ, bạn nên đặt giá trị này vào một giá trị khác không.
+- Bạn có thể thiết lập các giới hạn bằng cách sử dụng WriteQueueLimitHigh và WriteQueueLimitLow. Mỗi tùy chọn khia báo một số là số lượng các chỉ số trong hàng đợi. Nếu có số liệu trong hàng đợi lớn hơn chỉ số HighNum, bất kỳ chỉ số mới nào sẽ bị loại bỏ. Nếu có ít hơn số liệu LowNum trong hàng đợi, tất cả số liệu mới sẽ được thêm vào.
+- Nếu WriteQueueLimitHigh được đặt khác không và WriteQueueLimitLow không được đặt, giá trị mặc định sẽ bằng một nửa WriteQueueLimitHigh.
+- Nếu bạn không muốn đặt ngẫu nhiên các giá trị khi kích thước hàng đợi giữa LowNum và HighNum, hãy đặt WriteQueueLimitHigh và WriteQueueLimitLow với cùng một giá trị.
+- Kích hoạt tùy chọn CollectInternalStats là sự trợ giúp tuyệt vời để tìm ra các giá trị để đặt WriteQueueLimitHigh và WriteQueueLimitLow
+## FQDNLookup true|false
+- Nếu Tên máy chủ được xác định tự động, cài đặt này sẽ kiểm soát xem daemon có cố gắng tìm ra "tên miền đủ điều kiện", FQDN hay không. Điều này được thực hiện bằng cách sử dụng một tra cứu tên trả về bởi gethostname. Tùy chọn này được kích hoạt theo mặc định.
+
+<a name=2></a>
+# 2. Một số plugin metric hệ thống 
+## Memory Plugin
 - Memory plugin thu thập thông tin về bộ nhớ vật lý của máy ví dụ như cached, free, used và buffered.
 - Có thể cấu hình để collectd có thể hiện thị thông số thu thập được dưới dạng phần trăm (%).
 
@@ -12,7 +63,7 @@ Plugin aggregation để tổng hợp nhiều giá trị vào một tập hợp 
 ```
 - used(graphite) = used - buffered- cached
 
-# Plugin df
+## Plugin df
 - df plugin thu thập thông tin về việc sử dụng hệ thống file. Ví dụ trong một phân vùng, người dùng đã sử dụng hết bao nhiêu không gian và bao nhiêu không gian có sẵn để sử dụng.
 - Trên mỗi thư mụcngười dùng có thể thấy các thông số:
 
@@ -41,7 +92,7 @@ Trong đó total = free + reserved + used
 </Plugin>
 ```
 
-# Plugin disk
+## Plugin disk
 
 - Plugin disk thu thập thông tin hiệu suất của ổ đĩa.
 - Trên mỗi phân vùng, người dùng có thể nhìn thấy tốc độ đọc ghi của:
@@ -59,7 +110,7 @@ Trong đó total = free + reserved + used
 </Plugin>
 ```
 
-# Interface Plugin
+## Interface Plugin
 
 - Interface plugin thu thập dữ liệu về lưu lượng truy cập, số lượng gói trên mỗi giây và lỗi xảy ra trên các card mạng.
 - Trên mỗi card mạng, người dùng có thể thu thập thông tin :
@@ -82,7 +133,7 @@ Trong đó total = free + reserved + used
 </Plugin>
 ```
 
-# Plugin CPU
+## Plugin CPU
 - Plugin CPU dùng để hiển thị tình trạng CPU
 ```sh
 <Plugin cpu>
@@ -95,7 +146,7 @@ Trong đó total = free + reserved + used
   + ReportByState true : Hiển thị tất cả các tham số về tình trạng sử dụng.
   + ValuesPercentage true : Hiển thị theo phần trăm (%) thay vì hiển thị mặc định
 
-# Load Plugin
+## Load Plugin
 - Load plugin thu thập dữ liệu về tải hệ thống. Những con số này đưa ra một cái nhìn tổng quán về việc sử dụng máy.
 - Thông sổ hiện thị là tải hệ thống chia cho số lõi của CPU có sẵn:
 ```sh
@@ -105,7 +156,7 @@ Trong đó total = free + reserved + used
 ```
 - Biểu đồ hiển thị 3 thông số tải hệ thống trong longterm, midterm, shortterm tương ứng với trung bình tải trong 15 phút, 5 phút, 1 phút
 - load-relative xuất hiện khi cấu hình trong file collectd.conf 'ReportRelative true'
-# TCPconns Plugin
+## TCPconns Plugin
 - TCPconns plugin thu thập dữ liệu về tổng số lượng kết nối TCP trên một port cụ thể hoặc tất cả các port.
 - Lấy giữ liệu về tổng số kết nối tcp trên tất cả các port
 ```sh
@@ -135,9 +186,9 @@ Trong đó total = free + reserved + used
 	RemotePort "22" #tính số kêt nối trên port bên ngoài
 </Plugin>
 ```
-# Plugin users
+## Plugin users
 - Users plugin thống kê tổng số người dùng đăng nhập vào hệ thống.
-# Plugin libvirt
+## Plugin libvirt
 - Plugin libvirt sử dụng API libvirt để thu thập thông tin các máy ảo. Bằng cách này bạn có thể thu thập thông tin hệ thống máy ảo mà không cần cài đặt collectd lên từng máy ảo.
 - Kết nối tới máy chủ
   + `Connection "xen:///"` : ví dụ sử dụng xen
@@ -166,10 +217,12 @@ IgnoreSelected true|false
   HostnameFormat "name"
 </Plugin>
 ```
-# Một số Plugin khác
 
+<a name=3></a>
+# 3. Một số Plugin khác
+## Plugin aggregation
+Plugin aggregation để tổng hợp nhiều giá trị vào một tập hợp các chức năng sử dụng như sum, average, min và max. iều này có thể được sử dụng rộng rãi, ví dụ: Trung bình và tổng số thống kê CPU cho toàn hệ thống.
 ## Plugin ping 
-
 - Plugin ping gửi các gói tin "ping" ICMP tới các host được định cấu hình theo định kỳ và đo độ trễ của mạng.
 - Các tùy chọn cấu hình có sẵn:
 	+ Host IP-address: Host để ping định kì. Tùy chọn này có thể được lặp lại nhiều lần để ping nhiều máy.
