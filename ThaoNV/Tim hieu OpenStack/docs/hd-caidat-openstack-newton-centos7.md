@@ -1025,6 +1025,47 @@ enable_isolated_metadata = True
 
 **Cấu hình self-service network**
 
+Chỉnh sửa file `/etc/neutron/neutron.conf`
+
+``` sh
+[DEFAULT]
+service_plugins = router
+allow_overlapping_ips = True
+```
+
+Chỉnh sửa file `/etc/neutron/plugins/ml2/ml2_conf.ini`
+
+``` sh
+[ml2]
+type_drivers = flat,vlan,vxlan
+tenant_network_types = vxlan
+mechanism_drivers = linuxbridge,l2population
+
+[ml2_type_vxlan]
+vni_ranges = 1:1000
+```
+
+Chỉnh sửa file `/etc/neutron/plugins/ml2/linuxbridge_agent.ini`
+
+``` sh
+[vxlan]
+enable_vxlan = True
+local_ip = 10.10.10.10
+l2_population = True
+```
+
+- Cấu hình layer-3 agent
+
+Sao lưu file cấu hình
+
+`cp /etc/neutron/l3_agent.ini /etc/neutron/l3_agent.ini.origin`
+
+Chỉnh sửa file cấu hình
+
+``` sh
+[DEFAULT]
+interface_driver = neutron.agent.linux.interface.BridgeInterfaceDriver
+```
 
 **Cấu hình metadata agent**
 
@@ -1036,7 +1077,7 @@ Chỉnh sửa file cấu hình metadata agent
 
 ``` sh
 [DEFAULT]
-nova_metadata_ip = controller
+nova_metadata_ip = 192.168.100.197
 metadata_proxy_shared_secret = Welcome123
 ```
 
@@ -1139,6 +1180,43 @@ firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
 
 **Cấu hình self-service network**
 
+Chỉnh sửa file `/etc/neutron/plugins/ml2/linuxbridge_agent.ini`
+
+``` sh
+[vxlan]
+enable_vxlan = True
+local_ip = 10.10.10.11
+l2_population = True
+```
+
+**Cấu hình Compute service sử dụng network service**
+
+Chỉnh sửa file cấu hình `/etc/nova/nova.conf`
+
+``` sh
+[neutron]
+...
+url = http://controller:9696
+auth_url = http://controller:35357
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+region_name = RegionOne
+project_name = service
+username = neutron
+password = Welcome123
+```
+
+Restart compute service
+
+`systemctl restart openstack-nova-compute.service`
+
+Start Linux bridge agent và cho phép khởi động cùng hệ thống
+
+``` sh
+systemctl enable neutron-linuxbridge-agent.service
+systemctl start neutron-linuxbridge-agent.service
+```
 
 Kiểm tra lại các cấu hình
 
