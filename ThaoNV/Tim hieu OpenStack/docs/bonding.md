@@ -2,20 +2,22 @@
 
 ## Mục lục
 
-1. Network Bonding là gì?
+[1. Network Bonding là gì?](#def)
 
-2. Các mode trong network bonding
+[2. Các mode trong network bonding](#mode)
 
-3. Thực hành cấu hình bonding trên CentOS 7 và test thử
+[3. Thực hành cấu hình bonding trên CentOS 7 và test thử](#lab)
 
 -------
 
+<a name ="def"></a>
 ### 1. Network Bonding là gì?
 
 Network bonding là phương pháp kết hợp hai hoặc nhiều network interfaces lại với nhau để trở thành 1 interface duy nhất. Nó giúp gia tăng băng thông, giảm thiểu sự dư thừa dữ liệu... Nếu 1 interface bị down, những cái còn lại sẽ giữ cho đường truyền mạng ổn định mà không bị ảnh hưởng.
 
 Linux bonding drivers cung cấp cho ta phương thức để thực hiện điều ấy. Chức năng của "bonded" interface phụ thuộc vào mode được cấu hình.
 
+<a name ="mode"></a>
 ### 2. Các mode trong network bonding
 
 - mode=0 (balance-rr)
@@ -46,7 +48,7 @@ Cân bằng tải thích ứng với quá trình truyền tin: lưu lượng ra 
 
  Cân bằng tải thích ứng: bao gồm cả cân bằng tải truyền (balance-tlb) và cân bằng tải nhận (rlb - receive load balancing) đối với lưu lượng IPv4. Cân bằng tải nhận đạt được nhờ kết hợp với ARP. Bonding driver sẽ chặn các bản tin phản hồi ARP gửi bởi hệ thống cục bộ trên đường ra và ghi đè địa chỉ MAC nguồn bằng địa chỉ MAC của một trong các slaves trên đường bond.
 
-
+<a name ="lab"></a>
 ### 3. Thực hành cấu hình bonding mode 1 trên CentOS 7 và test thử
 
 **Mô hình**
