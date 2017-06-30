@@ -13,12 +13,12 @@
 	export SEYREN_URL="http://<IP>/seyren" / điền ip của host cài đặt seyren
 	export SEYREN_LOG_PATH="/var/log/seyren" / đường dẫn file log seyren
 	export GRAPHITE_URL="http://ip:80" / điền địa chỉ ip của graphite server
-	SMTP_HOST="smtp.gmail.com" 
-	SMTP_PORT="587" 
-	SMTP_FROM="địa chỉ email của bạn" 
-	SMTP_USERNAME="địa chỉ email của bạn" 
-	SMTP_PASSWORD="mật khẩu" 
-	SMTP_PROTOCOL="SMTP" 
+	export SMTP_HOST="smtp.gmail.com" 
+	export SMTP_PORT="587" 
+	export SMTP_FROM="địa chỉ email của bạn" 
+	export SMTP_USERNAME="địa chỉ email của bạn" 
+	export SMTP_PASSWORD="mật khẩu" 
+	export SMTP_PROTOCOL="SMTP" 
 	```
 - Lưu ý với khai báo SMTP_USERNAME và PASSWORD của gmail
 	+ Thứ nhất bạn phải bật less-security của gmail
