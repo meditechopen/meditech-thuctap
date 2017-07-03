@@ -1,16 +1,18 @@
-# Tìm hiểu OpenvSwitch
+# Tìm hiểu Open vSwitch
 
 ## Mục lục
 
 1. Giới thiệu về SDN (Software Defined Networking) và Open Flow
 
-2. Giới thiệu OpenvSwitch
+2. Giới thiệu Open vSwitch
 
-3. Những hạn chế khi sử dụng Linux Bridge - So sánh OpenvSwitch và Linux Bridge
+3. Những hạn chế khi sử dụng Linux Bridge - So sánh Open vSwitch và Linux Bridge
 
-4. Cấu trúc của OpenvSwitch
+4. Cấu trúc của Open vSwitch
 
-5. Hướng dẫn cài đặt KVM với OpenvSwitch
+5. Hướng dẫn cài đặt KVM với Open vSwitch
+
+6. Một vài câu lệnh với Open vSwitch
 
 --------
 
@@ -32,11 +34,11 @@ Tuy nhiên điều này có thể gây nên nhiều hệ lụy xấu như broadc
 
 Các thiết bị mạng đều có sự xuất hiện của control plane, nó cung cấp thông tin để xây lên bảng kết nối giúp các thiết bị mạng biết được chính xác nơi cần gửi dữ liệu.
 
-<img src="">
+<img src="http://i.imgur.com/lleKL7G.png">
 
 Dưới đây là mô hình của kiến trúc SDN
 
-<img src="">
+<img src="http://i.imgur.com/0f19CtI.png">
 
 Nhìn chung, SDN có 3 phần chính đó là:
 
@@ -55,7 +57,7 @@ Một thiết bị OpenFlow bao gồm ít nhất 3 thành phần:
 - OpenFlow Protocol: giao thức cung cấp phương thức tiêu chuẩn và mở cho một bộ điều khiển truyền thông với thiết bị.
 - Flow Table: một liên kết hành động với mỗi luồng, giúp thiết bị xử lý các luồng.
 
-<img src="">
+<img src="http://i.imgur.com/t4SOR63.png">
 
 
 ## 2. Giới thiệu OpenvSwitch
@@ -124,7 +126,7 @@ Các thành phần chính của Open vSwitch:
 - ovs-vsctl : Dùng để truy vấn và cập nhật cấu hình cho ovs-vswitchd.
 - ovs-appctl : Dùng để gửi câu lệnh chạy Open vSwitch daemons.
 
-<img src="">
+<img src="http://i.imgur.com/BveiREY.jpg">
 
 **Cơ chế hoạt động**
 
@@ -137,6 +139,186 @@ Open vSwitch có 2 modes, normal và flow:
 
 - Flow Mode: Ở mode này, Open vSwitch dùng flow table để quyết định xem port nào sẽ nhận packets. Flow table được quản lí bởi SDN controller nằm bên ngoài.
 
-<img src="">
+<img src="http://i.imgur.com/G4PxNjC.png">
 
 ## 5. Hướng dẫn cài đặt KVM với OpenvSwitch
+
+**Mô hình**
+
+- Môi trường lab: KVM
+- 1 máy Ubuntu 14.04 có 2 NICs, 1 NIC bridge và 1 NIC host-only
+
+**Cài đặt**
+
+- Update máy ảo
+
+`apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y`
+
+- Kế tiếp, chúng ta sẽ cài đặt KVM và 02 gói hỗ trợ
+
+`apt-get install qemu-kvm libvirt-bin virtinst -y`
+
+- Chuẩn bị cài OVS, chúng ta sẽ gỡ bridge libvirt mặc định (name: virbr0).
+
+``` sh
+virsh net-destroy default
+virsh net-autostart --disable default
+```
+
+- Gán quyền cho user libvirtd và kvm
+
+``` sh
+sudo adduser `id -un` libvirtd
+sudo adduser `id -un` kvm
+```
+
+- Vì chúng ta không sử dụng linux bridge mặc định, chúng ta có thể gỡ các gói ebtables bằng lệnh sau. (Không chắc chắn 100% là bước này cần thiết, nhưng hầu hết các bài hướng dẫn sẽ có bước này).
+
+`aptitude purge ebtables -y`
+
+- Chúng ta sẽ cài OVS bằng lệnh sau.
+
+` apt-get install openvswitch-controller openvswitch-switch openvswitch-datapath-source -y`
+
+- Các gói OVS được cài đặt xong, chúng ta sẽ check KVM bằng lệnh sau:
+
+`virsh -c qemu:///system list`
+
+Lệnh trên trả về danh sách các VM (máy ảo) đang chạy, lúc này sẽ trống.
+
+- Kiểm tra lại OVS bằng lệnh sau:
+
+``` sh
+service openvswitch-switch status
+ovs-vsctl show
+```
+
+- Đầu tiên, sẽ xử dụng lệnh ovs-vsctl để tạo bridge và add với 1 physical interface
+
+``` sh
+ovs-vsctl add-br br0
+ovs-vsctl add-port br0 eth0
+```
+
+- Kiểm tra các bridge đã tạo và interface đã được gán hay chưa
+
+``` sh
+root@ubuntu:~#  ovs-vsctl show
+8ff95bd9-d8c8-403e-bbc4-d584e25e7304
+    Bridge "br0"
+        Port "br0"
+            Interface "br0"
+                type: internal
+        Port "eth0"
+            Interface "eth0"
+    ovs_version: "2.0.2"
+```
+
+- Chỉnh sửa file /etc/network/interfaces
+
+``` sh
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet manual
+up ifconfig $IFACE 0.0.0.0 up
+up ip link set $IFACE promisc on
+down ip link set $IFACE promisc off
+down ifconfig $IFACE down
+
+auto eth1
+iface eth0 inet static
+address 10.10.10.50
+netmask 255.255.255.0
+
+auto br0
+iface br0 inet static
+address 192.168.100.44
+netmask 255.255.255.0
+gateway 192.168.100.1
+network 192.168.100.0
+broadcast 192.168.100.255
+dns-nameservers 8.8.8.8 8.8.4.4
+```
+
+- Tiến hành reset lại network
+
+`etc/init.d/networking restart`
+
+- Như vậy ta đã cài xong kvm với OVS, để kiểm tra xem có các network nào trong KVM
+
+`virsh net-list --all`
+
+Lúc này có thể thấy network default đã bị hủy, ta cần tạo network mới để sử dụng. Tạo file `ovsnet.xml` cho libvirt network:
+
+``` sh
+<network>
+   <name>br0</name>
+   <forward mode='bridge'/>
+   <bridge name='br0'/>
+   <virtualport type='openvswitch'/>
+ </network>
+```
+
+- Thực hiện lệnh để tạo network
+
+``` sh
+virsh net-define ovsnet.xml
+ virsh net-start br0
+ virsh net-autostart br0
+```
+
+- Kiểm tra lại network đã khai báo cho libvirt bằng lệnh `virsh net-list --all`, chúng ta sẽ nhìn thấy network có tên là `br0`, đây chính là network có type là `openvswitch` đã khai báo ở trên.
+
+``` sh
+root@ubuntu:~# virsh net-list --all
+ Name                 State      Autostart     Persistent
+----------------------------------------------------------
+ br0                  active     yes           yes
+ default              inactive   no            yes
+```
+
+Ở đây tạo nhanh một KVM guest sử dụng virt-install
+
+``` sh
+cd /var/lib/libvirt/images
+
+wget https://ncu.dl.sourceforge.net/project/gns-3/Qemu%20Appliances/linux-microcore-3.8.2.img
+
+virt-install \
+      -n VM01 \
+      -r 128 \
+       --vcpus 1 \
+      --os-variant=generic \
+      --disk path=/var/lib/libvirt/images/linux-microcore-3.8.2.img,format=qcow2,bus=virtio,cache=none \
+      --network network=br0 \
+      --hvm --virt-type kvm \
+      --vnc --noautoconsole \
+      --import
+```
+
+## 6. Một vài câu lệnh với Open vSwitch
+
+- ovs-<functionality> : Bạn chỉ cần nhập vào `ovs` rồi ấn `tab` 2 lần là có thể xem tất cả các câu lệnh đối với Open vSwitch.
+
+- ovs-vsctl : là câu lệnh để cài đặt và thay đổi một số cấu hình ovs. Nó cung cấp interface cho phép người dùng tương tác với Database để truy vấn và thay đổi dữ liệu.
+  - ovs-vsctl show: Hiển thị cấu hình hiện tại của switch.
+  - ovs-vsctl list-br: Hiển thị tên của tất cả các bridges.
+  - ovs-vsctl list-ports <bridge> : Hiển thị tên của tất cả các port trên bridge.
+  - ovs-vsctl list interface <bridge>: Hiển thị tên của tất cả các interface trên bridge.
+  - ovs-vsctl add-br <bridge> : Tạo bridge mới trong database.
+  - ovs-vsctl add-port <bridge> : <interface> : Gán interface (card ảo hoặc card vật lý) vào Open vSwitch bridge.
+
+- ovs-ofctl và ovs-dpctl : Dùng để quản lí và kiểm soát các  flow entries. OVS quản lý 2 loại flow:
+  - OpenFlows : flow quản lí control plane
+  - Datapath : là kernel flow.
+  - ovs-ofctl giao tiếp với OpenFlow module, ovs-dpctl
+giao tiếp với Kernel module.
+
+- ovs-ofctl show <BRIDGE> : hiển thị thông tin ngắn gọn về switch bao gồm port number và port mapping.
+- ovs-ofctl dump-flows <Bridge> : Dữ liệu trong OpenFlow tables
+- ovs-dpctl show : Thông tin cơ bản về logical datapaths (các bridges) trên switch.
+- ovs-dpctl dump-flows : Hiển thị flow cached trong datapath.
+- ovs-appctl bridge/dumpflows <br> : thông tin trong flow tables và offers kết nối trực tiếp cho VMs trên cùng hosts.
+- ovs-appctl fdb/show <br> : Hiển thị các cặp mac/vlan.
