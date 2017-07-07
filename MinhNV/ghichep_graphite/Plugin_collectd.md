@@ -196,30 +196,230 @@ Trong đó total = free + reserved + used
 - `RefreshInterval seconds` :
   + Làm mới danh sách domain và thiết bị mỗi giây . Mặc định là 60 giây.
   + Làm mới các thiết bị đặc biệt là hoạt động khá tốn kém, vì vậy nếu thiết lập ảo hóa của bạn là tĩnh bạn có thể xem xét. Nếu tùy chọn này được đặt thành 0, làm mới được tắt hoàn toàn.
+- Ví dụ
+
 ```sh
-Domain name
-BlockDevice name:dev
-InterfaceDevice name:dev
-IgnoreSelected true|false
-```
-  + Chọn tên miền và thiết bị được thu thập.
-  + Nếu IgnoreSelected không được cung cấp hoặc false sau đó các tên miền được liệt kê và thiết bị chỉ thu thập được đĩa và mạng.
-  + Nếu IgnoreSelected là true thì test sẽ bị đảo ngược và các tên miền được liệt kê và các thiết bị đĩa / mạng bị bỏ qua, trong khi phần còn lại được thu thập.
-- 1 ví dụ
-```sh
-<Plugin "virt">
-  Connection "xen:///"
-  RefreshInterval 60
-  #Domain "name"
-  #BlockDevice "name:device"
-  #InterfaceDevice "name:interface"
-  #IgnoreSelected false
-  HostnameFormat "name"
+<Plugin "libivrt">
+RefreshInterval 120
+Connection "qemu:///system"
+Domain "minhnv"
+BlockDevice "/:hdb/"
+InterfaceDevice "/:eth0/"
+IgnoreSelected "true"
+BlockDeviceFormat "target"
+HostnameFormat "uuid"
+InterfaceFormat "address"
+PluginInstanceFormat name
 </Plugin>
 ```
 
+**Các tùy chọn khi cấu hình:**
+
+ `Connection "qemu:///system"`:
+
+  Kết nối tới hypervisor thông qua uri, trong VD là kết nối tới hypervisor nằm chính trên host
+ 
+ `RefreshInterval 120`:
+
+  Khoảng thời gian để lấy dữ liệu của domain và device (được tính bằng giây). Nếu set là 0 thì sẽ disable tùy chọn này.
+ 
+ `Domain "minhnv"`:
+
+  Đưa máy ảo minhnv vào danh sách
+
+ `BlockDevice "/:hdb/"`:
+
+  Đưa thiết bị hdb trên tất cả các máy ảo vào danh sách các block device (các ổ cứng, CD-ROM)
+
+ `InterfaceDevice "/:eth0/":
+
+  Đưa thiết bị eth0 trên tất cả các máy ảo danh sách các interface device (các card mạng)
+
+ `IgnoreSelected "true"`:
+
+  Nếu chọn `false`, hệ thống sẽ chỉ lấy thông số của các máy ảo, block device và interface device trong danh sách và bỏ qua tất cả các máy ảo và thông số khác. Nếu chọn `true`, hệ thống sẽ lấy thông số của tất cả các máy ảo và device ngoài danh sách.
+
+ `BlockDeviceFormat "target"`:
+
+  Khai báo mặc định là `target`, tên của thiết bị block device trên máy ảo sẽ được lấy theo name được nhìn trong máy ảo, VD: sda. Nếu chuyển thành `source`, tên block device sẽ được lấy dựa trên đường dẫn file block device đó trên host, VD: var_lib_libvirt_images_image1.qcow2
+
+ `HostnameFormat "uuid"`:
+
+  - Khai báo mặc định là `name`: tên máy ảo trên collectd sẽ lấy tên máy ảo trên hypervisor
+  - Khai báo là `uuid`: tên máy ảo trên collectd sẽ lấy uuid của máy ảo trên hypervisor
+  - Khai báo là `hostname`: tên máy ảo trên collectd sẽ lấy hostname của host chứa máy ảo
+
+ `InterfaceFormat "address"`
+  - Khai báo mặc định là `name`: tên của interface trên collectd sẽ lấy theo tên interface trong máy ảo
+  - Khai báo là `address`: tên của interface trên collectd sẽ lấy theo MAC của interface trong máy ảo
+
+   `PluginInstanceFormat name|uuid|none`
+  - Plugin virt sẽ thu thập các metric và đặt plugin_instance của metric theo giá trị được gán.
+  - `name`: sử dụng tên của máy ảo.
+  - `uuid`: sử dụng uuid của máy ảo
+  - Mặc định sẽ không gán giá trị cho plugin_instance
+  - Có thể sử dụng cả 2 giá trị `name uuid`, khi đó plugin_instance sẽ được gán them name và uuid của máy ảo, cách nhau bởi ":"
+
 <a name=3></a>
 # 3. Một số Plugin khác
+## Plugin notify
+- Plugin notiy_email sử dụng thư viện ESMTP để gửi các cảnh báo tới địa chỉ email
+- Ví dụ:
+```sh
+LoadPlugin notify_email
+<Plugin "notify_email">
+ From "notify_email@email.com"
+ Recipient "receiver@email.com"
+ SMTPServer "smtp.notification.com"
+ SMTPUser "notify_email"
+ SMTPPort "25"
+ Subject "[collectd] %s on %s!"
+ SMTPPassword "notify_email_password"
+</Plugin>
+```
+ Các tùy chọn khi cấu hình:
+
+ - `From Address`:
+
+    Khai báo địa chỉ email sử dụng để gửi cảnh báo
+
+ - `Recipient Address`:
+
+    Khai báo địa chỉ email để nhận cảnh báo, có thể lặp lại khai báo này để thêm nhiều email
+ 
+ - `SMTPServer Hostname`:
+
+    Khai báo Hostname của SMTP Server
+
+ - `SMTPPort Port`:
+
+    Mặc định sử dụng port 25
+
+ - `SMTPUser Username`:
+
+    Khai báo User name để xác thực với mail server
+
+ - `SMTPPassword Password`:
+
+    Khai báo User password
+
+ - `Subject Subject`:
+
+    Khai báo tiêu để của mail. Sẽ có 2 biến có thể thay thê trong subject, thứ nhất là mức độ cảnh báo, thứ 2 là hostname.
+    VD: [collectd] %s on %s!
+    Subject email nhận được sẽ là [collectd] Warning on Host1!
+
+## Plugin Threshold
+- Plugin threshold cho phép tạo và gửi đi cảnh báo khi có vấn đề được ghi nhận trong quá trình giám sát của collectd. Các plugin khác có thể cấu hình để nhận cảnh báo và thực hiện các hành động tiếp theo. Mỗi khi giá trị vượt ngưỡng, cảnh báo được gửi đi, khi giá trị trở lại ngưỡng thì cảnh báo "OK" được gửi đi.
+- Ví dụ 
+```sh
+LoadPlugin "threshold"
+ <Plugin "threshold">
+   <Type "foo">
+     WarningMin    0.00
+     WarningMax 1000.00
+     FailureMin    0.00
+     FailureMax 1200.00
+     Invert false
+     Instance "bar"
+   </Type>
+   
+   <Plugin "interface">
+     Instance "eth0"
+     <Type "if_octets">
+       FailureMax 10000000
+       DataSource "rx"
+     </Type>
+   </Plugin>
+   
+   <Host "hostname">
+     <Type "cpu">
+       Instance "idle"
+       FailureMin 10
+     </Type>
+   
+     <Plugin "memory">
+       <Type "memory">
+         Instance "cached"
+         WarningMin 100000000
+       </Type>
+     </Plugin>
+   
+     <Type "load">
+        DataSource "midterm"
+        FailureMax 4
+        Hits 3
+        Hysteresis 3
+     </Type>
+   </Host>
+</Plugin>
+```
+
+Để xác định giá trị được gửi cảnh báo, ta dùng các block `Host`, `Plugin`, `Type`.
+Một value được xác định bởi một `name`, hay còn gọi là `identifier`, một identifier có 5 phần, gồm:
+ - host
+ - plugin
+ - plugin instance (optional)
+ - type
+ - type instance (optional)
+VD: c0f671e9-9353-49dd-954a-e7f783f5660f/virt-instance-00000015/disk_octets-vda
+
+ - `c0f671e9-9353-49dd-954a-e7f783f5660f`: host là id máy ảo
+ - `virt`: tên plugin
+ - `instance-00000015`: plugin instance là tên máy ảo
+ - `disk_octets`: loại metric
+ - `vda`: type instance là tên ổ đĩa được lấy metric
+
+Các tùy chọn khi cấu hình
+
+ `FailureMax Value
+  WarningMax Value`:
+
+  Đặt ngưỡng chặn trên cho metric. Nếu giá trị vượt ngưỡng FailureMax, một cảnh báo "FAILURE" sẽ được tạo. Nếu giá trị vượt ngưỡng "WarningMax" nhưng nhở hơn "FailureMax" một cảnh báo WARNING sẽ được tạo.
+ 
+ `FailureMin Value
+  WarningMin Value`:
+
+  Đặt ngưỡng chặn dưới cho metric. Nếu giá trị vượt ngưỡng FailureMin, một cảnh báo "FAILURE" sẽ được tạo. Nếu giá trị vượt ngưỡng "WarningMin" nhưng nhở hơn "FailureMin" một cảnh báo WARNING sẽ được tạo.
+ 
+ `DataSource DSName`:
+
+  Một số data có thể có nhiều datasource, vd `if_octets` có `rx`(số bytes đi vào NIC) và `tx` (số bytes đi ra khỏi NIC), hoặc `disk_ops`, có datasource `read` và `write`.
+  Nếu muốn đặt threshold cho một datasource cụ thể, dùng tùy chọn này.
+
+ `Invert true|false`:
+
+  Nếu set là `true` sẽ đổi ngược lại các khoảng giá trị, VD giá trị giữa FailureMin và FailureMax sẽ trở thành Failure. Mặc định option này là False.
+
+ `Persist true|false:
+
+  - Nếu là `true`, cảnh báo sẽ được tạo với mỗi giá trị nằm ngoài ngưỡng.
+  - Nếu là `false`, cảnh báo sẽ được tạo khi giá trị nằm ngoài ngưỡng mà giá trị trước đó là WARNING hoặc FAILURE.
+
+ `PersistOK true|false`:
+
+  - Nếu là `true`, cảnh báo sẽ được tạo với mỗi giá trị nằm trong ngưỡng.
+  - Nếu là `false`, cảnh báo sẽ được tạo khi giá trị nằm trong ngưỡng mà giá trị trước đó là OK.
+
+ `Percentage true|false`:
+
+  Nếu set `true`, giá trị lớn nhất và nhỏ nhất được thể hiện bằng %
+
+ `Hits Value`:
+
+  Khai báo số lần vượt ngưỡng liên tiếp cần đạt tới trước khi gửi cảnh báo
+
+ `Hysteresis Value`
+ 
+  Khai báo khoảng dao động cho threshold, tránh trường hợp giá trị dao động liên tục quanh nguõng cảnh báo.
+  VD:
+    WarningMax 100.0
+    Hysteresis 1.0
+  Cảnh báo chi gửi đi khi giá trị vượt quá 101 và trở về OK khi giá trị dưới 99.
+
+ `Interesting true|false`
+
+  Nếu set true, một cảnh báo FAILURE sẽ được gửi khi các giá trị không còn được update và bị xóa khỏi cache. Nếu set false, bỏ qua cảnh báo
 ## Plugin aggregation
 Plugin aggregation để tổng hợp nhiều giá trị vào một tập hợp các chức năng sử dụng như sum, average, min và max. iều này có thể được sử dụng rộng rãi, ví dụ: Trung bình và tổng số thống kê CPU cho toàn hệ thống.
 ## Plugin ping 
