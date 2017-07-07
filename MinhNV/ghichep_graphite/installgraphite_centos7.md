@@ -255,3 +255,10 @@ Khởi động lại collectD
 ## Bước 5: Truy cập vào web-interface
 
 http://ip_graphite_server
+
+## Sửa lỗi khi cài đặt 
+
+### Lỗi không start được carbon-cache : 
+Ở bước tải project/carbon hãy tải thư mục carbon trên git của mình ``https://github.com/nguyenminh12051997/meditech-thuctap/tree/master/MinhNV/ghichep_graphite``
+### Lỗi k start được http
+Tắt firewall, selinux và khởi động lại máy sau đó mới start httpd
