@@ -362,6 +362,7 @@ Một value được xác định bởi một `name`, hay còn gọi là `identi
  - plugin instance (optional)
  - type
  - type instance (optional)
+
 VD: c0f671e9-9353-49dd-954a-e7f783f5660f/virt-instance-00000015/disk_octets-vda
 
  - `c0f671e9-9353-49dd-954a-e7f783f5660f`: host là id máy ảo
