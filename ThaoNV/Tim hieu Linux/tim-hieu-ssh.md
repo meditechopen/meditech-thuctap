@@ -106,4 +106,20 @@ Sau đó dùng câu lệnh sau để ssh tới server dùng private key đã ph�
 
 **Phía client**
 
-- Nếu bạn dùng Windows
+- Nếu bạn dùng Windows, có thể dùng PuTTY hoặc MobaXterm để gen ssh keys. Ở đây mình dùng MobaXterm.
+
+Chọn loại key là RSA và click generate
+
+<img src="">
+
+Di chuyển chuột liên tục vào vùng trống để tạo khóa mới
+
+<img src="">
+
+Copy toàn bộ nội dung trong ô “Public key for pasting into OpenSSH authorized_keys file:” và lưu lại dưới tên authorized_keys rồi gửi lên Server. Đây là Public Key dành riêng cho OpenSSH. Nút “Save public key” sẽ cho một Public Key dạng khác, bạn không cần quan tâm đến nút này.
+
+<img src="">
+
+Nhập passphrase và chọn “Save Private key“. Việc tạo bộ khóa hoàn tất.
+
+<img src="">
