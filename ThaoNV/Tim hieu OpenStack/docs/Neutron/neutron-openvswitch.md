@@ -166,8 +166,38 @@ Chúng ta cũng có thể xem cấu hình của router với câu lệnh `ip net
 
 Chúng ta có thể xem bảng định tuyến bên trong router thông qua câu lệnh `ip netns exec qrouter-.... ip route`
 
+``` sh
+[root@controller ~]# ip netns exec qrouter-6c9927a0-851b-44dc-bf57-189a6b83ff89 ip route
+default via 172.16.69.1 dev qg-5ae40a29-b5
+10.10.10.0/24 dev qr-99b8677c-40  proto kernel  scope link  src 10.10.10.1
+172.16.69.0/24 dev qg-5ae40a29-b5  proto kernel  scope link  src 172.16.69.250
+```
+
 Bạn cũng có thể xem bảng NAT thông qua câu lệnh `ip netns exec qrouter-... iptables -t nat -S`
 
+``` sh
+[root@controller ~]# ip netns exec qrouter-6c9927a0-851b-44dc-bf57-189a6b83ff89 iptables -t nat -S
+-P PREROUTING ACCEPT
+-P INPUT ACCEPT
+-P OUTPUT ACCEPT
+-P POSTROUTING ACCEPT
+-N neutron-l3-agent-OUTPUT
+-N neutron-l3-agent-POSTROUTING
+-N neutron-l3-agent-PREROUTING
+-N neutron-l3-agent-float-snat
+-N neutron-l3-agent-snat
+-N neutron-postrouting-bottom
+-A PREROUTING -j neutron-l3-agent-PREROUTING
+-A OUTPUT -j neutron-l3-agent-OUTPUT
+-A POSTROUTING -j neutron-l3-agent-POSTROUTING
+-A POSTROUTING -j neutron-postrouting-bottom
+-A neutron-l3-agent-POSTROUTING ! -i qg-5ae40a29-b5 ! -o qg-5ae40a29-b5 -m conntrack ! --ctstate DNAT -j ACCEPT
+-A neutron-l3-agent-PREROUTING -d 169.254.169.254/32 -i qr-+ -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 9697
+-A neutron-l3-agent-snat -j neutron-l3-agent-float-snat
+-A neutron-l3-agent-snat -o qg-5ae40a29-b5 -j SNAT --to-source 172.16.69.250
+-A neutron-l3-agent-snat -m mark ! --mark 0x2/0xffff -m conntrack --ctstate DNAT -j SNAT --to-source 172.16.69.250
+-A neutron-postrouting-bottom -m comment --comment "Perform source NAT on outgoing traffic." -j neutron-l3-agent-snat
+```
 
 **Link tham khảo:**
 
