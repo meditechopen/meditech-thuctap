@@ -49,6 +49,10 @@ Nếu bạn xem các rules trên node compute nơi chứa máy ảo thì bạn s
 
 Interface thứ 2 gán vào Linux Bridge có tên `qvb...`, interface này sẽ nối LB tới integration bridge (br-int).
 
+**Linux bridge**
+
+Trên đây chứa các rules dùng cho security group. Nó có 1 đầu là `tap` interface có địa chỉ MAC trùng với địa chỉ MAC của card mạng trên máy ảo và một đầu là `qvb...` được nối với `qvo...` trên integration bridge.
+
 **Integration Bridge**
 
 Bridge này thường có tên là `br-int` thường được dùng để "tag" và "untag" VLAN cho traffic vào và ra VM. Lúc này br-int sẽ trông như sau:
@@ -98,3 +102,77 @@ Bridge br-provider
 Mô hình self-service Network sẽ phức tạp hơn khi mà traffic còn phải đi qua một router được đặt trên node controller. Dưới đây là mô hình:
 
 <img src="http://i.imgur.com/QMgxaqd.png">
+
+**Tunnel Bridge**
+
+Traffic tới từ node compute sẽ được chuyển tới node controller thông qua GRE/VXLAN tunnel trên bridge tunnel (br-tun). Nếu sử dụng VLAN thì nó sẽ chuyển đổi VLAN-tagged traffic từ intergration bridge sang GRE/VXLAN tunnels. Việc chuyển đỏi qua lại giữa VLAN IDs và tunnel IDs được thực hiện bởi OpenFlow rules trên `br-tun`.
+
+Đối với GRE hoặc VXLAN-based network truyền tới từ `patch-tun` của br-int sang `patch-int` của br-tun. Bridge này sẽ chứa 1 port cho tunnel có tên "vxlan-..."
+
+``` sh
+Bridge br-tun
+       Controller "tcp:127.0.0.1:6633"
+           is_connected: true
+       fail_mode: secure
+       Port "vxlan-c0a80b0a"
+           Interface "vxlan-c0a80b0a"
+               type: vxlan
+               options: {df_default="true", in_key=flow, local_ip="192.168.11.12", out_key=flow, remote_ip="192.168.11.10"}
+```
+
+Tunnel trong trường hợp trên nối từ local interface trên node compute (192.168.11.12) tới remote ip trên node controller (192.168.11.10)
+
+Tunnel này sử dụng bảng định tuyến trên host để trao đổi gói tin vì thế ko cần bất cứ yêu cầu nào đối với hai endpoints hai bên, khác với khi sử dụng VLAN. Tất cả các interface trên br-tun được coi là internal đối với Open vSwitch. Vì thế nó sẽ không thể nhìn thấy từ bên ngoài, để giám sát traffic, bạn phải tạo ra mirror port cho `patch-tun` trên `br-int` bridge.
+
+Tunnel bridge trên node controller về cơ bản không có gì khác nhiều so với tunnel trên node compute. Một số rules trên node controller:
+
+``` sh
+NXST_FLOW reply (xid=0x4):
+ cookie=0xb47bbe6025792346, duration=193515.678s, table=2, n_packets=38926, n_bytes=2679421, idle_age=0, hard_age=65534, priority=0,dl_dst=01:00:00:00:00:00/01:00:00:00:00:00 actions=resubmit(,22)
+ cookie=0xb47bbe6025792346, duration=193515.676s, table=3, n_packets=0, n_bytes=0, idle_age=65534, hard_age=65534, priority=0 actions=drop
+ cookie=0xb47bbe6025792346, duration=193392.459s, table=4, n_packets=0, n_bytes=0, idle_age=65534, hard_age=65534, priority=1,tun_id=0x3e actions=mod_vlan_vid:2,resubmit(,10)
+```
+
+**DHCP Router on Controller**
+
+DHCP server thường được chạy trên node controller hoặc compute. Nó là một instance của [dnsmasq](http://www.thekelleys.org.uk/dnsmasq/doc.html) chạy trong một network namespace. Network namespace là một Linux kernel facility cho phép thực hiện một loạt các tiến trình tạo ra network stack (interfaces, routing tables, iptables rules).
+
+Bạn có thể nhìn thấy danh sách của network namespace với câu lệnh `ip netns`
+
+``` sh
+# ip netns
+qdhcp-88b1609c-68e0-49ca-a658-f1edff54a264
+qrouter-2d214fde-293c-4d64-8062-797f80ae2d8f
+```
+
+`qdhcp....` là DHCP server namespace còn `qrouter...` là router.
+
+Dùng câu lệnh `ip netns exec` để xem cấu hình của các interface bên trong.
+
+``` sh
+# ip netns exec qdhcp-88b1609c-68e0-49ca-a658-f1edff54a264 ip addr
+tapf14c598d-98: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000
+    link/ether fa:16:3e:10:2f:03 brd ff:ff:ff:ff:ff:ff
+    inet 10.1.0.3/24 brd 10.1.0.255 scope global ns-f14c598d-98
+    inet6 fe80::f816:3eff:fe10:2f03/64 scope link
+       valid_lft forever preferred_lft forever
+```
+
+**Router on Controller**
+
+Router cũng là một network namespace với một loạt các routing rules và iptables rules để thực hiện việc định tuyến giữa các subnets.
+
+Chúng ta cũng có thể xem cấu hình của router với câu lệnh `ip netns exec`. Mỗi router sẽ có 2 interface, một cổng sẽ kết nối tới gateway (được tạo bởi câu lệnh router-gateway-set), một cổng sẽ nối tới integration bridge.
+
+Chúng ta có thể xem bảng định tuyến bên trong router thông qua câu lệnh `ip netns exec qrouter-.... ip route`
+
+Bạn cũng có thể xem bảng NAT thông qua câu lệnh `ip netns exec qrouter-... iptables -t nat -S`
+
+
+**Link tham khảo:**
+
+http://blog.oddbit.com/2013/11/14/quantum-in-too-much-detail/
+
+https://docs.openstack.org/ops-guide/ops-network-troubleshooting.html#network-paths
+
+http://www.yet.org/2014/09/openvswitch-troubleshooting/
