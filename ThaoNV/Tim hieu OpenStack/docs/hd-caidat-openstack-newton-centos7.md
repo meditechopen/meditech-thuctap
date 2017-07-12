@@ -314,7 +314,7 @@ MS Name/IP address         Stratum Poll Reach LastRx Last sample
 
 **Kích hoạt OpenStack repository**
 
-`yum install centos-release-openstack-newton`
+`yum install centos-release-openstack-newton -y`
 
 **Update packages**
 
@@ -322,11 +322,11 @@ MS Name/IP address         Stratum Poll Reach LastRx Last sample
 
 **Cài đặt OpenStack client**
 
-`yum install python-openstackclient`
+`yum install python-openstackclient -y`
 
 **Cài đặt openstack-selinux**
 
-`yum install openstack-selinux`
+`yum install openstack-selinux -y`
 
 **Lưu ý**
 
@@ -359,7 +359,7 @@ Chỉnh sửa file cấu hình keystone
 ``` sh
 [database]
 ...
-connection = mysql+pymysql://keystone:KEYSTONE_DBPASS@controller/keystone
+connection = mysql+pymysql://keystone:Welcome123@controller/keystone
 
 [token]
 ...
@@ -654,7 +654,7 @@ project_domain_name = Default
 user_domain_name = Default
 project_name = service
 username = glance
-password = GLANCE_PASS
+password = Welcome123
 
 [paste_deploy]
 flavor = keystone
@@ -723,7 +723,7 @@ Gán role admin cho user nova
 
 Tạo nova service
 
-` openstack service create --name nova --description "OpenStack Compute" compute`
+`openstack service create --name nova --description "OpenStack Compute" compute`
 
 Tạo API endpoint cho Compute service
 
@@ -935,14 +935,16 @@ Sao lưu file cấu hình
 Chỉnh sửa file cấu hình `/etc/neutron/neutron.conf`
 
 ``` sh
-[database]
+[DEFAULT]
 auth_strategy = keystone
-connection = mysql+pymysql://neutron:Welcome123@controller/neutron
 core_plugin = ml2
 service_plugins =
 transport_url = rabbit://openstack:Welcome123@controller
 notify_nova_on_port_status_changes = True
 notify_nova_on_port_data_changes = True
+
+[database]
+connection = mysql+pymysql://neutron:Welcome123@controller/neutron
 
 [keystone_authtoken]
 auth_uri = http://controller:5000
@@ -1345,7 +1347,7 @@ Chỉnh sửa file cấu hình
 ``` sh
 [DEFAULT]
 auth_strategy = keystone
-transport_url = rabbit://openstack:RABBIT_PASS@controller
+transport_url = rabbit://openstack:Welcome123@controller
 my_ip = 192.168.100.197
 
 [database]
@@ -1434,7 +1436,7 @@ Chỉnh sửa file cấu hình
 ``` sh
 [DEFAULT]
 auth_strategy = keystone
-transport_url = rabbit://openstack:RABBIT_PASS@controller
+transport_url = rabbit://openstack:Welcome123@controller
 my_ip = 192.168.100.200
 enabled_backends = lvm
 glance_api_servers = http://controller:9292
