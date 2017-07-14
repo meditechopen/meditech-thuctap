@@ -8,6 +8,8 @@
 
 3. Thực hành lab SSH
 
+4. Cấu hình ssh chỉ sử dụng key pairs
+
 ----------
 
 ## 1. Giới thiệu SSH.
@@ -30,7 +32,7 @@ Khi có client muốn xác thực bằng SSH keys, server có thể test xem cli
 
 Hình dưới đây mô tả quá trình xác thực giữa server và client:
 
-<img src="">
+<img src="http://i.imgur.com/5scoQCI.png">
 
 ## 3. Thực hành lab SSH
 
@@ -72,54 +74,79 @@ root@meditech:~# chmod 700 .ssh
 
 Tiếp đến, hãy tiến hành cấu hình trong file `/etc/ssh/sshd_config` để khai báo thư mục đặt key cũng như cho phép user root login. Sau khi chỉnh sửa, tiến hành restart lại dịch vụ ssh.
 
-<img src="">
+<img src="http://i.imgur.com/X5DCr55.png">
 
 **Phía client**
 
 - Nếu bạn sử dụng Windows để SSH đến, tiến hành copy file private key ra máy và load bằng PuTTY hoặc MobaXterm. Ở đây mình dùng MobaXterm để load private key.
 
-<img src="">
+<img src="http://i.imgur.com/OaZyWCE.png">
 
-<img src="">
+<img src="http://i.imgur.com/mIZKUzq.png">
 
 Sau khi load key, bạn hãy lưu nó dưới dạng `ppk`
 
-<img src="">
+<img src="http://i.imgur.com/30ygCPg.png">
 
 Để ssh vào server. Bạn chỉ cần import private key vào session.
 
-<img src="">
+<img src="http://i.imgur.com/89ZeLhA.png">
 
 Nếu có passphrase thì bạn sẽ phải nhập passphrase, và thế là xong !
 
-<img src="">
+<img src="http://i.imgur.com/oJi8P1O.png">
 
 - Nếu bạn sử dụng hệ điều hành Linux, tiến hành copy private key vào và phân quyền cho private key (phải phân quyền là `600` vì mặc định là `644` thì key sẽ không được phép sử dụng)
+
+<img src="http://i.imgur.com/n9uhnZL.png">
 
 Sau đó dùng câu lệnh sau để ssh tới server dùng private key đã phân quyền:
 
 `ssh -i thaonv root@192.168.100.51`
 
-<img src="">
 
 ### 3.1 Tạo khóa trên phía client.
-
-**Phía client**
 
 - Nếu bạn dùng Windows, có thể dùng PuTTY hoặc MobaXterm để gen ssh keys. Ở đây mình dùng MobaXterm.
 
 Chọn loại key là RSA và click generate
 
-<img src="">
+<img src="http://i.imgur.com/1Ya6uPx.png">
 
 Di chuyển chuột liên tục vào vùng trống để tạo khóa mới
 
-<img src="">
+<img src="http://i.imgur.com/LdJdAo3.png">
 
 Copy toàn bộ nội dung trong ô “Public key for pasting into OpenSSH authorized_keys file:” và lưu lại dưới tên authorized_keys rồi gửi lên Server. Đây là Public Key dành riêng cho OpenSSH. Nút “Save public key” sẽ cho một Public Key dạng khác, bạn không cần quan tâm đến nút này.
 
-<img src="">
+<img src="http://i.imgur.com/ed9Qmeg.png">
 
 Nhập passphrase và chọn “Save Private key“. Việc tạo bộ khóa hoàn tất.
 
-<img src="">
+<img src="http://i.imgur.com/T5QmxEf.png">
+
+Để đăng nhập, bạn mở session mới, nhập địa chỉ của ssh server, chọn phần `Advanced SSH settings` -> `Use private key` rồi chọn tới private key đã save.
+
+
+- Nếu bạn dùng Linux, tiến hành gen key như bình thường bằng câu lệnh `ssh-keygen -t rsa`.
+
+Sau đó tiến hành đẩy public key (file_name.pub) lên server vào file `~/.ssh/authorized_keys`.
+
+Để tiến hành đăng nhập, bạn sử dụng câu lệnh sau trên phía client `ssh -i thaonv root@192.168.100.51` . Trong đó `thaonv` chính là private key được tạo cùng với public key trước đó.
+
+<img src="http://i.imgur.com/Cg5ZHhf.png">
+
+## 4. Cấu hình ssh chỉ sử dụng key pairs
+
+Để cấu hình ssh chỉ sử dụng key pairs, tiến hành sửa đổi file `/etc/ssh/sshd_config`
+
+``` sh
+# Change to no to disable tunnelled clear text passwords
+PasswordAuthentication no
+```
+
+Bên cạnh đó, bạn cũng có thể cấu hình sửa đổi file lưu public key:
+
+`AuthorizedKeysFile      %h/.ssh/authorized_keys`
+
+## 5. Sử dụng cloud-init để chèn key pair cho máy ảo trên OpenStack

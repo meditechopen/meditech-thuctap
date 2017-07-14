@@ -41,3 +41,45 @@ Workflow khi khởi tạo máy ảo:
 16. Nova-compute tương tác với cinder-api để gán volume vào máy ảo.
 
 17. Nova-compute sẽ generate dữ liệu cho Hypervisor và gửi thông tin thông qua libvirt.
+
+
+## Spawning VMs workflow
+
+1. Dùng câu lệnh `nova-boot` hoặc tạo máy ảo trên dashboard
+
+2. Quy trình tạo máy ảo: API -> Scheduler -> Compute (manager) -> Libvirt Driver
+
+3. Tạo file disk: Lấy image từ glance vào thư mục  instance_dir/_ base và converrt nó sang dạng RAW (nếu đã ở dạng raw thì không cần convert)
+-> Tạo instance_dir/uuid/{disk, disk.local, disk.swap}:
+    -> Tạo `QCOW2` "disk" file, với backing file từ `_base image`
+    -> Tạo QCOW2 “disk.local” và “disk.swap”
+4. Tạo file libvirt XML và sao chép nó vào instance_dir (dù file này không được sử dụng bởi Nova)
+
+5. Thiết lập kết nối với volume (nếu bạn chọn option boot từ volume). Các câu lệnh thực thi tiếp theo còn tùy thuộc vào volume driver:
+  - Đối với iSCSI: Kết nối thông qua tgt hoặc iscsiadm
+  - Đối với RBD: Tạo XML cho Libvirt, phần còn lại được thực hiện bởi QEMU.
+
+6. Tạo network cho máy ảo
+
+- Tùy thuộc vào các driver mà người dùng khai báo, các câu lệnh sẽ được thực hiện theo.
+- Bật tất cả các bridges/VLANs cần thiết.
+- Tạo security groups (iptables)
+
+7. Difine domain với Libvirt, sử dụng file XML đã được tạo từ trước. Tương đương với câu lệnh `virsh define instance_dir/<uuid>/libvirt.xml’`
+
+8. Giờ đây máy ảo đã được start. Tương đương với câu lệnh `virsh start`
+
+
+## Hard reboot workflow
+
+1. Destroy domain (chỉ hủy đi tiến trình, không hủy dữ liệu).
+
+2. Thiết lập lại các kết nối volume.
+
+3. Tạo lại file Libvirt XML.
+
+4. Kiểm tra và tải lại các backing files nếu thiếu.
+
+5. Gán lại các network stack.
+
+6. Tạo lại các iptables rules.

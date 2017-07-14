@@ -6,6 +6,11 @@
 
 [2. Self-service Network](#self-service)
 
+[3. Network traffic flow]
+
+  - 3.1 Linux Bridge
+  - 3.2 OpenvSwitch
+
 ------------
 
 <a name ="provider"></a>
@@ -198,6 +203,25 @@ Bạn cũng có thể xem bảng NAT thông qua câu lệnh `ip netns exec qrout
 -A neutron-l3-agent-snat -m mark ! --mark 0x2/0xffff -m conntrack --ctstate DNAT -j SNAT --to-source 172.16.69.250
 -A neutron-postrouting-bottom -m comment --comment "Perform source NAT on outgoing traffic." -j neutron-l3-agent-snat
 ```
+
+## 3. Network traffic flow
+
+### 3.1 Linux Bridge
+
+#### Provider networks
+
+**North/South with fixed IP**
+
+<img src="">
+
+1. Máy ảo chuyển gói tin từ interface (1) tới interface của provider bridge (2) qua `veth` pair
+2. Security group rules (3) trên provider bridge sẽ quản lí và giám sát traffic.
+3. VLAN sub-interface port (4) trên provider bridge chuyển gói tin tới physical network interface (5).
+4. physical network interface (5) gán VLAN tag (101) vào cho packets và chuyển nó tới switch vật lí (6).
+5. Switch vật lí bỏ VLAN tag 101 từ packets và chuyển nó tới router (7)
+6. Router định tuyến packets từ provider network (8) sang external network (9) và chuyển nó tới switch (10)
+7. Switch chuyển tiếp packet tới external network (11)
+8. External network (12) nhận packets
 
 **Link tham khảo:**
 
