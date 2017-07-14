@@ -10,6 +10,8 @@
 
 4. Cấu hình ssh chỉ sử dụng key pairs
 
+5. Sử dụng cloud-init để chèn key pair cho máy ảo trên OpenStack
+
 ----------
 
 ## 1. Giới thiệu SSH.
@@ -150,3 +152,48 @@ Bên cạnh đó, bạn cũng có thể cấu hình sửa đổi file lưu publi
 `AuthorizedKeysFile      %h/.ssh/authorized_keys`
 
 ## 5. Sử dụng cloud-init để chèn key pair cho máy ảo trên OpenStack
+
+**Giới thiệu tổng quan về cloud-init**
+
+Ngày nay với metadata service, người dùng có thể bắt đầu cấu hình cho server của mình trước khi log in. metadata service là một địa chỉ HTTP nơi mà máy chủ có thể access tới trong quá trình boot. Nó chứa các thông tin cơ bản như địa chỉ ip, host name...Trong quá trình cài đặt ban đầu, các giá trị này được "nhồi" vào trong bởi một chương trình có tên là `cloud-init` giúp cấu hình các dịch vụ cần thiết.
+
+Cloud-config script chính là phương pháp phổ biến nhất được dùng để chèn vào trong quá trình tạo máy ảo. Nó có định dạng `YAML` đơn giản, dễ cấu hình. Một số các chức năng mà script này mang lại:
+
+- Thay đổi password của user root
+- Tạo mới user
+- Tạo mới password cho user
+- Cho phép user có quyền của user root
+- Thay đổi port của dịch vụ SSH
+- Cho phép SSH bằng user root
+- ...
+
+Tìm hiểu thêm về cloud-init [tại đây](http://cloudinit.readthedocs.io/en/latest/topics/examples.html)
+
+**Hướng dẫn sử dụng cloud-init để chèn SSH key giúp user root đăng nhập vào máy ảo chạy Ubuntu 14.04 trên OpenStack.**
+
+- Tạo key pairs bất kì bằng câu lệnh hoặc sử dụng công cụ như MobaXterm, PuTTY
+- Đăng nhập và tạo máy ảo trên dashboard
+- Sau khi khai báo thông tin cấu hình cho máy ảo, chèn đoạn script sau vào phần `Customization Script`
+
+``` sh
+#cloud-config
+users:
+  - name: root
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCv60WjxoM39LgPDbiW7ne3gu18q0NIVv0RE6rDLNal1quXZ3nqAlANpl5qmhDQ+GS/sOtygSG4/9aiOA4vXO54k1mHWL2irjuB9XbXr00+44vSd2q/vtXdGXhdSMTf4/XK17fjKSG/9y3yD6nml6q9XgQxx9Vf/IkaKdlK0hbC1ds0+8h83PTb9dF3L7hf3Ch/ghvj5++tWJFdFeG+VI7EDuKNA4zL8C5FdYYWFA88YAmM8ndjA5qCjZXIIeZvZ/z9Kpy6DL0QZ8T3NsxRKapEU3nyiIuEAmn8fbnosWcsovw0IS1Hz6HsjYo4bu/gA82LWt3sdRUBZ/7ZsVD3ELip user@example.com
+runcmd:
+  - sed -i -e '/^PermitRootLogin/s/^.*$/PermitRootLogin no/' /etc/ssh/sshd_config
+```
+
+**Lưu ý** : Thay đoạn khóa trên bằng public key của bạn.
+
+- Sau khi tạo xong máy ảo, tiến hành đăng nhập bằng private key đã tạo.
+
+
+**Link tham khảo**
+
+http://cloudinit.readthedocs.io/en/latest/topics/examples.html
+
+https://www.digitalocean.com/community/tutorials/how-to-use-cloud-config-for-your-initial-server-setup
+
+https://www.digitalocean.com/community/tutorials/an-introduction-to-cloud-config-scripting
