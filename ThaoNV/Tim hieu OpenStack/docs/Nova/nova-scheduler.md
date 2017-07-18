@@ -81,3 +81,13 @@ Nova scheduler tính toán mỗi weight với 1 configurable multiplier rồi sa
 <img src="http://i.imgur.com/bCbiLIL.png">
 
 Tóm lại, trong số các input của nova-scheduler có 3 thứ quan trọng nhất đó là cấu hình trong file `nova.conf`, service capability của mỗi host và request specifications. Cấu hình trong file conf sẽ quyết định cấu trúc của các class, service capability giống như base intelligent data còn request spec chính là service target.
+
+**Link tham khảo:**
+
+http://williamherry.blogspot.com/2012/05/openstack-nova-scheduler-and-its.html
+
+https://docs.openstack.org/mitaka/config-reference/compute/scheduler.html
+
+https://docs.openstack.org/nova/latest/filter_scheduler.html
+
+Production Ready OpenStack - Recipes for Successful Environments - Arthur Berezin
