@@ -210,9 +210,9 @@ Bạn cũng có thể xem bảng NAT thông qua câu lệnh `ip netns exec qrout
 
 #### Provider networks
 
-**North/South with fixed IP**
+**North/South**
 
-<img src="">
+<img src="http://i.imgur.com/zfgNkwC.png">
 
 1. Máy ảo chuyển gói tin từ interface (1) tới interface của provider bridge (2) qua `veth` pair
 2. Security group rules (3) trên provider bridge sẽ quản lí và giám sát traffic.
@@ -222,6 +222,28 @@ Bạn cũng có thể xem bảng NAT thông qua câu lệnh `ip netns exec qrout
 6. Router định tuyến packets từ provider network (8) sang external network (9) và chuyển nó tới switch (10)
 7. Switch chuyển tiếp packet tới external network (11)
 8. External network (12) nhận packets
+
+**East/West**
+
+Đường đi giữa các máy ảo theo chiều này tương tự như chiều North/South chỉ khác là nó không ra ngoài internet, khi đến switch vật lí bên ngoài nó sẽ được chuyển trở lại địa chỉ đích của máy ảo cần chuyển trong trường hợp cùng vlan. Đối với các dải mạng khác vlan, nó sẽ phải đi ra ngoài con router rồi mới quay trở lại.
+
+Cùng dải mạng
+
+<img src="http://i.imgur.com/Pw2f2kr.png">
+
+Khác dải mạng
+
+<img src="http://i.imgur.com/SKr4eDX.png">
+
+#### Self-service
+
+**North/South with a fixed IP**
+
+<img src="http://i.imgur.com/ZAi4x7n.png">
+
+1. Interface của máy ảo(1) sẽ chuyển packets tới self-service bridge port (2) thông qua veth pair.
+2. Security group rules (3) trên self-service bridge sẽ kiểm soát giám sát kết nối.
+3. Self-service bridge chuyển tiếp
 
 **Link tham khảo:**
 
