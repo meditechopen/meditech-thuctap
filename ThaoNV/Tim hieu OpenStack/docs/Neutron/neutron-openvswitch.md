@@ -1,4 +1,4 @@
-# Kiến trúc Network trong OpenStack (Open vSwitch)
+# Kiến trúc Network trong OpenStack (Open vSwitch) và đường đi của gói tin trong OPS
 
 ## Mục lục
 
@@ -6,10 +6,10 @@
 
 [2. Self-service Network](#self-service)
 
-[3. Network traffic flow]
+[3. Network traffic flow](#flow)
 
-  - 3.1 Linux Bridge
-  - 3.2 OpenvSwitch
+  - [3.1 Linux Bridge](#lb)
+  - [3.2 OpenvSwitch](#ovs)
 
 ------------
 
@@ -204,8 +204,10 @@ Bạn cũng có thể xem bảng NAT thông qua câu lệnh `ip netns exec qrout
 -A neutron-postrouting-bottom -m comment --comment "Perform source NAT on outgoing traffic." -j neutron-l3-agent-snat
 ```
 
+<a name="flow"></a>
 ## 3. Network traffic flow
 
+<a name="lb"></a>
 ### 3.1 Linux Bridge
 
 #### Provider networks
@@ -243,7 +245,62 @@ Khác dải mạng
 
 1. Interface của máy ảo(1) sẽ chuyển packets tới self-service bridge port (2) thông qua veth pair.
 2. Security group rules (3) trên self-service bridge sẽ kiểm soát giám sát kết nối.
-3. Self-service bridge chuyển tiếp
+3. Self-service bridge chuyển tiếp tới VXLAN interface (4), đóng dói gói tin dùng VNI 101
+4. Underlying interface (5) của VXLAN sẽ forward gói tin tới network node hoặc controller node thông qua overlay network(6).
+5. Underlying interface (7) của VXLAN chuyển tiếp gói tin tới VXLAN interface để "mở gói"
+6. self-service bridge router port (9) chuyển gói tin tới self-service network interface (10) trên router. Tại đây router sử dụng SNAT để chuyển đổi IP rồi gửi chúng tới gateway interface của provider network.
+7. Router chuyển tiếp gói tin tới provider bridge router port (12).
+8. VLAN sub-interface port (13)  trên provider bridge chuyển gói tin tới provider physical network interface (14)
+9. provider physical network interface (14) gán VLAN tag 101 vào packet và chuyển tiếp nó ra ngoài internet thông qua physical network infrastructure (15).
+
+**North/South with a floating IPv4 address**
+
+<img src="http://i.imgur.com/nd51B20.png">
+
+**East/West: Instance on the same network**
+
+<img src="http://i.imgur.com/07iaI8w.png">
+
+**East/West: Instance on different network**
+
+<img src="http://i.imgur.com/RGMbYgj.png">
+
+
+<a name="ovs"></a>
+### 3.2 OpenvSwitch
+
+#### Provider
+
+**North/South**
+
+<img src="http://i.imgur.com/fXsDWIH.png">
+
+**East/West: Instance on the same network**
+
+<img src="http://i.imgur.com/tzC0jic.png">
+
+**East/West: Instance on different network**
+
+<img src="http://i.imgur.com/zckFpCh.png">
+
+#### Self-service
+
+**North/South with a fixed IP**
+
+<img src="http://i.imgur.com/jYh6Pph.png">
+
+**North/South with a floating IPv4 address**
+
+<img src="http://i.imgur.com/hPYriI7.png">
+
+**East/West: Instance on the same network**
+
+<img src="http://i.imgur.com/EFLr4D2.png">
+
+**East/West: Instance on different network**
+
+<img src="http://i.imgur.com/RPUN0Ii.png">
+
 
 **Link tham khảo:**
 
