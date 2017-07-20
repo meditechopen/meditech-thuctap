@@ -52,7 +52,8 @@
 
 <img src="http://i.imgur.com/A2NQQjD.png">
 
-## <a name="setup">2. Setup môi trường cài đặt </a>
+<a name="set-up"></a>
+## 2. Setup môi trường cài đặt
 
 <a name="bonding"></a>
 ### 2.1 Cài đặt bonding
@@ -1543,7 +1544,7 @@ systemctl restart neutron-metadata-agent.service
 systemctl restart neutron-l3-agent
 ```
 
-**Trên node Compute**
+### 7.2 Trên node Compute
 
 Chỉnh sửa file `/etc/neutron/plugins/ml2/openvswitch_agent.ini`
 
@@ -1574,7 +1575,7 @@ Tiến hành cấu hình tương tự với node compute còn lại.
 `neutron agent-list`
 
 <a name="horizon"></a>
-## 7. Cấu hình dashboard - horizon
+## 8. Cấu hình dashboard - horizon
 
 **Lưu ý:** Dịch vụ này chạy trên node controller
 
