@@ -117,6 +117,7 @@ sig_hashalgo:   sha256
 
 - Bước 1 : Tạo bond1 cho 2 interface ens35 & ens36
 
+``` sh
 cat << EOF> /etc/sysconfig/network-scripts/ifcfg-bond1
 DEVICE=bond1
 TYPE=Bond
@@ -129,6 +130,7 @@ NETMASK=255.255.255.0
 BONDING_OPTS="mode=1 miimon=100"
 NM_CONTROLLED=no
 EOF
+```
 
 - Bước 2 : Sửa file cấu hình các interface thuộc bond1
 
@@ -263,7 +265,7 @@ Permanent HW addr: 00:0c:29:8e:73:78
 Slave queue ID: 0
 ```
 
-Kết quả cuối cùng, máy CTL, COM vaf STR phải có 2 card bond0 và bond1 với cấu hình network như trên IP Plan.
+Kết quả cuối cùng, máy CTL, COM và STR phải có 2 card bond0 và bond1 với cấu hình network như trên IP Plan.
 
 ### <a name="controller">2.2 Cài đặt trên controller </a>
 
