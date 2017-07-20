@@ -6,9 +6,9 @@
 
 [2. Setup môi trường cài đặt](#set-up)
 
-- [2.1. Cài đặt trên controller](#controller)
-- [2.2. Cài đặt trên 2 compute node](#compute)
-- [2.3. Cài đặt trên node block storage](#storage)
+- [2.1. Cài đặt bonding](#bonding)
+- [2.2. Cài đặt trên controller](#controller)
+- [2.3. Cài đặt trên 2 compute node và node storage](#compute)
 
 [3. Cài đặt identity service - keystone](#keystone)
 
@@ -30,8 +30,8 @@
 
 [9. Cài đặt block storage service - cinder](#cinder)
 
-  - [9.1 Cài đặt trên node controller](#8.1)
-  - [9.2 Cài đặt trên node storage](#8.2)
+  - [9.1 Cài đặt trên node controller](#9.1)
+  - [9.2 Cài đặt trên node storage](#9.2)
 
 [10. Launch máy ảo](#launch)
 
@@ -54,7 +54,218 @@
 
 ## <a name="setup">2. Setup môi trường cài đặt </a>
 
-### <a name="controller">2.1 Cài đặt trên controller </a>
+<a name="bonding"></a>
+### 2.1 Cài đặt bonding
+
+- Kiểm tra mô hình bonding
+
+<img src="http://i.imgur.com/VErti0U.png">
+
+Dùng 4 card mạng, chia làm 2 cặp, NIC 1 và 2 dùng VMNet 8 (NAT), NIC 3 và 4 dùng VMNet 1 (Host-only)
+
+Phân bố NIC:
+
+- bond0: ens33, ens34 (VMNet 8)
+- bond1: ens35, ens36 (VMNet1)
+
+Lưu ý : Trong quá trình thêm card mới, thêm lần lượt từng card một, không add nhiều card 1 lúc, sẽ dễ gây hiện tượng nhảy card mạng.
+
+Kiểm tra xem đã có file cấu hình cho NIC hay chưa
+
+`ls -alh /etc/sysconfig/network-scripts/`
+
+Với những card chưa có file cấu hình, dùng lệnh sau để tạo :
+
+`nmcli device connect enoXXX`
+
+Thay thế enoXXX với tên NIC chưa có file cấu hình. Kiểm tra lại xem file cấu hình đã sinh.
+
+**Các bước cấu hình**
+
+Thực hiện lệnh để nạp chế độ bonding cho OS trên các máy cần cấu hình.
+
+`modprobe bonding`
+
+Kiểm tra xem chế độ bonding đã được hay chưa.
+
+`modinfo bonding`
+
+Kết quả sẽ hiển thị như sau, trong đó chưa dòng description: Ethernet Channel Bonding Driver, v3.7.1
+
+``` sh
+filename:       /lib/modules/3.10.0-514.26.2.el7.x86_64/kernel/drivers/net/bonding/bonding.ko
+author:         Thomas Davis, tadavis@lbl.gov and many others
+description:    Ethernet Channel Bonding Driver, v3.7.1
+version:        3.7.1
+license:        GPL
+alias:          rtnl-link-bond
+rhelversion:    7.3
+srcversion:     B664145ACFBCC961505C750
+depends:
+intree:         Y
+vermagic:       3.10.0-514.26.2.el7.x86_64 SMP mod_unload modversions
+signer:         CentOS Linux kernel signing key
+sig_key:        61:8F:5D:DF:77:2E:4B:E8:25:FB:1B:B0:95:91:86:27:24:ED:1E:97
+sig_hashalgo:   sha256
+```
+
+**Cấu hình bond1**
+
+**Lưu ý:**
+
+Đây là các bước thực hiện trên node controller, các node còn lại thực hiện tương tự.
+
+- Bước 1 : Tạo bond1 cho 2 interface ens35 & ens36
+
+cat << EOF> /etc/sysconfig/network-scripts/ifcfg-bond1
+DEVICE=bond1
+TYPE=Bond
+NAME=bond1
+BONDING_MASTER=yes
+BOOTPROTO=none
+ONBOOT=yes
+IPADDR=192.168.11.10
+NETMASK=255.255.255.0
+BONDING_OPTS="mode=1 miimon=100"
+NM_CONTROLLED=no
+EOF
+
+- Bước 2 : Sửa file cấu hình các interface thuộc bond1
+
+Sao lưu file cấu hình interface ens35
+
+`cp /etc/sysconfig/network-scripts/ifcfg-ens35 /etc/sysconfig/network-scripts/ifcfg-ens35.orig`
+
+Sửa dòng với giá trị mới nếu đã có dòng đó và thêm các dòng nếu thiếu trong file /etc/sysconfig/network-scripts/ifcfg-ens35
+
+``` sh
+BOOTPROTO=none
+ONBOOT=yes
+MASTER=bond1
+SLAVE=yes
+NM_CONTROLLED=no
+```
+
+Sao lưu file cấu hình của interface ens36
+
+`cp /etc/sysconfig/network-scripts/ifcfg-ens36 /etc/sysconfig/network-scripts/ifcfg-ens36.orig`
+
+Sửa dòng với giá trị mới nếu đã có dòng đó và thêm các dòng nếu thiếu trong file /etc/sysconfig/network-scripts/ifcfg-ens36
+
+``` sh
+BOOTPROTO=none
+ONBOOT=yes
+MASTER=bond1
+SLAVE=yes
+NM_CONTROLLED=no
+```
+
+- Khởi động lại network sau khi cấu hình bond1
+
+``` sh
+nmcli con reload
+systemctl restart network
+```
+
+- Kiểm tra với câu lệnh `ip a` sẽ thấy bond1 đã có địa chỉ IP và state UP
+
+- Kiểm tra trạng thái các NIC
+
+`nmcli device status`
+
+Với những card mạng nào vẫn trong trạng thái disconnect, kiểm tra lại thông số `ONBOOT=yes` trong file cấu hình.
+
+**Cấu hình bond0**
+
+- Bước 1 : Tạo bond0 cho 2 interface ens33 & ens34
+
+``` sh
+cat << EOF> /etc/sysconfig/network-scripts/ifcfg-bond0
+DEVICE=bond0
+TYPE=Bond
+NAME=bond0
+BONDING_MASTER=yes
+BOOTPROTO=none
+ONBOOT=yes
+IPADDR=172.16.69.238
+NETMASK=255.255.255.0
+GATEWAY=172.16.69.1
+DNS=8.8.8.8
+BONDING_OPTS="mode=1 miimon=100"
+NM_CONTROLLED=no
+EOF
+```
+
+- Bước 2 : Sửa file cấu hình các interface thuộc bond0
+
+Sao lưu file cấu hình interface ens33
+
+`cp /etc/sysconfig/network-scripts/ifcfg-ens33 /etc/sysconfig/network-scripts/ifcfg-ens33.orig`
+
+Sửa dòng với giá trị mới nếu đã có dòng đó và thêm các dòng nếu thiếu trong file /etc/sysconfig/network-scripts/ifcfg-ens33
+
+``` sh
+BOOTPROTO=none
+ONBOOT=yes
+MASTER=bond0
+SLAVE=yes
+NM_CONTROLLED=no
+```
+
+Sao lưu file cấu hình của interface ens34
+
+`cp /etc/sysconfig/network-scripts/ifcfg-ens34 /etc/sysconfig/network-scripts/ifcfg-ens34.orig`
+
+Sửa dòng với giá trị mới nếu đã có dòng đó và thêm các dòng nếu thiếu trong file /etc/sysconfig/network-scripts/ifcfg-ens34
+
+``` sh
+BOOTPROTO=none
+ONBOOT=yes
+MASTER=bond0
+SLAVE=yes
+NM_CONTROLLED=no
+```
+
+Khởi động lại network sau khi cấu hình bond0
+
+``` sh
+nmcli con reload
+systemctl restart network
+```
+
+Kiểm tra với câu lệnh ip a sẽ thấy bond0 đã có địa chỉ IP và state UP. Kiểm tra thông tin các bond với câu lệnh cat /proc/net/bonding/bond0, kết quả như sau :
+
+``` sh
+Ethernet Channel Bonding Driver: v3.7.1 (April 27, 2011)
+
+Bonding Mode: fault-tolerance (active-backup)
+Primary Slave: None
+Currently Active Slave: ens33
+MII Status: up
+MII Polling Interval (ms): 100
+Up Delay (ms): 0
+Down Delay (ms): 0
+
+Slave Interface: ens33
+MII Status: up
+Speed: 1000 Mbps
+Duplex: full
+Link Failure Count: 0
+Permanent HW addr: 00:0c:29:8e:73:6e
+Slave queue ID: 0
+
+Slave Interface: ens34
+MII Status: up
+Speed: 1000 Mbps
+Duplex: full
+Link Failure Count: 0
+Permanent HW addr: 00:0c:29:8e:73:78
+Slave queue ID: 0
+```
+
+Kết quả cuối cùng, máy CTL, COM vaf STR phải có 2 card bond0 và bond1 với cấu hình network như trên IP Plan.
+
+### <a name="controller">2.2 Cài đặt trên controller </a>
 
 Cấu hình file `/etc/hosts` và `/etc/resolv.conf`
 
@@ -238,7 +449,7 @@ systemctl enable memcached.service
 systemctl start memcached.service
 ```
 
-### <a name ="compute">2.2 Cài đặt trên compute node </a>
+### <a name ="compute">2.3 Cài đặt trên compute node </a>
 
 Cấu hình file `/etc/hosts` và `/etc/resolv.conf`
 
@@ -1424,7 +1635,7 @@ Restart lại dịch vụ
 <a name="cinder"></a>
 ## 9. Cấu hình Block storage service - Cinder
 
-<a name="8.1"></a>
+<a name="9.1"></a>
 ### 9.1 Cấu hình trên node controller
 
 Tạo database
@@ -1521,7 +1732,7 @@ systemctl enable openstack-cinder-api.service openstack-cinder-scheduler.service
 systemctl start openstack-cinder-api.service openstack-cinder-scheduler.service
 ```
 
-<a name="8.2"></a>
+<a name="9.2"></a>
 ### 9.2 Cài đặt trên node storage
 
 Cài đặt LVM package
