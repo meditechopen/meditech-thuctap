@@ -674,7 +674,7 @@ systemctl start openstack-glance-api.service openstack-glance-registry.service
 Kiểm tra lại cài đặt. Tải image
 
 ``` sh
-. admin-openrc
+. admin-rc
 wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img
 ```
 
@@ -713,7 +713,7 @@ exit
 Tạo user nova
 
 ``` sh
-. admin-openrc
+. admin-rc
 openstack user create --domain default --password-prompt nova
 ```
 
@@ -877,7 +877,7 @@ systemctl start libvirtd.service openstack-nova-compute.service
 - Sau khi cấu hình xong quay trở lại node controller và kiểm tra các service đã lên hay chưa.
 
 ``` sh
-. admin-openrc
+. admin-rc
 openstack compute service list
 ```
 
@@ -901,7 +901,7 @@ GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%' IDENTIFIED BY 'Welcome123';
 Tạo user neutron và gán role admin cho user neutron
 
 ``` sh
-. admin-openrc
+. admin-rc
 openstack user create --domain default --password-prompt neutron
 openstack role add --project service --user neutron admin
 ```
@@ -1225,7 +1225,7 @@ Tiến hành cấu hình tương tự với node compute còn lại.
 Kiểm tra lại các cấu hình
 
 ``` sh
-. admin-openrc
+. admin-rc
 neutron ext-list
 openstack network agent list
 ```
