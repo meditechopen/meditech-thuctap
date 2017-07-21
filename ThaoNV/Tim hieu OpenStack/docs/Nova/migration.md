@@ -61,7 +61,7 @@ Dưới đây là các hình minh họa tiến trình khi thực hiện migrate 
 
 - Pre-migration: VM trên host A đang chạy, host B được lựa chọn bởi người dùng hoặc scheduler.
 
-<img src="../images/migrate1.png">
+<img src=".../images/migrate1.png">
 
 - Reservation: Xác nhận host B có đủ tà nguyên để thực hiện migrate, tạo mới một máy ảo trên host B.
 
@@ -106,7 +106,7 @@ Dưới đây là các hình minh họa tiến trình khi thực hiện migrate 
 
 - Trong live-migrate, có 2 loại đó là True live migration và Block live migration. Hignh dưới đây mô tả những loại storage mà 2 loại migration trên hỗ trợ:
 
-<imh src="../images/migrate2.png">
+<imh src=".../images/migrate2.png">
 
 **Ngữ cảnh sử dụng:**
 
