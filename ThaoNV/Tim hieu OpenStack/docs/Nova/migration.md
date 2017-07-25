@@ -61,7 +61,7 @@ Dưới đây là các hình minh họa tiến trình khi thực hiện migrate 
 
 - Pre-migration: VM trên host A đang chạy, host B được lựa chọn bởi người dùng hoặc scheduler.
 
-<img src="../images/migrate1.png">
+<img src=".docs/nova/images/migrate1.png">
 
 - Reservation: Xác nhận host B có đủ tà nguyên để thực hiện migrate, tạo mới một máy ảo trên host B.
 
