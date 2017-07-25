@@ -106,7 +106,7 @@ Dưới đây là các hình minh họa tiến trình khi thực hiện migrate 
 
 - Trong live-migrate, có 2 loại đó là True live migration và Block live migration. Hình dưới đây mô tả những loại storage mà 2 loại migration trên hỗ trợ:
 
-<imh src="../images/migrate2.png">
+<img src="../images/migrate2.png">
 
 **Ngữ cảnh sử dụng:**
 
