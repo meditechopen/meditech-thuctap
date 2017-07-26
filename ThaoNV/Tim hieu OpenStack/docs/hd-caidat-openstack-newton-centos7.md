@@ -7,8 +7,7 @@
 [2. Setup môi trường cài đặt](#set-up)
 
 - [2.1. Cài đặt trên controller](#controller)
-- [2.2. Cài đặt trên 2 compute node](#compute)
-- [2.3. Cài đặt trên node block storage](#storage)
+- [2.2. Cài đặt trên 2 compute node và storage node](#compute)
 
 [3. Cài đặt identity service - keystone](#keystone)
 
@@ -359,7 +358,7 @@ Chỉnh sửa file cấu hình keystone
 ``` sh
 [database]
 ...
-connection = mysql+pymysql://keystone:Welcome123@controller/keystone
+connection = mysql+pymysql://keystone:Welcome123@192.168.100.197/keystone
 
 [token]
 ...
@@ -381,9 +380,9 @@ Bootstrap dịch vụ identity
 
 ```sh
 keystone-manage bootstrap --bootstrap-password Welcome123 \
-  --bootstrap-admin-url http://controller:35357/v3/ \
-  --bootstrap-internal-url http://controller:35357/v3/ \
-  --bootstrap-public-url http://controller:5000/v3/ \
+  --bootstrap-admin-url http://192.168.100.197:35357/v3/ \
+  --bootstrap-internal-url http://192.168.100.197:35357/v3/ \
+  --bootstrap-public-url http://192.168.100.197:5000/v3/ \
   --bootstrap-region-id RegionOne
 ```
 
@@ -421,7 +420,7 @@ export OS_PASSWORD=Welcome123
 export OS_PROJECT_NAME=admin
 export OS_USER_DOMAIN_NAME=Default
 export OS_PROJECT_DOMAIN_NAME=Default
-export OS_AUTH_URL=http://controller:35357/v3
+export OS_AUTH_URL=http://192.168.100.197:35357/v3
 export OS_IDENTITY_API_VERSION=3
 ```
 
@@ -490,7 +489,7 @@ Unset biến
 Request authentication token cho admin user
 
 ``` sh
-$ openstack --os-auth-url http://controller:35357/v3 \
+$ openstack --os-auth-url http://192.168.100.197:35357/v3 \
   --os-project-domain-name Default --os-user-domain-name Default \
   --os-project-name admin --os-username admin token issue
 
@@ -510,7 +509,7 @@ Password:
 Request authentication token cho demo user
 
 ``` sh
-$ openstack --os-auth-url http://controller:5000/v3 \
+$ openstack --os-auth-url http://192.168.100.197:5000/v3 \
   --os-project-domain-name Default --os-user-domain-name Default \
   --os-project-name demo --os-username demo token issue
 
@@ -530,27 +529,27 @@ Password:
 Tạo các file source script `admin-rc` và `demo-rc`
 
 ``` sh
-vi admin-rc
+vi admin-openrc
 
 export OS_PROJECT_DOMAIN_NAME=Default
 export OS_USER_DOMAIN_NAME=Default
 export OS_PROJECT_NAME=admin
 export OS_USERNAME=admin
 export OS_PASSWORD=Welcome123
-export OS_AUTH_URL=http://controller:35357/v3
+export OS_AUTH_URL=http://192.168.100.197:35357/v3
 export OS_IDENTITY_API_VERSION=3
 export OS_IMAGE_API_VERSION=2
 ```
 
 ```sh
-vi demo-rc
+vi demo-openrc
 
 export OS_PROJECT_DOMAIN_NAME=Default
 export OS_USER_DOMAIN_NAME=Default
 export OS_PROJECT_NAME=demo
 export OS_USERNAME=demo
 export OS_PASSWORD=Welcome123
-export OS_AUTH_URL=http://controller:5000/v3
+export OS_AUTH_URL=http://192.168.100.197:5000/v3
 export OS_IDENTITY_API_VERSION=3
 export OS_IMAGE_API_VERSION=2
 ```
@@ -558,7 +557,7 @@ export OS_IMAGE_API_VERSION=2
 Kiểm tra script
 
 ``` sh
-. admin-rc
+. admin-openrc
 
 openstack token issue
 ```
@@ -581,7 +580,7 @@ exit
 Tạo glance user
 
 ``` sh
-. admin-rc
+. admin-openrc
 openstack user create glance --domain default --password Welcome123
 ```
 
@@ -596,9 +595,9 @@ Tạo glance service entity
 Tạo API endpoints cho Image service
 
 ``` sh
-openstack endpoint create --region RegionOne image public http://controller:9292
-openstack endpoint create --region RegionOne image internal http://controller:9292
-openstack endpoint create --region RegionOne image admin http://controller:9292
+openstack endpoint create --region RegionOne image public http://192.168.100.197:9292
+openstack endpoint create --region RegionOne image internal http://192.168.100.197:9292
+openstack endpoint create --region RegionOne image admin http://192.168.100.197:9292
 ```
 
 Cài đặt package
@@ -613,12 +612,12 @@ Chỉnh sửa file config glance-api
 
 ``` sh
 [database]
-connection = mysql+pymysql://glance:GLANCE_DBPASS@controller/glance
+connection = mysql+pymysql://glance:Welcome123@192.168.100.197/glance
 
 [keystone_authtoken]
-auth_uri = http://controller:5000
-auth_url = http://controller:35357
-memcached_servers = controller:11211
+auth_uri = http://192.168.100.197:5000
+auth_url = http://192.168.100.197:35357
+memcached_servers = 192.168.100.197:11211
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -643,12 +642,12 @@ Chỉnh sửa file config glance-registry
 
 ``` sh
 [database]
-connection = mysql+pymysql://glance:Welcome123@controller/glance
+connection = mysql+pymysql://glance:Welcome123@192.168.100.197/glance
 
 [keystone_authtoken]
-auth_uri = http://controller:5000
-auth_url = http://controller:35357
-memcached_servers = controller:11211
+auth_uri = http://192.168.100.197:5000
+auth_url = http://192.168.100.197:35357
+memcached_servers = 192.168.100.197:11211
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -674,7 +673,7 @@ systemctl start openstack-glance-api.service openstack-glance-registry.service
 Kiểm tra lại cài đặt. Tải image
 
 ``` sh
-. admin-rc
+. admin-openrc
 wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img
 ```
 
@@ -713,7 +712,7 @@ exit
 Tạo user nova
 
 ``` sh
-. admin-rc
+. admin-openrc
 openstack user create --domain default --password-prompt nova
 ```
 
@@ -728,9 +727,9 @@ Tạo nova service
 Tạo API endpoint cho Compute service
 
 ``` sh
-openstack endpoint create --region RegionOne compute public http://controller:8774/v2.1/%\(tenant_id\)s
-openstack endpoint create --region RegionOne compute internal http://controller:8774/v2.1/%\(tenant_id\)s
-openstack endpoint create --region RegionOne compute admin http://controller:8774/v2.1/%\(tenant_id\)s
+openstack endpoint create --region RegionOne compute public http://192.168.100.197:8774/v2.1/%\(tenant_id\)s
+openstack endpoint create --region RegionOne compute internal http://192.168.100.197:8774/v2.1/%\(tenant_id\)s
+openstack endpoint create --region RegionOne compute admin http://192.168.100.197:8774/v2.1/%\(tenant_id\)s
 ```
 
 Cài đặt các packages
@@ -749,21 +748,21 @@ Chỉnh sửa file cấu hình `/etc/nova/nova.conf`
 [DEFAULT]
 auth_strategy = keystone
 enabled_apis = osapi_compute,metadata
-transport_url = rabbit://openstack:RABBIT_PASS@controller
+transport_url = rabbit://openstack:Welcome123@controller
 my_ip = 192.168.100.197
 use_neutron = True
 firewall_driver = nova.virt.firewall.NoopFirewallDriver
 
 [api_database]
-connection = mysql+pymysql://nova:Welcome123@controller/nova_api
+connection = mysql+pymysql://nova:Welcome123@192.168.100.197/nova_api
 
 [database]
-connection = mysql+pymysql://nova:Welcome123@controller/nova
+connection = mysql+pymysql://nova:Welcome123@192.168.100.197/nova
 
 [keystone_authtoken]
-auth_uri = http://controller:5000
-auth_url = http://controller:35357
-memcached_servers = controller:11211
+auth_uri = http://192.168.100.197:5000
+auth_url = http://192.168.100.197:35357
+memcached_servers = 192.168.100.197:11211
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -776,7 +775,7 @@ vncserver_listen = $my_ip
 vncserver_proxyclient_address = $my_ip
 
 [glance]
-api_servers = http://controller:9292
+api_servers = http://192.168.100.197:9292
 
 [oslo_concurrency]
 lock_path = /var/lib/nova/tmp
@@ -813,6 +812,7 @@ Chỉnh sửa file cấu hình
 ``` sh
 [DEFAULT]
 auth_strategy = keystone
+transport_url = rabbit://openstack:Welcome123@192.168.100.197
 enabled_apis = osapi_compute,metadata
 my_ip = 192.168.100.198
 use_neutron = True
@@ -820,9 +820,9 @@ firewall_driver = nova.virt.firewall.NoopFirewallDriver
 
 [keystone_authtoken]
 ...
-auth_uri = http://controller:5000
-auth_url = http://controller:35357
-memcached_servers = controller:11211
+auth_uri = http://192.168.100.197:5000
+auth_url = http://192.168.100.197:35357
+memcached_servers = 192.168.100.197:11211
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -837,7 +837,7 @@ vncserver_proxyclient_address = $my_ip
 novncproxy_base_url = http://192.168.100.197:6080/vnc_auto.html
 
 [glance]
-api_servers = http://controller:9292
+api_servers = http://192.168.100.197:9292
 
 [oslo_concurrency]
 lock_path = /var/lib/nova/tmp
@@ -855,6 +855,7 @@ Chỉnh sửa lại section `[libvirt]` trong file `/etc/nova/nova.conf`
 ``` sh
 [libvirt]
 virt_type = qemu
+cpu_mode = none
 ```
 
 **Lưu ý:**
@@ -877,7 +878,7 @@ systemctl start libvirtd.service openstack-nova-compute.service
 - Sau khi cấu hình xong quay trở lại node controller và kiểm tra các service đã lên hay chưa.
 
 ``` sh
-. admin-rc
+. admin-openrc
 openstack compute service list
 ```
 
@@ -901,7 +902,7 @@ GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%' IDENTIFIED BY 'Welcome123';
 Tạo user neutron và gán role admin cho user neutron
 
 ``` sh
-. admin-rc
+. admin-openrc
 openstack user create --domain default --password-prompt neutron
 openstack role add --project service --user neutron admin
 ```
@@ -913,11 +914,11 @@ Tạo service neutron
 Tạo Networking service API endpoints
 
 ``` sh
-openstack endpoint create --region RegionOne network public http://controller:9696
+openstack endpoint create --region RegionOne network public http://192.168.100.197:9696
 
-openstack endpoint create --region RegionOne network internal http://controller:9696
+openstack endpoint create --region RegionOne network internal http://192.168.100.197:9696
 
-openstack endpoint create --region RegionOne network admin http://controller:9696
+openstack endpoint create --region RegionOne network admin http://192.168.100.197:9696
 ```
 
 **Cấu hình provider network**
@@ -939,17 +940,17 @@ Chỉnh sửa file cấu hình `/etc/neutron/neutron.conf`
 auth_strategy = keystone
 core_plugin = ml2
 service_plugins =
-transport_url = rabbit://openstack:Welcome123@controller
+transport_url = rabbit://openstack:Welcome123@192.168.100.197
 notify_nova_on_port_status_changes = True
 notify_nova_on_port_data_changes = True
 
 [database]
-connection = mysql+pymysql://neutron:Welcome123@controller/neutron
+connection = mysql+pymysql://neutron:Welcome123@192.168.100.197/neutron
 
 [keystone_authtoken]
-auth_uri = http://controller:5000
-auth_url = http://controller:35357
-memcached_servers = controller:11211
+auth_uri = http://192.168.100.197:5000
+auth_url = http://192.168.100.197:35357
+memcached_servers = 192.168.100.197:11211
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -959,7 +960,7 @@ password = Welcome123
 
 
 [nova]
-auth_url = http://controller:35357
+auth_url = http://192.168.100.197:35357
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -1089,8 +1090,8 @@ Chỉnh sửa file cấu hình `/etc/nova/nova.conf`
 
 ``` sh
 [neutron]
-url = http://controller:9696
-auth_url = http://controller:35357
+url = http://192.168.100.197:9696
+auth_url = http://192.168.100.197:35357
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -1141,12 +1142,12 @@ Chỉnh sửa file cấu hình
 ``` sh
 [DEFAULT]
 auth_strategy = keystone
-transport_url = rabbit://openstack:Welcome123@controller
+transport_url = rabbit://openstack:Welcome123@192.168.100.197
 
 [keystone_authtoken]
-auth_uri = http://controller:5000
-auth_url = http://controller:35357
-memcached_servers = controller:11211
+auth_uri = http://192.168.100.197:5000
+auth_url = http://192.168.100.197:35357
+memcached_servers = 192.168.100.197:11211
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -1198,8 +1199,8 @@ Chỉnh sửa file cấu hình `/etc/nova/nova.conf`
 ``` sh
 [neutron]
 ...
-url = http://controller:9696
-auth_url = http://controller:35357
+url = http://192.168.100.197:9696
+auth_url = http://192.168.100.197:35357
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -1225,7 +1226,7 @@ Tiến hành cấu hình tương tự với node compute còn lại.
 Kiểm tra lại các cấu hình
 
 ``` sh
-. admin-rc
+. admin-openrc
 neutron ext-list
 openstack network agent list
 ```
@@ -1246,7 +1247,7 @@ Sao lưu file cấu hình
 Chỉnh sửa file cấu hình
 
 ``` sh
-OPENSTACK_HOST = "controller"
+OPENSTACK_HOST = "192.168.100.197"
 
 ALLOWED_HOSTS = ['*', ]
 
@@ -1255,7 +1256,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 CACHES = {
     'default': {
          'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-         'LOCATION': 'controller:11211',
+         'LOCATION': '192.168.100.197:11211',
     }
 }
 
@@ -1321,17 +1322,17 @@ openstack service create --name cinder --description "OpenStack Block Storage" v
 
 openstack service create --name cinderv2 --description "OpenStack Block Storage" volumev2
 
-openstack endpoint create --region RegionOne volume public http://controller:8776/v1/%\(tenant_id\)s
+openstack endpoint create --region RegionOne volume public http://192.168.100.197:8776/v1/%\(tenant_id\)s
 
-openstack endpoint create --region RegionOne volume internal http://controller:8776/v1/%\(tenant_id\)s
+openstack endpoint create --region RegionOne volume internal http://192.168.100.197:8776/v1/%\(tenant_id\)s
 
-openstack endpoint create --region RegionOne volume admin http://controller:8776/v1/%\(tenant_id\)s
+openstack endpoint create --region RegionOne volume admin http://192.168.100.197:8776/v1/%\(tenant_id\)s
 
-openstack endpoint create --region RegionOne volumev2 public http://controller:8776/v2/%\(tenant_id\)s
+openstack endpoint create --region RegionOne volumev2 public http://192.168.100.197:8776/v2/%\(tenant_id\)s
 
-openstack endpoint create --region RegionOne volumev2 internal http://controller:8776/v2/%\(tenant_id\)s
+openstack endpoint create --region RegionOne volumev2 internal http://192.168.100.197:8776/v2/%\(tenant_id\)s
 
-openstack endpoint create --region RegionOne volumev2 admin http://controller:8776/v2/%\(tenant_id\)s
+openstack endpoint create --region RegionOne volumev2 admin http://192.168.100.197:8776/v2/%\(tenant_id\)s
 ```
 
 Cài đặt package
@@ -1347,17 +1348,17 @@ Chỉnh sửa file cấu hình
 ``` sh
 [DEFAULT]
 auth_strategy = keystone
-transport_url = rabbit://openstack:Welcome123@controller
+transport_url = rabbit://openstack:Welcome123@192.168.100.197
 my_ip = 192.168.100.197
 
 [database]
-connection = mysql+pymysql://cinder:Welcome123@controller/cinder
+connection = mysql+pymysql://cinder:Welcome123@192.168.100.197/cinder
 
 [keystone_authtoken]
 ...
-auth_uri = http://controller:5000
-auth_url = http://controller:35357
-memcached_servers = controller:11211
+auth_uri = http://192.168.100.197:5000
+auth_url = http://192.168.100.197:35357
+memcached_servers = 192.168.100.197:11211
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -1436,19 +1437,19 @@ Chỉnh sửa file cấu hình
 ``` sh
 [DEFAULT]
 auth_strategy = keystone
-transport_url = rabbit://openstack:Welcome123@controller
+transport_url = rabbit://openstack:Welcome123@192.168.100.197
 my_ip = 192.168.100.200
 enabled_backends = lvm
-glance_api_servers = http://controller:9292
+glance_api_servers = http://192.168.100.197:9292
 
 [database]
-connection = mysql+pymysql://cinder:Welcome123@controller/cinder
+connection = mysql+pymysql://cinder:Welcome123@192.168.100.197/cinder
 
 [keystone_authtoken]
 ...
-auth_uri = http://controller:5000
-auth_url = http://controller:35357
-memcached_servers = controller:11211
+auth_uri = http://192.168.100.197:5000
+auth_url = http://192.168.100.197:35357
+memcached_servers = 192.168.100.197:11211
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
