@@ -107,7 +107,7 @@ Trước tiên ta tìm hiểu hoạt động của máy chủ ủy quyền và m
 
 Client SIP A gửi bản tin INVITE cho B để mời tham gia cuộc gọi.
 	
-	<img src="http://i.imgur.com/kxUUrjZ.png">
+<img src="http://i.imgur.com/kxUUrjZ.png">
 
 Các bước như sau: 
 	
