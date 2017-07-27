@@ -103,14 +103,13 @@ Các bản tin SIP có khuôn dạng text, tương tự như HTTP. Mào đầu c
 ##### Thiết lập và hủy cuộc gọi SIP 
 Trước tiên ta tìm hiểu hoạt động của máy chủ ủy quyền và máy chủ chuyển đổi 
 
-- Hoạt động của máy chủ ủy quyền (Proxy Server) 
-	
-	<img src="http://i.imgur.com/kxUUrjZ.png">
+- Hoạt động của máy chủ ủy quyền (Proxy Server)
 
 Client SIP A gửi bản tin INVITE cho B để mời tham gia cuộc gọi.
 	
+	<img src="http://i.imgur.com/kxUUrjZ.png">
+
 Các bước như sau: 
-	
 	+ Bước 1: A gửi bản tin INVITE cho B ở miền B, bản tin này đến proxy server SIP của miền B (Bản tin INVITE có thể đi từ Proxy server SIP của miền yahoo.com và được Proxy này chuyển đến Proxy server của miền hotmail.com). 
 	+ Bước 2: Proxy server của miền hotmail.com sẽ tham khảo server định vị (Location server) để quyết định vị trí hiện tại của UserB. 
 	+ Bước 3: Server định vị trả lại vị trí hiện tại của B. 
@@ -126,7 +125,7 @@ Các bước như sau:
 	
 	<img src="http://i.imgur.com/JdwIATK.png">
 	
-  + Bước 1: Redirect server nhân được yêu cầu INVITE từ người gọi (Yêu cầu này có thể đi từ một proxy server khác). 
+  	+ Bước 1: Redirect server nhân được yêu cầu INVITE từ người gọi (Yêu cầu này có thể đi từ một proxy server khác). 
 	+ Bước 2: Redirect server truy vấn server định vị địa chỉ của B. 
 	+ Bước 3: Server định vị trả lại địa chỉ của B cho Redirect server. 
 	+ Bước 4: Redirect server trả lại địa chỉ của B đến người gọi A. Nó không phát yêu cầu INVITE như proxy server. 
