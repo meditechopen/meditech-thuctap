@@ -110,6 +110,7 @@ Client SIP A gửi bản tin INVITE cho B để mời tham gia cuộc gọi.
 	<img src="http://i.imgur.com/kxUUrjZ.png">
 
 Các bước như sau: 
+	
 	+ Bước 1: A gửi bản tin INVITE cho B ở miền B, bản tin này đến proxy server SIP của miền B (Bản tin INVITE có thể đi từ Proxy server SIP của miền yahoo.com và được Proxy này chuyển đến Proxy server của miền hotmail.com). 
 	+ Bước 2: Proxy server của miền hotmail.com sẽ tham khảo server định vị (Location server) để quyết định vị trí hiện tại của UserB. 
 	+ Bước 3: Server định vị trả lại vị trí hiện tại của B. 
