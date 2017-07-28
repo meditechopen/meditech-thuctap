@@ -2,16 +2,17 @@
 
 ## Mục lục
 
-1. Giới thiệu và workflow khi evacuate máy ảo
+[1. Giới thiệu và workflow khi evacuate máy ảo](#intro)
 
-2. Sự khác biệt giữa evacuate, migrate và live-migration
+[2. Sự khác biệt giữa evacuate, migrate và live-migration](#differ)
 
-3. Hướng dẫn evacuate một máy ảo
+[3. Hướng dẫn evacuate một máy ảo](#1)
 
-4. Hướng dẫn evacuate toàn bộ máy ảo
+[4. Hướng dẫn evacuate toàn bộ máy ảo](#all)
 
 ----------
 
+<a name="intro"></a>
 ## 1. Giới thiệu và workflow khi evacuate máy ảo
 
 Evacuation là một kĩ thuật được dùng để chuyển máy ảo từ một node compute đã chết hoặc bị tắt sang một node compute khác ở trong cùng một môi trường. Vì thế nó chỉ có tác dụng khi máy ảo sử dụng shared storage hoặc block storage bởi nếu không thì ổ cứng của máy ảo sẽ không thể được truy cập từ bên ngoài trong trường hợp host bị chết. Trong trường hợp rebuild máy ảo được boot từ local sử dụng ephemeral disk thì một máy mới sẽ được tạo mang cùng thông số của máy ảo cũ (IP, ID, flavor...) nhưng ổ đĩa lúc này đã mất đồng nghõa với việc dữ liệu cũng không còn nữa.
@@ -28,7 +29,7 @@ Lưu ý rằng bạn chỉ có thể evacuate máy ảo khi host đã bị tắt
 
 (Xem thêm [tại đây]())
 
-**workflow khi evacuate máy ảo**
+**Workflow khi evacuate máy ảo**
 
 <img src="../images/evacuate1.png">
 
@@ -43,18 +44,20 @@ Lưu ý rằng bạn chỉ có thể evacuate máy ảo khi host đã bị tắt
 9. Nova compute lấy network info từ network service
 10. Nova compute lấy tất cả các thông tin của bdm thông qua nova conductor
 11. Sau khi có được thông tin, nó sẽ yêu cầu volume service gỡ volume ra khỏi máy ảo cũ.
-12. Nova compute sau đó thiết lập trạng thái REBUIL_BLOCK_DEVICE_MAPPING cho máy ảo thông qua nova conductor
+12. Nova compute sau đó thiết lập trạng thái REBUILD_BLOCK_DEVICE_MAPPING cho máy ảo thông qua nova conductor
 13. Nova compute yêu cầu thiết lập bdm cho máy ảo mới.
 14. Trạng thái của máy ảo bắt đầu được chuyển thành REBUILD_SPAWNING.
 15. Cùng lúc đó, nova compute yêu cầu nova compute driver spawn máy ảo với những thông tin đã có sẵn
 16. Trạng thái của máy ảo chuyển thành ACTIVE
 
+<a name="differ"></a>
 ## 2. Sự khác biệt giữa evacuate, migrate và live-migration
 
 | Evacuate | Migrate | Live-migration |
 |----------|---------|----------------|
 | Rebuild máy ảo đang ở trên một compute node (đã down) sang một compute node khác | Rebuild máy ảo đang ở trên một compute node (đang chạy) sang một compute node khác | Di chuyển máy ảo tới một node khác mà không có downtime (hoặc downtime không đáng kể) |
 
+<a name="1"></a>
 ## 3. Hướng dẫn evacuate một máy ảo
 
 Câu lệnh:
@@ -90,7 +93,7 @@ Ta tiến hành evacuate máy ảo sang compute2 bằng câu lệnh:
 
 <img src="../images/evacuate5.png">
 
-
+<a name="all"></a>
 ## 4. Hướng dẫn evacuate toàn bộ máy ảo
 
 Câu lệnh:

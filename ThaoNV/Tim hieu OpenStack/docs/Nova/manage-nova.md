@@ -16,7 +16,7 @@
 
 [7. Kiểm tra hoạt động và Quản lí Nova Compute Servers](#verify)
 
-8. Quản lí volume
+[8. Quản lí volume](#volume)
 
 ----------
 
@@ -612,7 +612,7 @@ nova-api  3211 nova    3w   REG  253,0  6495156 34571230 /var/log/nova/nova-api.
 nova-api  3220 nova    3w   REG  253,0  6495156 34571230 /var/log/nova/nova-api.log
 nova-api  3221 nova    3w   REG  253,0  6495156 34571230 /var/log/nova/nova-api.log
 ```
-
+<a name="volume"></a>
 ## 8. Quản lí volume
 
 Câu lệnh dùng để quản lí volume:
@@ -644,7 +644,6 @@ Ví dụ để hiển thi các loại volume đang được hỗ trợ:
 +--------------------------------------+-------+
 ```
 
-## 9.
 
 **Tham khảo:**
 
