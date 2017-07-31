@@ -144,14 +144,12 @@ scp /var/lib/nova/.ssh/id_rsa.pub computeNodeAddress:~/
 - Trên node đích, thay đổi quyền của key pair cho user nova và add key pair đó vào SSH.
 
 ``` sh
-# chown nova:nova id_rsa
-# chown nova:nova id_rsa.pub
-# su nova
 $ mkdir -p /var/lib/nova/.ssh
 $ cp id_rsa /var/lib/nova/.ssh/
 $ cat id_rsa.pub >> /var/lib/nova/.ssh/authorized_keys
+$ chown nova:nova /var/lib/nova/.ssh/authorized_keys
+$ chown nova:nova /var/lib/nova/.ssh/id_rsa
 $ echo 'StrictHostKeyChecking no' >> /var/lib/nova/.ssh/config
-$ exit
 ```
 
 - Kiểm tra để chắc chắn rằng user `nova` có thể login được vào node compute còn lại mà không cần sử dụng password
