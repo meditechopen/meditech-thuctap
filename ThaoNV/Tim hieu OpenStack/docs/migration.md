@@ -144,14 +144,14 @@ scp /var/lib/nova/.ssh/id_rsa.pub computeNodeAddress:~/
 - Trên node đích, thay đổi quyền của key pair cho user nova và add key pair đó vào SSH.
 
 ``` sh
-mkdir -p /var/lib/nova/.ssh
-cd /var/lib/nova/.ssh/
-cp id_rsa /var/lib/nova/.ssh/
-cat id_rsa.pub >> /var/lib/nova/.ssh/authorized_keys
-echo 'StrictHostKeyChecking no' >> /var/lib/nova/.ssh/config
-chown nova:nova id_rsa
-chown nova:nova authorized_keys
-chown nova:nova config
+# chown nova:nova id_rsa
+# chown nova:nova id_rsa.pub
+# su nova
+$ mkdir -p /var/lib/nova/.ssh
+$ cp id_rsa /var/lib/nova/.ssh/
+$ cat id_rsa.pub >> /var/lib/nova/.ssh/authorized_keys
+$ echo 'StrictHostKeyChecking no' >> /var/lib/nova/.ssh/config
+$ exit
 ```
 
 - Kiểm tra để chắc chắn rằng user `nova` có thể login được vào node compute còn lại mà không cần sử dụng password
@@ -201,6 +201,7 @@ Các yêu cầu chung:
 - Sửa thông tin trong libvirt
 cp /etc/libvirt/libvirtd.conf /etc/libvirt/libvirtd.conf.orig
 
+``` sh
 sed -i 's|#listen_tls = 0|listen_tls = 0|'g /etc/libvirt/libvirtd.conf
 sed -i 's|#listen_tcp = 1|listen_tcp = 1|'g /etc/libvirt/libvirtd.conf
 sed -i 's|#tcp_port = "16509"|tcp_port = "16509"|'g /etc/libvirt/libvirtd.conf
@@ -208,6 +209,7 @@ sed -i 's|#auth_tcp = "sasl"|auth_tcp = "none"|'g /etc/libvirt/libvirtd.conf
 
 cp /etc/sysconfig/libvirtd /etc/sysconfig/libvirtd.orig
 sed -i 's|#LIBVIRTD_ARGS="--listen"|LIBVIRTD_ARGS="--listen"|'g /etc/sysconfig/libvirtd
+```
 
 - Cập nhậy URL trong file `/etc/nova/nova.conf`
 
@@ -220,13 +222,17 @@ systemctl restart libvirtd
 systemctl restart openstack-nova-compute.service
 ```
 
-- Nếu sử dụng block live migration cho các VMs boot từ local thì chạy thêm câu lệnh sau :
+- Nếu sử dụng block live migration cho các VMs boot từ local thì sửa file `nova.conf` rồi restart lại dịch vụ nova-compute :
 
 ``` sh
-openstack-config --set /etc/nova/nova.conf DEFAULT block_migration_flag VIR_MIGRATE_UNDEFINE_SOURCE,VIR_MIGRATE_PEER2PEER,VIR_MIGRATE_LIVE,VIR_MIGRATE_NON_SHARED_INC
 
-systemctl restart openstack-nova-compute.service
+[libvirt]
+.......
+block_migration_flag=VIR_MIGRATE_UNDEFINE_SOURCE, VIR_MIGRATE_PEER2PEER, VIR_MIGRATE_LIVE, VIR_MIGRATE_NON_SHARED_INC
+......
 ```
+
+`systemctl restart openstack-nova-compute.service`
 
 **Migrate máy ảo**
 
