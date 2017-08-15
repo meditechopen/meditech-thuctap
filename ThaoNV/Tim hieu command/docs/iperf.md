@@ -149,7 +149,7 @@ Trên Ubuntu
 
 **Mô hình thực hiện bài test**
 
-<img src="">
+<img src="../images/iperf5.png">
 
 Để kiểm tra băng thông của mạng ta có thể sử dụng một trong hai giao thức TCP hoặc UDP, nhưng điểm chung giữa hai phương pháp này là đều cần 1 máy làm server để lắng nghe, một máy client kết nối đến giống như hình trên. IPerf sẽ tính toán và đưa ra được băng thông của mạng giữa Server và client.
 
@@ -167,7 +167,7 @@ Trên phía client
 
 Kết quả sau 10 giây
 
-<img src="./images/iperf1.png">
+<img src="../images/iperf1.png">
 
 Ví dụ bài test TCP với Buffer size: 16 MB, Window Size: 60 Mbps, Max segment size 5 trong thời gian 5 phút, kết quả hiển thị dưới dạng mbps
 
@@ -179,7 +179,7 @@ Client:
 
 `iperf -c ip-server -i 1 -p 5001 -w 60.0m -M 1.0K -l 16.0M -f m -t 300`
 
-<img src="./images/iperf2.png">
+<img src="../images/iperf2.png">
 
 
 **Sử dụng UDP**
@@ -192,7 +192,7 @@ Trên phía client
 
 `iperf -c ip-server -u`
 
-<img src="./images/iperf3.png">
+<img src="../images/iperf3.png">
 
 Ví dụ bài test UDP với Bandwidth 600 Mbps Packet size 500 Bytes trong 300s
 
@@ -204,7 +204,7 @@ Client:
 
 `iperf -c ip-server -u -i 1 -p 5001 -l 500B -f m -b 600m -t 300`
 
-<img src="./images/iperf4.png">
+<img src="../images/iperf4.png">
 
 **Kiểm tra tốc độ của một cổng mạng**
 
