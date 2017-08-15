@@ -160,7 +160,7 @@ $ ssh computeNodeAddress
 $ exit
 ```
 
-- - Thực hiện restart service (Thực hiện trên cả node nguồn và đích)
+- Thực hiện restart service (Thực hiện trên cả node nguồn và đích)
 
 ``` sh
 systemctl restart libvirtd.service
