@@ -96,7 +96,7 @@ Chạy test mặc định với TCP trong vòng 10 giây, máy chạy câu lện
 
 Kết quả trả về:
 
-<img src="./images/bwctl.png">
+<img src="../images/bwctl.png">
 
 `bwctl -x -c somehost.example.com`
 
