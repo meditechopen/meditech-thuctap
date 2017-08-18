@@ -40,9 +40,16 @@ Có 2 mode cơ bản.
 | -B | Buộc receiver phải đọc toàn bộ buffer |
 | -u | Sử dụng UDP (mặc định là TCP) |
 | -v | Cung cấp thêm thông tin |
-| -w | kích thước cửa sổ trượt |
+| -w | window size |
 | -p | port sử dụng để kết nối dữ liệu, mặc định là 5001 |
 | -P | với mode client-server, đây là port để kiểm soát kết nối, mặc định là 5000 |
+| -n | Số lượng bufers |
+| -N | Số lượng luồng dữ liệu truyền |
+| -R | Tốc độ truyền |
+| -l | packet length |
+| -T | thời gian, mặc định là 10 giây |
+| -i | thời gian gửi báo cáo (giây) |
+
 
 <a name ="lab"></a>
 ## 3. Lab cài đặt và sử dụng Nuttcp

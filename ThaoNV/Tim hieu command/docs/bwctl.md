@@ -50,6 +50,9 @@ bwctl client sẽ liên lạc với một máy chủ để thực hiện bài te
 | -h, --help | Show help message |
 | -p, --print | In kết quả ra file |
 | -V, --version | Phiên bản |
+| -P | Số luồng kết nối tới server |
+| -w | kích thước gói tin |
+| --tester_port | port để test, mặc định được specific bởi công cụ sử dụng |
 
 <a name ="lab"></a>
 ## 3. Lab cài đặt và sử dụng bwctl trên CentOS 7

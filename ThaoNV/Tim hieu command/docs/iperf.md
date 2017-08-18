@@ -68,12 +68,13 @@ Iperf3 được phát triển chủ yếu bởi Phòng thí nghiệm Quốc gia 
 | Command line option | Description |
 |---------------------|-------------|
 | -f, --format | format cho output. 'b' = bits/sec, 'B' = Bytes/sec, 'k' = Kbits/sec, 'K' = KBytes/sec, 'm' = Mbits/sec, 'M' = MBytes/sec, 'g' = Gbits/sec, 'G' = GBytes/sec, 'a' = adaptive bits/sec, 'A' = adaptive Bytes/sec |
-| -i, --interval | Thời gian lấy mẫu để hiển thị kết quả tại thời điểm đó ra màn hình (mặc định là 0) |
+| -i, --interval | Thời gian gửi báo cáo (mặc định là 0) |
 | -l, --len  | Buffer size |
-| -p, --port | port mà server lắng nghe và client kết nối tới |
+| -p, --port | port mà server lắng nghe và client kết nối tới, giống nhau ở client và server, mặc định là port 5001 |
 | -u, --udp | Sử dụng udp |
 | -N, --nodelay | sử dụng tùy chọn TCP no delay |
-| h, --help | Tóm tắt các tùy chọn có thể sử dụng |
+| -h, --help | Tóm tắt các tùy chọn có thể sử dụng |
+| -n | Gửi n gói tin với kích thước l |
 
 **Phía server**
 
@@ -104,15 +105,17 @@ Iperf3 được phát triển chủ yếu bởi Phòng thí nghiệm Quốc gia 
 
 | Command line option | Description |
 |---------------------|-------------|
-| -p, --port | port mà server lắng nghe và client kết nối tới |
+| -p, --port | port mà server lắng nghe và client kết nối tới, nên giống nhau ở cả hai đầu client và server. Mặc định là port 5201 |
 | -f, --format | format cho output. 'k' = Kbits/sec, 'K' = KBytes/sec, 'm' = Mbits/sec, 'M' = MBytes/sec |
-| -F, --file  | client : đọc và write vào network, thay vid sử dụng random data, server : đọc từ network và write vào file, thay vì bỏ dữ liệu đi |
-| -i, --interval | Thời gian lấy mẫu để hiển thị kết quả tại thời điểm đó ra màn hình (mặc định là 0) |
+| -i, --interval | Thời gian mà iperf gửi báo cáo cho bạn (mặc định là 0) |
 | -A, --affinity  | đặt số lượng cpu core |
 | -V, --verbose | output hiển thị nhiều thông tin hơn |
 | -J, --json | output dưới dạng file json |
 | --logfile | gửi ouput tới logfile |
 | -h, --help | hiển thị tóm tắt các tùy chọn |
+| -P | Đẩy nhiều luồng song song, phù hợp với stress testing, mặc định là 1 |
+| -B | Gán host/interface. Sử dụng khi máy có nhiều interface và bạn chỉ muốn test 1 |
+| -n | Gửi n gói tin với kích thước l |
 
 **Phía server**
 
