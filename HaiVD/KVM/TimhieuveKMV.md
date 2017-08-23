@@ -17,10 +17,11 @@
 ### [5.1 Mô hình](#mohinh)
 ### [5.2 Cấu hình và cài đặt máy webvirt](#maywebvirt)
 ### [5.3 Cấu hình và cài đặt máy KVM](#maykvm)
-## [VI. Các chế độ card mạng KVM](#network)
-### [6.1 NAT](#nat)
-### [6.2 Public Bridging](#pubbr)
-### [6.3 Private Bridging](#prbr)
+### [VI. Sử dụng Webvirt](#sd)
+## [VII. Các chế độ card mạng KVM](#network)
+### [7.1 NAT](#nat)
+### [7.2 Public Bridging](#pubbr)
+### [7.3 Private Bridging](#prbr)
 
 
 
@@ -247,7 +248,8 @@ Các tùy chọn giám sát và khắc phục sự cố :
   - dumpxml : thông tin domain trong XML
   - noteinfo : thông tin về note
 
-<a name=webvirt)</a>
+
+<a name=webvirt></a>
 ## V. Hướng dẫn cài đặt webvirt
 
 <a name=mohinh></a>
@@ -588,20 +590,80 @@ virsh -c qemu+tcp://127.0.0.1/system
 
  <img src=http://i.imgur.com/J6o9dgm.png>
 
- - Bước tiếp theo : cài đặt card mạng KVM
+ - Bước tiếp theo : cài đặt card mạng KVM : Tham khảo phần 7
+
+ Sau khi đã tiến hành cài đặt card mạng 1 trong 3 cách,chúng ta tiến hành coppy một file iso của một hệ điều hành bất kì vào máy KVM để tiến hành cài đặt (Có thể sử dụng WinSCP trên windows hoặc sử dụng SCP trên Linux):
+ - Tại máy KVM , tạo file lưu trữ file iso :
+
+ ```
+mkdir -p /var/www/webvirtmgr/images
+ ```
+ - Tiến hành coppy file iso bất kì vào thư mục trên.
+
+<a name=sd></a>
+## VI. Sử dụng Webvirt
+- Trên trình duyệt, tiến hành gõ địa chỉ ip của máy chủ cài đặt Webvirt. Giao diện Webvirt hiện ra. Click vào Add Connection để tiến hành tạo một kết nối đến máy KVM :
+
+<img src=http://i.imgur.com/09koSpE.png>
+
+Lưu ý : tài khoản đăng nhập là tài khoản của máy KVM.
+
+- Click vào đường dẫn kvm-154 vừa tạo, Chọn `Storages/New Storage` để tiến hành tạo thư mục ổ đĩa và thư mục chưa file iso cho KVM :
+
+<img src=http://i.imgur.com/F2GCqF1.png>
+
+Lưu trữ file iso :
+
+<img src=http://i.imgur.com/dpPzW7C.png>
+
+Sau khi tạo được 1 mục chứa các phân vùng đĩa và một mục chứa các file iso . Chúng ta tiến hành tạo Network
+
+- Chuyển sang tab Network :
+
+Có thể cài NAT hoặc Brigde hoăc OVS tùy theo cách cấu hình và nhu cầu sử dụng :
+
+
+<img src=http://i.imgur.com/2emKN6C.png>
+
+hoặc NAT
+
+<img src=http://i.imgur.com/YuPkihG.png>
+
+- Sau khi cài đặt mạng, tiến hành tạo img cho hệ điều hành muốn cài .Vào `Storages/Add Images`:
+
+<img src=http://i.imgur.com/sHMUVgE.png>
+
+- Tiếp theo chúng ta tiến hành cài đặt . Vào `Instances/New Instance/Custom Instance` :
+
+<img src=http://i.imgur.com/nNhlYYl.png>
+
+- Tiến hành add file iso và connect hệ điều hành cho máy vừa tạo :
+
+<img src=http://i.imgur.com/Zz8NP5q.png>
+
+- Chuyển sang tab Start và Console máy vừa tạo
+
+<img src=http://i.imgur.com/pNTb9dI.png>
+
+<img src=http://i.imgur.com/73wo3xT.png>
+
+- noVNC hiện lên, tiến hành cài hệ điều hành như bình thường.
+
+<img src=http://i.imgur.com/ejuIfPp.png>
+
 
 <a name=network></a>
-## [VI. Các chế độ card mạng của KVM]
+## VII. Các chế độ card mạng của KVM
 
 <a name=nat></a>
-### 6.1 : NAT
+### 7.1 : NAT
 
   Đây là cấu hình card mạng mặc định của KVM.
 
   NAT (Network Address Translation) giống như một Router, chuyển tiếp các gói tin giữa những lớp mạng khác nhau trên một mạng lớn. NAT dịch hay thay đổi một hoặc cả hai địa chỉ bên trong một gói tin khi gói tin đó đi qua một Router, hay một số thiết bị khác. Thông thường NAT thường thay đổi địa chỉ thường là địa chỉ riêng (IP Private) của một kết nối mạng thành địa chỉ công cộng (IP Public).
 
 <a name=pbbr></a>
-### 6.2: Public Bridging
+### 7.2: Public Bridging
 
   Nếu bạn chỉ có một NIC trên máy chủ KVM, trong khi bạn muốn các Guest của mình cũng được truy cập vào cùng dải mạng vật lý thì phải thiết lập một bridge kết nối thông qua cổng eth0 của máy vật lý.
 
@@ -633,7 +695,7 @@ virsh -c qemu+tcp://127.0.0.1/system
   </ul>
 
 <a name=prbr></a>
-### 6.3: Private Bridging
+### 7.3: Private Bridging
 
   Các này tạo một card bridge sử dụng một dải ip riêng dùng để giao tiếp với các guest KVM thông qua công eth0 mà không ảnh hưởng tới địa chỉ của KVM host.Chính vì vậy không cần tham số  `bridge_ports` và cũng không cần comment `eth0` :
 
@@ -662,3 +724,5 @@ auto br0 inet static
     bridge_fd 0
     bridge_maxwait 0
   ```
+
+Trên đây là 3 cách cấu hình card mạng.

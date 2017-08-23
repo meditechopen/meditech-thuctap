@@ -1,0 +1,23 @@
+language: python
+python: 2.7
+sudo: false
+
+env:
+  - TOXENV=py27-django19-pyparsing2
+  - TOXENV=docs
+  - TOXENV=lint
+
+addons:
+  apt:
+    packages:
+      - libcairo2-dev
+
+install:
+  - pip install tox
+
+script:
+  - tox -e $TOXENV
+
+after_success:
+  - pip install codecov
+  - codecov
