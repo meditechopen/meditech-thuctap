@@ -1026,50 +1026,6 @@ dhcp_driver = neutron.agent.linux.dhcp.Dnsmasq
 enable_isolated_metadata = True
 ```
 
-**Cấu hình self-service network**
-
-Chỉnh sửa file `/etc/neutron/neutron.conf`
-
-``` sh
-[DEFAULT]
-service_plugins = router
-allow_overlapping_ips = True
-```
-
-Chỉnh sửa file `/etc/neutron/plugins/ml2/ml2_conf.ini`
-
-``` sh
-[ml2]
-type_drivers = flat,vlan,vxlan
-tenant_network_types = vxlan
-mechanism_drivers = linuxbridge,l2population
-
-[ml2_type_vxlan]
-vni_ranges = 1:1000
-```
-
-Chỉnh sửa file `/etc/neutron/plugins/ml2/linuxbridge_agent.ini`
-
-``` sh
-[vxlan]
-enable_vxlan = True
-local_ip = 10.10.10.10
-l2_population = True
-```
-
-- Cấu hình layer-3 agent
-
-Sao lưu file cấu hình
-
-`cp /etc/neutron/l3_agent.ini /etc/neutron/l3_agent.ini.origin`
-
-Chỉnh sửa file cấu hình
-
-``` sh
-[DEFAULT]
-interface_driver = neutron.agent.linux.interface.BridgeInterfaceDriver
-```
-
 **Cấu hình metadata agent**
 
 Sao lưu file cấu hình metadata agent
@@ -1121,6 +1077,56 @@ Start các service neutron và cho phép khởi động dịch vụ cùng hệ t
 systemctl enable neutron-server.service neutron-linuxbridge-agent.service neutron-dhcp-agent.service neutron-metadata-agent.service
 
 systemctl start neutron-server.service neutron-linuxbridge-agent.service neutron-dhcp-agent.service neutron-metadata-agent.service
+```
+
+**Cấu hình self-service network**
+
+Chỉnh sửa file `/etc/neutron/neutron.conf`
+
+``` sh
+[DEFAULT]
+service_plugins = router
+allow_overlapping_ips = True
+```
+
+Chỉnh sửa file `/etc/neutron/plugins/ml2/ml2_conf.ini`
+
+``` sh
+[ml2]
+type_drivers = flat,vlan,vxlan
+tenant_network_types = vxlan
+mechanism_drivers = linuxbridge,l2population
+
+[ml2_type_vxlan]
+vni_ranges = 1:1000
+```
+
+Chỉnh sửa file `/etc/neutron/plugins/ml2/linuxbridge_agent.ini`
+
+``` sh
+[vxlan]
+enable_vxlan = True
+local_ip = 10.10.10.10
+l2_population = True
+```
+
+- Cấu hình layer-3 agent
+
+Sao lưu file cấu hình
+
+`cp /etc/neutron/l3_agent.ini /etc/neutron/l3_agent.ini.origin`
+
+Chỉnh sửa file cấu hình
+
+``` sh
+[DEFAULT]
+interface_driver = neutron.agent.linux.interface.BridgeInterfaceDriver
+```
+
+Restart các dịch vụ và bật l3-agent
+
+``` sh
+systemctl restart neutron-server.service neutron-linuxbridge-agent.service neutron-dhcp-agent.service neutron-metadata-agent.service
 
 systemctl enable neutron-l3-agent.service
 systemctl start neutron-l3-agent.service
