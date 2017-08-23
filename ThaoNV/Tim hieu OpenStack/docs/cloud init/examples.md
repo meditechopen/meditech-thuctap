@@ -2,32 +2,34 @@
 
 ## Mục lục
 
-1. Cấu hình users và groups
+[1. Cấu hình users và groups](#1)
 
-2. Viết ra file mới
+[2. Viết ra file mới](#2)
 
-3. Thêm yum repository
+[3. Thêm yum repository](#3)
 
-4. Cấu hình file resolv.conf
+[4. Cấu hình file resolv.conf](#4)
 
-5. Thêm apt repositories
+[5. Thêm apt repositories](#5)
 
-6. Chạy commands ở lần boot đầu tiên
+[6. Chạy commands ở lần boot đầu tiên](#6)
 
-7. Cài đặt arbitrary packages
+[7. Cài đặt arbitrary packages](#7)
 
-8. Update apt database
+[8. Update apt database](#8)
 
-9. Chạy câu lệnh apt hoặc yum upgrade
+[9. Chạy câu lệnh apt hoặc yum upgrade](#9)
 
-10. Reboot/poweroff khi kết thúc
+[10. Reboot/poweroff khi kết thúc](#10)
 
-11. Cấu hình ssh-keys
+[11. Cấu hình ssh-keys](#11)
 
-12. Set up disk
+[12. Set up disk](#12)
+
 
 --------
 
+<a name=""></a>
 ## 1. Cấu hình users và groups
 
 ``` sh
@@ -150,6 +152,7 @@ users:
 #    groups: [adm, audio, cdrom, dialout, floppy, video, plugdev, dip, netdev]
 ```
 
+<a name="2"></a>
 ## 2. Viết ra file mới
 
 ``` sh
@@ -187,6 +190,7 @@ write_files:
     permissions: '0755'
 ```
 
+<a name="3"></a>
 ## 3. Thêm yum repository
 
 ``` sh
@@ -212,6 +216,7 @@ yum_repos:
         name: Extra Packages for Enterprise Linux 5 - Testing
 ```
 
+<a name="4"></a>
 ## 4. Cấu hình file resolv.conf
 
 ``` sh
@@ -237,6 +242,7 @@ resolv_conf:
     timeout: 1
 ```
 
+<a name="5"></a>
 ## 5. Thêm apt repositories
 
 ``` sh
@@ -290,6 +296,7 @@ apt:
       search_dns: True
 ```
 
+<a name="6"></a>
 ## 6. Chạy commands ở lần boot đầu tiên
 
 ``` sh
@@ -334,6 +341,7 @@ runcmd:
  - [ wget, "http://slashdot.org", -O, /tmp/index.html ]
 ```
 
+<a name="7"></a>
 ## 7. Cài đặt arbitrary packages
 
 ``` sh
@@ -354,6 +362,7 @@ packages:
  - [libpython2.7, 2.7.3-0ubuntu3.1]
 ```
 
+<a name="8"></a>
 ## 8. Update apt database
 
 ``` sh
@@ -367,6 +376,7 @@ packages:
 package_update: false
 ```
 
+<a name="9"></a>
 ## 9. Chạy câu lệnh apt hoặc yum upgrade
 
 ``` sh
@@ -380,6 +390,7 @@ package_update: false
 package_upgrade: true
 ```
 
+<a name="10"></a>
 ## 10. Reboot/poweroff khi kết thúc
 
 ``` sh
@@ -425,6 +436,7 @@ power_state:
  condition: True
 ```
 
+<a name="11"></a>
 ## 11. Cấu hình ssh-keys
 
 ``` sh
@@ -456,6 +468,7 @@ ssh_keys:
   dsa_public: ssh-dss AAAAB3NzaC1kc3MAAACBAM/...
 ```
 
+<a name="12"></a>
 ## 12. Set up disk
 
 ``` sh
@@ -711,3 +724,7 @@ fs_setup:
 # Behavior Caveat: The default behavior is to _check_ if the file system exists.
 #    If a file system matches the specification, then the operation is a no-op.
 ```
+
+**Nguồn:**
+
+https://cloudinit.readthedocs.io/en/latest/topics/examples.html

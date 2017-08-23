@@ -2,32 +2,35 @@
 
 ## Mục lục
 
-1. Bootcmd
+[1. Bootcmd](#1)
 
-2. Disk Setup
+[2. Disk Setup](#2)
 
-3. NTP
+[3. NTP](#3)
 
-4. Package Update Upgrade Install
+[4. Package Update Upgrade Install](#4)
 
-5. Resolv Conf
+[5. Resolv Conf](#5)
 
-6. Runcmd
+[6. Runcmd](#6)
 
-7. Set Hostname
+[7. Set Hostname](#7)
 
-8. Set Passwords
+[8. Set Passwords](#8)
 
-9. SSH
+[9. SSH](#9)
 
-10. Users and Groups
+[10. Users and Groups](#10)
 
-11. Write Files
+[11. Write Files](#11)
 
-12. Yum Add Repo
+[12. Yum Add Repo](#12)
+
+[13. Power State Change](#13)
 
 ---------------
 
+<a name=""></a>
 ## 1. Bootcmd
 
 Chạy câu lệnh ở ngay lúc quá trình boot mới diễn ra. Nó nên chỉ được dùng cho những phần sẽ không làm được ở giai đoạn sau của quá trình boot.
@@ -42,6 +45,7 @@ bootcmd:
     - [ cloud-init-per, once, mymkfs, mkfs, /dev/vdb ]
 ```
 
+<a name=""></a>
 ## 2. Disk Setup
 
 Cấu hình partions và filesystems.
@@ -69,6 +73,7 @@ fs_setup:
       replace_fs: <filesystem type>
 ```
 
+<a name="3"></a>
 ## 3. NTP
 
 Kích hoạt và cấu hình NTP
@@ -91,6 +96,7 @@ ntp:
   - 192.168.23.2
 ```
 
+<a name="4"></a>
 ## 4. Package Update Upgrade Install
 
 Update, upgrade và cài đặt packages trong quá trình boot. Nếu có package nào được cài đặt hoặc upgrade thì package cache sẽ được update trước. Nếu yêu cầu reboot thì máy sẽ reboot khi phát hiện tùy chọn `package_reboot_if_required`.
@@ -113,7 +119,7 @@ apt_upgrade: (alias for package_upgrade)
 apt_reboot_if_required: (alias for package_reboot_if_required)
 ```
 
-
+<a name="5"></a>
 ## 5. Resolv Conf
 
 Cấu hình file resolv.conf nếu nó là cần thiết cho những tiến trình tiếp theo trong quá trình boot. Lưu ý trên các distro Ubuntu/debian, người ta khuyến khích sử dụng file /etc/network/interfaces.
@@ -135,6 +141,7 @@ resolv_conf:
         timeout: 1
 ```
 
+<a name="6"></a>
 ## 6. Runcmd
 
 Chạy câu lệnh. Lưu ý tất cả các câu lệnh cần đúng theo cú pháp yaml.
@@ -152,6 +159,7 @@ runcmd:
     - [ wget, "http://example.org", -O, /tmp/index.html ]
 ```
 
+<a name="7"></a>
 ## 7. Set Hostname
 
 Đặt hostname và fqdn. Nếu tùy chọn `preserve_hostname` được thiết lập thì hostname sẽ không thể bị thay đổi sau này.
@@ -166,6 +174,7 @@ fqdn: <fqdn>
 hostname: <fqdn/hostname>
 ```
 
+<a name="8"></a>
 ## 8. Set Passwords
 
 Cấu hình passwords và kích hoạt hoặc hủy ssh bằng password.
@@ -199,6 +208,8 @@ chpasswd:
         - user4:R
         - user4:$6$rL..$ej...
 ```
+
+<a name="9"></a>
 ## 9. SSH
 
 Cấu hình ssh và ssh keys. Có rất nhiều image đã có sẵn keys, bạn có thể xóa nó bằng tùy chọn `ssh_deletekeys`.
@@ -241,6 +252,7 @@ ssh_authorized_keys:
     - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA3I7VUf2l5gSn5uavROsc5HRDpZ ...
 ```
 
+<a name="10"></a>
 ## 10. Users and Groups
 
 Cấu hình users và groups. Các entry hỗ trợ đối với `users`
@@ -295,11 +307,14 @@ users:
       uid: <user id>
 ```
 
+<a name="11"></a>
 ## 11. Write Files
 
 Thêm nội dung vào file và có thể set thêm quyền.
 
 Distro hỗ trợ: tất cả
+
+Config keys:
 
 ``` sh
 write_files:
@@ -322,11 +337,14 @@ write_files:
       permissions: '0555'
 ```
 
+<a name="12"></a>
 ## 12. Yum Add Repo
 
 Thêm cấu hình yum repository vào `/etc/yum.repos.d`
 
 Distro hỗ trợ: fedora, rhel
+
+Config keys:
 
 ``` sh
 yum_repos:
@@ -335,6 +353,24 @@ yum_repos:
         name: <repo name>
         enabled: <true/false>
         # any repository configuration options (see man yum.conf)
+```
+
+<a name="13"></a>
+## 13. Power State Change
+
+Module này cho phép bạn shutdown/reboot máy ảo sau khi các module khác đã hoàn tất.
+
+Distro hỗ trợ: tất cả
+
+Config keys:
+
+``` sh
+power_state:
+    delay: <now/'+minutes'>
+    mode: <poweroff/halt/reboot>
+    message: <shutdown message>
+    timeout: <seconds>
+    condition: <true/false/command>
 ```
 
 **Link tham khảo:**

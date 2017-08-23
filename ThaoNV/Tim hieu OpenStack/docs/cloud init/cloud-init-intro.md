@@ -2,14 +2,15 @@
 
 ## Mục lục
 
-1. Giới thiệu tổng quan về cloud-init
+[1. Giới thiệu tổng quan về cloud-init](#1)
 
-2. Chức năng của cloud-init
+[2. Chức năng của cloud-init](#2)
 
-3. Giới thiệu về cloud-config
+[3. Giới thiệu về cloud-config](#3)
 
 ---------
 
+<a name="1"></a>
 ## 1. Giới thiệu về cloud-init
 
 Cloud-init là một công cụ được sử dụng để thực hiện các thiếp lập ban đầu đối với các máy ảo hóa và cloud. Dịch vụ này sẽ chạy trước quá trình boot, nó lấy dữ liệu từ bên ngoài và thực hiện một số tác động tới máy chủ.
@@ -149,6 +150,7 @@ Notes: Đối với OpenStack, url để lấy metadata của nó thường là 
 - `sem` : Cloud-init có một khái niệm về một semaphore module, về cơ bản bao gồm tên module và tần suất của nó. Các tệp này được sử dụng để đảm bảo module chỉ chạy mỗi lần 1 lần, một trường hợp, chạy liên tục.
 
 
+<a name="2"></a>
 ## 2. Chức năng của cloud-init
 
 - Đặt nơi chứa máy ảo
@@ -160,6 +162,7 @@ Notes: Đối với OpenStack, url để lấy metadata của nó thường là 
 
 Hiện tại cloud-init đang được sử dụng rất rộng rãi trên hầu hết các distro của linux và các công nghệ cloud như OpenStack, Amazon EC2, RHEV, và VMware.
 
+<a name="3"></a>
 ## 3. Giới thiệu về cloud-config
 
 Định dạng cloud-config thực thi các câu lệnh đã được declare cho rất nhiều các configuration items phổ biến, nó khiến việc thực hiện các task này trở nên dễ dàng hơn.
