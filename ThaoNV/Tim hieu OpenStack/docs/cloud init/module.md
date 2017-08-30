@@ -50,6 +50,17 @@ bootcmd:
 
 Cấu hình partions và filesystems.
 
+Các aliases được sinh ra để mapping đối với disks, có 2 aliases tự động đó là swap xcho phân vùng swap và ephemeral<X> cho block device của ephemeral image.
+
+Các cấu hình partions được khai báo trong `disk_setup`. `table_type` chỉ định loại partition table (mbr hoặc gpt). `layout` cho biết partions được sắp xếp như thế nào. Nếu tùy chọn này được set bằng true, 1 partion được tạo ra chứa tất cả các lưu lượng trống. Ngược lại nếu được set bằng false thì sẽ không có bất kì partion nào được tạo ra.
+
+Partions có thể được chỉ định bằng việc cung cấp danh sách trong phần `layout`, mỗi một entry sẽ là size hoặc cả size cả mã partion. Size của partion sẽ được chỉ định bằng phần trăm (ví dụ 33 nghĩa là partion này chiếm khoảng 1/3 không gian disk).
+
+Tùy chọn `overwrite` kiểm soát phần ghi đè lên và có thể làm mất dữ liệu. Nếu nó được set thành false, device sẽ check xem nó nó partion table và file system chưa. Nếu một trong hai cái được phát hiện thì câu lệnh sẽ được skip.
+
+Cấu hình filesystem được khai báo trong phần `fs_setup`. Các partion có thể được set `auto`, module sẽ tìm kiếm filesystem match với `label`, `type`, `device` của `fs_setup` entry và skip quá trình tạo filesystem. Nếu nó được set thành `any` thì chỉ cần `type` và `device` match là được. Để tạo filesystem trực tiếp, sử dụng `partition: none`.
+
+
 Distro hỗ trợ: tất cả
 
 Config keys:
