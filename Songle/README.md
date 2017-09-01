@@ -1,1 +1,1 @@
-# HII
+# Đây là thư mục thực tập của Lê Xuân Song
