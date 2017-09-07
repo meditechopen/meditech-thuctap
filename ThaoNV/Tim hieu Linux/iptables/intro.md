@@ -52,7 +52,7 @@ Firewalld là phiên bản firewall mới mặc định được sử dụng tro
 
 Hình dưới đây mô tả tổng quan mối quan hệ giữa iptables và firewalld
 
-<img src="">
+<img src="http://i.imgur.com/Pu5sOu7.png">
 
 Như vậy cả hai đều sử dụng iptables tool để giao tiếp với kernel packet filter.
 
@@ -99,15 +99,15 @@ iptables định nghĩa ra 5 "hook points" trong quá trình xử lí gói tin c
 
 Hình dưới đây mô tả quá trình gói tin đi qua hệ thống để NAT
 
-<img src="">
+<img src="http://i.imgur.com/GpNoh0x.png">
 
 Hình dưới đây mô tả quá trình gói tin đi qua hệ thống để filter
 
-<img src="">
+<img src="http://i.imgur.com/3phtTDm.png">
 
 Hình dưới đây mô tả quá trình gói tin đi qua hệ thống để mangle
 
-<img src="">
+<img src="http://i.imgur.com/wpfICOs.png">
 
 | Hook | Cho phép bạn xử lí các packet ...|
 |------|------------------------------|
@@ -138,7 +138,7 @@ iptables rule bao gồm một hoặc nhiều tiêu chuẩn để xác định pa
 Cả hai yếu tố của rules đó là match và target đều là tùy chọn.
 Như vậy, cấu trúc của iptables như sau: iptables -> Tables -> Chains -> Rules
 
-<img src="">
+<img src="http://i.imgur.com/POf5Fvx.png">
 
 **Matches**
 
