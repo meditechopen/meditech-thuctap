@@ -6,11 +6,13 @@
 
 2. Sự khác biệt với Firewalld
 
-3. Các khái niệm thường gặp trong iptables. Cấu trúc của iptables
+3. Các khái niệm thường gặp trong iptables.
 
-4. Quá trình xử lí gói tin trong iptables
+4. Cách hoạt động của iptables
 
-5. Một số tùy chọn phổ biến
+5. Quá trình xử lí gói tin trong iptables
+
+6. Một số tùy chọn phổ biến
 
 -----------
 
@@ -91,4 +93,77 @@ Bạn vẫn có thể sử dụng iptables tại các phiên bản CentOS/RHEL7 
 - Đối với CentOS/RHEL 7, khi bạn tắt firewalld (mặc định) hoặc tắt iptables service. Các iptables rules cũng sẽ biến mất -> Một số service hoạt động dựa trên nó như network default của KVM (LB) cũng sẽ bị ảnh hưởng.
 - Đối với Ubuntu/Debian, ufw là firewall mặc định. Tuy nhiên khi disable ufw, các iptables rules không bị mất đi. Mặc dù vậy, để có thể lưu lại các iptables rules đã cấu hình, bạn cần cài thêm gói `iptables-persistent`
 
-## Các khái niệm thường gặp trong iptables. Cấu trúc của iptables
+## 3. Các khái niệm thường gặp trong iptables
+
+iptables định nghĩa ra 5 "hook points" trong quá trình xử lí gói tin của kernel: PREROUTING, INPUT, FORWARD, POSTROUTING và OUTPUT. Các built-int chains được gán vào các hook points này, bạn có thể add một loạt các rules cho mỗi hook points. Lưu ý: Chains không thực sự nằm trong một table và table cũng không chỉ chứa một chain.
+
+Hình dưới đây mô tả quá trình gói tin đi qua hệ thống để NAT
+
+<img src="">
+
+Hình dưới đây mô tả quá trình gói tin đi qua hệ thống để filter
+
+<img src="">
+
+Hình dưới đây mô tả quá trình gói tin đi qua hệ thống để mangle
+
+<img src="">
+
+| Hook | Cho phép bạn xử lí các packet ...|
+|------|------------------------------|
+| FORWARD | có đích là một server khác nhưng không được tạo từ server của bạn. Chain này là cách cơ bản để cấu hình server của bạn để route các request tới một thiết bị khác |
+| INPUT | có địa chỉ đích đến là server của bạn |
+| OUTPUT | được tạo bởi server của bạn |
+| PREROUTING | vừa mới tiến vào từ network interface. Nó sẽ được thực thi trước khi quá trình routing diễn ra, thường dùng cho DNAT (destination NAT) |
+| POSTROUTING | đi ra ngoài hoặc được forward sau khi  quá trình routing  hoàn tất, chỉ trước khi nó tiến vào đường truyền, thường dùng cho SNAT (source NAT) |
+
+**Tables**
+
+Iptables có 3 bảng chính: filter, mangle, và nat.
+
+| Table | Description |
+|-------|-------------|
+| nat | dùng để NAT, thường dựa vào địa chỉ nguồn hoặc đích. Nó có 3 chains là:  OUTPUT, POSTROUTING, và PREROUTING |
+| filter | Dùng để thiết lập policies cho các traffic vào, qua và ra khỏi hệ thống. iptables lấy đây làm table default, nếu bạn không khai báo bất cứ thông tin gì về table trong câu lệnh, iptables sẽ mặc định áp dụng nó cho filter table. Nó bao gồm các chains: FORWARD, INPUT, và OUTPUT |
+| mangle | Dùng để thay đổi một số thông tin cụ thể của packet. Nó có các chains là : ORWARD, INPUT, OUTPUT, POSTROUTING, và PREROUTING |
+
+**Chains**
+
+Mặc định thì mỗi table đều có chains trống. Bạn cũng có thể tự tạo chain cho mình. Mỗi chain sẽ có policy, policy này sẽ quyết định trạng thái của gói tin truong trường hợp nó không match với bất cứ rules nào. Policy chỉ cso 2 target là ACCEPT và DROP, mặc định là ACCEPT. Các chain được tạo bởi user sẽ có policy mặc định và không thay đổi được có target là RETURN.
+
+**Rules**
+
+iptables rule bao gồm một hoặc nhiều tiêu chuẩn để xác định packets nào sẽ phải chịu ảnh hưởng và target để xác định hành động nào sẽ được thực thi với packet ấy.
+
+Cả hai yếu tố của rules đó là match và target đều là tùy chọn.
+Như vậy, cấu trúc của iptables như sau: iptables -> Tables -> Chains -> Rules
+
+<img src="">
+
+**Matches**
+
+Có vô số các match có thể sử dụng với iptables. Ví dụ như Internet Protocol (IP) matches (protocol, source, hoặc destination address).
+
+**Targets**
+
+Targets được dùng để xác định hành động sẽ được thực thi đối với các packets "match" với rules và nó cũng dùng để xác định chain policies. Hiện có 4 targets mặc định đó là:
+
+| Target | Description |
+|--------|-------------|
+| ACCEPT | Cho phép packet đi đến quá trình xử lí tiếp theo. Dừng việc traverse ở chain hiện tại |
+| DROP | Không cho phép tiếp tục quá trình xử lí, không check đối với bất cứ rules, chains, tables nào thêm. Để gửi feedback trả lại sender, bạn nên dùng REJECT thay cho DROP |
+| QUEUE | Gửi packet tới userspace |
+| RETURN | Đối với rule ở user-defined chain, không tiếp tục xử lí chain này, quay lại chain có chain đang xử lí là target. Đối với built-in
+chain, không tiếp tục xử lí gói tin và sử dụng policy |
+
+## 4. Cách hoạt động của iptables
+
+Iptables hoạt động bằng cách so sánh network traffic với một danh sách các rules. Rule định nghĩa các tính chất mà packet cần có để match với rule kèm theo những hành động sẽ được thực thi với những matching packets.
+
+Có rất nhiều các options để thiết lập rule sao cho nó match với packets đi qua như protocol, ip, interface... Khi một packet match, target được thực thi. Target có thể là quyết định cuối cùng áp dụng đối với packet ví dụ như ACCEPT hoặc DROP. Nó cũng có thể chuyển packet tới chain khác để xử lí hoặc đơn giản log lại.
+
+Các rules này được gộp lại thành nhóm gọi là chains. Chains là danh sách các rules và nó sẽ được check lần lượt. Khi một packet match với 1 rules, nó sẽ được thực thi với hành động tương ứng và không cần phải check với các rules còn lại.
+
+Mỗi chain có thể có một hoặc nhiều rule nhưng mặc định nó sẽ có 1 policy. Trong trường hợp packets không match với bất cứ rules nào, policy sẽ được thực thi, bạn có thể accept hoặc drop nó.
+
+## 5. Quá trình xử lí gói tin trong iptables
