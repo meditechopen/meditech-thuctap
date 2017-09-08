@@ -2,20 +2,20 @@
 
 ## Mục lục
 
-1. iptables là gì và để làm gì?
+[1. iptables là gì và để làm gì?](#1)
 
-2. Sự khác biệt với Firewalld
+[2. Sự khác biệt với Firewalld](#2)
 
-3. Các khái niệm thường gặp trong iptables.
+[3. Các khái niệm thường gặp trong iptables](#3)
 
-4. Cách hoạt động của iptables
+[4. Cách hoạt động của iptables](#4)
 
-5. Quá trình xử lí gói tin trong iptables
+[5. Quá trình xử lí gói tin trong iptables](#5)
 
-6. Một số tùy chọn phổ biến
 
 -----------
 
+<a name="1"></a>
 ## 1. iptables là gì và để làm gì?
 
 iptables là firewall software cơ bản được dùng nhiều nhất trong Linux, được dùng để tạo tường lửa cho máy linux của bạn, nó có các chức năng lọc gói tin, nat gói tin qua đó để giúp làm nhiệm vụ bảo mật thông tin cá nhân tránh mất mát thông tin và áp dụng nhưng chính sách đổi với người sử dụng. Iptables hoạt động bằng cách giao tiếp với packet filtering hooks trong Linux kernel's networking stack. Các hooks này là netfilter framework.
@@ -47,6 +47,7 @@ Các firewall software khác chỉ đơn giản là sử dụng lại cơ chế 
 - Thực hiệm một số tác vụ với packet như thay đổi TOS/DSCP/ECN trong IP header
 
 
+<a name="2"></a>
 ## 2. Sự khác biệt giữa iptables với Firewalld
 Firewalld là phiên bản firewall mới mặc định được sử dụng trong các phiên bản RHEL 7 để thay thế cho interface của iptables. Về bản chất, nó vẫn kết nối tới netfilter kernel code. Firewalld tập trung chủ yếu vào việc cải thiện vấn đề quản lí rules bằng cách cho phép thay đổi cấu hình mà không bị mất các kết nối hiện tại.
 
@@ -93,6 +94,7 @@ Bạn vẫn có thể sử dụng iptables tại các phiên bản CentOS/RHEL7 
 - Đối với CentOS/RHEL 7, khi bạn tắt firewalld (mặc định) hoặc tắt iptables service. Các iptables rules cũng sẽ biến mất -> Một số service hoạt động dựa trên nó như network default của KVM (LB) cũng sẽ bị ảnh hưởng.
 - Đối với Ubuntu/Debian, ufw là firewall mặc định. Tuy nhiên khi disable ufw, các iptables rules không bị mất đi. Mặc dù vậy, để có thể lưu lại các iptables rules đã cấu hình, bạn cần cài thêm gói `iptables-persistent`
 
+<a name="3"></a>
 ## 3. Các khái niệm thường gặp trong iptables
 
 iptables định nghĩa ra 5 "hook points" trong quá trình xử lí gói tin của kernel: PREROUTING, INPUT, FORWARD, POSTROUTING và OUTPUT. Các built-int chains được gán vào các hook points này, bạn có thể add một loạt các rules cho mỗi hook points. Lưu ý: Chains không thực sự nằm trong một table và table cũng không chỉ chứa một chain.
@@ -153,9 +155,9 @@ Targets được dùng để xác định hành động sẽ được thực thi
 | ACCEPT | Cho phép packet đi đến quá trình xử lí tiếp theo. Dừng việc traverse ở chain hiện tại |
 | DROP | Không cho phép tiếp tục quá trình xử lí, không check đối với bất cứ rules, chains, tables nào thêm. Để gửi feedback trả lại sender, bạn nên dùng REJECT thay cho DROP |
 | QUEUE | Gửi packet tới userspace |
-| RETURN | Đối với rule ở user-defined chain, không tiếp tục xử lí chain này, quay lại chain có chain đang xử lí là target. Đối với built-in
-chain, không tiếp tục xử lí gói tin và sử dụng policy |
+| RETURN | Đối với rule ở user-defined chain, không tiếp tục xử lí chain này, quay lại chain có chain đang xử lí là target. Đối với built-in chain, không tiếp tục xử lí gói tin và sử dụng policy |
 
+<a name="4"></a>
 ## 4. Cách hoạt động của iptables
 
 Iptables hoạt động bằng cách so sánh network traffic với một danh sách các rules. Rule định nghĩa các tính chất mà packet cần có để match với rule kèm theo những hành động sẽ được thực thi với những matching packets.
@@ -166,4 +168,72 @@ Các rules này được gộp lại thành nhóm gọi là chains. Chains là d
 
 Mỗi chain có thể có một hoặc nhiều rule nhưng mặc định nó sẽ có 1 policy. Trong trường hợp packets không match với bất cứ rules nào, policy sẽ được thực thi, bạn có thể accept hoặc drop nó.
 
+<a name="5"></a>
 ## 5. Quá trình xử lí gói tin trong iptables
+
+**Những gói tin có đích đến là server của bạn**
+
+| Step | Table | Chain | |
+|------|-------|-------|-|
+| 1 | | | Trên đường mạng (Internet) |
+| 2 | | | Tới interface |
+| 3 | raw | PREROUTING | Chain này được dùng để kiểm soát gói tin trước khi thiết lập giám sát đường truyền (connection tracking). |
+| 4 | | | Thiết lập giám sát đường truyền |
+| 5 | mangle | PREROUTING | Dùng để mangle gói tin vd như thay đổi TOS... |
+| 6 | nat | PREROUTING | Sử dụng chủ yếu cho DNAT, không dùng filter ở chain này vì một số gói tin có thể bypassed |
+| 7 | | | Các routing decision được thiết lập để xác định đích đến  gói tin |
+| 8 | mangle | INPUT | mangle gói tin sau khi route nhưng vẫn chưa được gửi tới process trên máy |
+| 9 | filter | INPUT | Đây là nơi ta filter với mọi gói tin được gửi đến server. Lưu ý rằng mọi packets có đích đến là server đều phải đi qua chain này |
+| 10 | | | Quá trình xử lí trên máy (Local process or application) |
+
+**Các gói tin bắt đầu từ server của bạn**
+
+
+| Step | Table | Chain | |
+|------|-------|-------|-|
+| 1 | | | Local process/application |
+| 2 | | | Routing decision được đưa ra. Source address, interface nào sẽ được sử dụng... |
+| 3 | raw | OUTPUT | đây là nơi bạn có thể đưa ra một số quyết định trước khi gói tin được thiết lập trạng thái giám sát |
+| 4 | | | Thiết lập trạng thái giám sát |
+| 5 | mangle | OUTPUT | Nơi ta có thể mangle packets |
+| 6 | nat | OUTPUT | Sử dụng để nat các gói tin đi từ phía firewall ra ngoài |
+| 7 | | | Thêm routing decision bởi có thể quá trình mangle và nat làm thay đổi đích đến của gói tin |
+| 8 | filter | OUTPUT | Nơi ta filter các gói tin đi từ phía Local |
+| 9 | mangle | POSTROUTING | Được sử dụng chủ yếu nếu ta muốn mangle gói tin sau khi nó được route nhưng chưa rời khỏi host |
+| 10 | nat | POSTROUTING | Nơi ta SNAT |
+| 11 | | | Đi ra một interface |
+| 12 | | | Ra đường truyền |
+
+
+**Các gói tin được forward**
+
+| Step | Table | Chain | |
+|------|-------|-------|-|
+| 1 | | | Trên đường mạng (Internet) |
+| 2 | | | Tới interface |
+| 3 | raw | PREROUTING | Chain này được dùng để kiểm soát gói tin trước khi thiết lập giám sát đường truyền (connection tracking). |
+| 4 | | | Thiết lập giám sát đường truyền |
+| 5 | mangle | PREROUTING | Dùng để mangle gói tin vd như thay đổi TOS... |
+| 6 | nat | PREROUTING | Sử dụng chủ yếu cho DNAT, không dùng filter ở chain này vì một số gói tin có thể bypassed |
+| 7 | | | Các routing decision được thiết lập để xác định đích đến  gói tin |
+| 8 | mangle | FORWARD | dùng để mangle các packet sau khi routing decision được đưa ra nhưng trước routing decision cuối cùng |
+| 9 | filter | FORWARD | sau khi đã được route thì chỉ những forwarded packets mới có thể tới chain này, đây là nơi ta filter |
+| 10 | mangle | POSTROUTING | dùng để mangle các gói tin sau khi tất cả routing decision được thiết lập nhưng vẫn chưa ra khỏi host |
+| 11 | nat | POSTROUTING | dùng cho SNAT |
+| 12 | | | Đi ra một interface |
+| 13 | | | Ra đường truyền |
+
+
+Dưới đây là mô hình miêu tả quá trình gói tin traverse qua iptables
+
+<img src="http://i.imgur.com/2nQQzrh.jpg">
+
+Lưu ý mọi gói tin sẽ đều phải đi qua một hoặc nhiều path trong mô hình trên. Nếu bạn có DNAT cho nó quay về network ban đầu thì nó cũng phải đi hết các chain.
+
+**Link tham khảo**
+
+http://www.iptables.info/en/iptables-contents.html
+
+Linux iptables Pocket Reference by Gregor N. Purdy
+
+https://github.com/NguyenHoaiNam/Iptables-trong-Linux
