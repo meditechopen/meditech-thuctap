@@ -1,4 +1,4 @@
-# Hướng dẫn cài đặt OpenStack Newton trên CentOS 7.3
+# Hướng dẫn cài đặt OpenStack Newton trên CentOS 7.3 sử dụng OVS và Bonding
 
 ## Mục lục
 
@@ -6,8 +6,9 @@
 
 [2. Setup môi trường cài đặt](#set-up)
 
-- [2.1. Cài đặt trên controller](#controller)
-- [2.2. Cài đặt trên 2 compute node và storage node](#compute)
+- [2.1. Cài đặt bonding](#bonding)
+- [2.2. Cài đặt trên controller](#controller)
+- [2.3. Cài đặt trên 2 compute node và node storage](#compute)
 
 [3. Cài đặt identity service - keystone](#keystone)
 
@@ -18,40 +19,256 @@
   - [5.1 Cài đặt trên node controller](#5.1)
   - [5.2 Cài đặt trên node compute](#5.2)
 
-[6. Cài đặt networking service - neutron](#neutron)
+[6. Cài đặt networking service - neutron (provider network)](#neutron)
 
   - [6.1 Cài đặt trên node controller](#6.1)
   - [6.2 Cài đặt trên node compute](#6.2)
 
-[7. Cài đặt dashboard - horizon](#horizon)
+[7. Cài đặt self-service network](#self-service)
 
-[8. Cài đặt block storage service - cinder](#cinder)
+[8. Cài đặt dashboard - horizon](#horizon)
 
-  - [8.1 Cài đặt trên node controller](#8.1)
-  - [8.2 Cài đặt trên node storage](#8.2)
+[9. Cài đặt block storage service - cinder](#cinder)
 
-[9. Launch máy ảo](#launch)
+  - [9.1 Cài đặt trên node controller](#9.1)
+  - [9.2 Cài đặt trên node storage](#9.2)
+
+[10. Launch máy ảo](#launch)
 
 
 --------
 
 ## <a name="prepare">1. Chuẩn bị </a>
 
-**Distro:** CentOS 7.3, 2 NIC (1 Public Bridge, 1 Private Bridge)
+**Distro:** CentOS 7.3, 4 NIC (2 NAT, 2 Host-only)
 
-**Môi trường lab:** KVM
+**Môi trường lab:** VMWare
 
 **Mô hình**
 
-<img src="http://i.imgur.com/RNQ3tW9.png">
+<img src="http://i.imgur.com/q8ujqN4.png">
 
 **IP Planning**
 
-<img src="http://i.imgur.com/izdpCT2.png">
+<img src="http://i.imgur.com/A2NQQjD.png">
 
-## <a name="setup">2. Setup môi trường cài đặt </a>
+<a name="set-up"></a>
+## 2. Setup môi trường cài đặt
 
-### <a name="controller">2.1 Cài đặt trên controller </a>
+<a name="bonding"></a>
+### 2.1 Cài đặt bonding
+
+- Kiểm tra mô hình bonding
+
+<img src="http://i.imgur.com/VErti0U.png">
+
+Dùng 4 card mạng, chia làm 2 cặp, NIC 1 và 2 dùng VMNet 8 (NAT), NIC 3 và 4 dùng VMNet 1 (Host-only)
+
+Phân bố NIC:
+
+- bond0: ens33, ens34 (VMNet 8)
+- bond1: ens35, ens36 (VMNet1)
+
+Lưu ý : Trong quá trình thêm card mới, thêm lần lượt từng card một, không add nhiều card 1 lúc, sẽ dễ gây hiện tượng nhảy card mạng.
+
+Kiểm tra xem đã có file cấu hình cho NIC hay chưa
+
+`ls -alh /etc/sysconfig/network-scripts/`
+
+Với những card chưa có file cấu hình, dùng lệnh sau để tạo :
+
+`nmcli device connect enoXXX`
+
+Thay thế enoXXX với tên NIC chưa có file cấu hình. Kiểm tra lại xem file cấu hình đã sinh.
+
+**Các bước cấu hình**
+
+Thực hiện lệnh để nạp chế độ bonding cho OS trên các máy cần cấu hình.
+
+`modprobe bonding`
+
+Kiểm tra xem chế độ bonding đã được hay chưa.
+
+`modinfo bonding`
+
+Kết quả sẽ hiển thị như sau, trong đó chưa dòng description: Ethernet Channel Bonding Driver, v3.7.1
+
+``` sh
+filename:       /lib/modules/3.10.0-514.26.2.el7.x86_64/kernel/drivers/net/bonding/bonding.ko
+author:         Thomas Davis, tadavis@lbl.gov and many others
+description:    Ethernet Channel Bonding Driver, v3.7.1
+version:        3.7.1
+license:        GPL
+alias:          rtnl-link-bond
+rhelversion:    7.3
+srcversion:     B664145ACFBCC961505C750
+depends:
+intree:         Y
+vermagic:       3.10.0-514.26.2.el7.x86_64 SMP mod_unload modversions
+signer:         CentOS Linux kernel signing key
+sig_key:        61:8F:5D:DF:77:2E:4B:E8:25:FB:1B:B0:95:91:86:27:24:ED:1E:97
+sig_hashalgo:   sha256
+```
+
+**Cấu hình bond1**
+
+**Lưu ý:**
+
+Đây là các bước thực hiện trên node controller, các node còn lại thực hiện tương tự.
+
+- Bước 1 : Tạo bond1 cho 2 interface ens35 & ens36
+
+``` sh
+cat << EOF> /etc/sysconfig/network-scripts/ifcfg-bond1
+DEVICE=bond1
+TYPE=Bond
+NAME=bond1
+BONDING_MASTER=yes
+BOOTPROTO=none
+ONBOOT=yes
+IPADDR=192.168.11.10
+NETMASK=255.255.255.0
+BONDING_OPTS="mode=1 miimon=100"
+NM_CONTROLLED=no
+EOF
+```
+
+- Bước 2 : Sửa file cấu hình các interface thuộc bond1
+
+Sao lưu file cấu hình interface ens35
+
+`cp /etc/sysconfig/network-scripts/ifcfg-ens35 /etc/sysconfig/network-scripts/ifcfg-ens35.orig`
+
+Sửa dòng với giá trị mới nếu đã có dòng đó và thêm các dòng nếu thiếu trong file /etc/sysconfig/network-scripts/ifcfg-ens35
+
+``` sh
+BOOTPROTO=none
+ONBOOT=yes
+MASTER=bond1
+SLAVE=yes
+NM_CONTROLLED=no
+```
+
+Sao lưu file cấu hình của interface ens36
+
+`cp /etc/sysconfig/network-scripts/ifcfg-ens36 /etc/sysconfig/network-scripts/ifcfg-ens36.orig`
+
+Sửa dòng với giá trị mới nếu đã có dòng đó và thêm các dòng nếu thiếu trong file /etc/sysconfig/network-scripts/ifcfg-ens36
+
+``` sh
+BOOTPROTO=none
+ONBOOT=yes
+MASTER=bond1
+SLAVE=yes
+NM_CONTROLLED=no
+```
+
+- Khởi động lại network sau khi cấu hình bond1
+
+``` sh
+nmcli con reload
+systemctl restart network
+```
+
+- Kiểm tra với câu lệnh `ip a` sẽ thấy bond1 đã có địa chỉ IP và state UP
+
+- Kiểm tra trạng thái các NIC
+
+`nmcli device status`
+
+Với những card mạng nào vẫn trong trạng thái disconnect, kiểm tra lại thông số `ONBOOT=yes` trong file cấu hình.
+
+**Cấu hình bond0**
+
+- Bước 1 : Tạo bond0 cho 2 interface ens33 & ens34
+
+``` sh
+cat << EOF> /etc/sysconfig/network-scripts/ifcfg-bond0
+DEVICE=bond0
+TYPE=Bond
+NAME=bond0
+BONDING_MASTER=yes
+BOOTPROTO=none
+ONBOOT=yes
+IPADDR=172.16.69.238
+NETMASK=255.255.255.0
+GATEWAY=172.16.69.1
+DNS1=8.8.8.8
+BONDING_OPTS="mode=1 miimon=100"
+NM_CONTROLLED=no
+EOF
+```
+
+- Bước 2 : Sửa file cấu hình các interface thuộc bond0
+
+Sao lưu file cấu hình interface ens33
+
+`cp /etc/sysconfig/network-scripts/ifcfg-ens33 /etc/sysconfig/network-scripts/ifcfg-ens33.orig`
+
+Sửa dòng với giá trị mới nếu đã có dòng đó và thêm các dòng nếu thiếu trong file /etc/sysconfig/network-scripts/ifcfg-ens33
+
+``` sh
+BOOTPROTO=none
+ONBOOT=yes
+MASTER=bond0
+SLAVE=yes
+NM_CONTROLLED=no
+```
+
+Sao lưu file cấu hình của interface ens34
+
+`cp /etc/sysconfig/network-scripts/ifcfg-ens34 /etc/sysconfig/network-scripts/ifcfg-ens34.orig`
+
+Sửa dòng với giá trị mới nếu đã có dòng đó và thêm các dòng nếu thiếu trong file /etc/sysconfig/network-scripts/ifcfg-ens34
+
+``` sh
+BOOTPROTO=none
+ONBOOT=yes
+MASTER=bond0
+SLAVE=yes
+NM_CONTROLLED=no
+```
+
+Khởi động lại network sau khi cấu hình bond0
+
+``` sh
+nmcli con reload
+systemctl restart network
+```
+
+Kiểm tra với câu lệnh ip a sẽ thấy bond0 đã có địa chỉ IP và state UP. Kiểm tra thông tin các bond với câu lệnh cat /proc/net/bonding/bond0, kết quả như sau :
+
+``` sh
+Ethernet Channel Bonding Driver: v3.7.1 (April 27, 2011)
+
+Bonding Mode: fault-tolerance (active-backup)
+Primary Slave: None
+Currently Active Slave: ens33
+MII Status: up
+MII Polling Interval (ms): 100
+Up Delay (ms): 0
+Down Delay (ms): 0
+
+Slave Interface: ens33
+MII Status: up
+Speed: 1000 Mbps
+Duplex: full
+Link Failure Count: 0
+Permanent HW addr: 00:0c:29:8e:73:6e
+Slave queue ID: 0
+
+Slave Interface: ens34
+MII Status: up
+Speed: 1000 Mbps
+Duplex: full
+Link Failure Count: 0
+Permanent HW addr: 00:0c:29:8e:73:78
+Slave queue ID: 0
+```
+
+Kết quả cuối cùng, máy CTL, COM và STR phải có 2 card bond0 và bond1 với cấu hình network như trên IP Plan.
+
+### <a name="controller">2.2 Cài đặt trên controller </a>
 
 Cấu hình file `/etc/hosts` và `/etc/resolv.conf`
 
@@ -61,10 +278,10 @@ vi /etc/hosts
 
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
-192.168.100.197    controller
-192.168.100.198    compute
-192.168.100.199    compute2
-192.168.100.200    block
+172.16.69.238    controller
+172.16.69.239    compute
+172.16.69.240    compute2
+172.16.69.241    block
 ```
 
 ``` sh
@@ -158,7 +375,7 @@ vi /etc/my.cnf.d/openstack.cnf
 
 [mysqld]
 
-bind-address = 192.168.100.197
+bind-address = 172.16.69.238
 default-storage-engine = innodb
 innodb_file_per_table
 max_connections = 4096
@@ -226,7 +443,7 @@ Sao lưu cấu hình memcache
 
 Chính sửa cấu hình memcache
 
-`sed -i 's/OPTIONS=\"-l 127.0.0.1,::1\"/OPTIONS=\"-l 192.168.100.197,::1\"/g' /etc/sysconfig/memcached`
+`sed -i 's/OPTIONS=\"-l 127.0.0.1,::1\"/OPTIONS=\"-l 172.16.69.238,::1\"/g' /etc/sysconfig/memcached`
 
 Start dịch vụ và cấu hình khởi động cùng hệ thống
 
@@ -235,7 +452,7 @@ systemctl enable memcached.service
 systemctl start memcached.service
 ```
 
-### <a name ="compute">2.2 Cài đặt trên compute node </a>
+### <a name ="compute">2.3 Cài đặt trên compute node </a>
 
 Cấu hình file `/etc/hosts` và `/etc/resolv.conf`
 
@@ -245,10 +462,10 @@ vi /etc/hosts
 
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
-192.168.100.197    controller
-192.168.100.198    compute
-192.168.100.199    compute2
-192.168.100.200    block
+172.16.69.238    controller
+172.16.69.239    compute
+172.16.69.240    compute2
+172.16.69.241    block
 ```
 
 ``` sh
@@ -358,7 +575,7 @@ Chỉnh sửa file cấu hình keystone
 ``` sh
 [database]
 ...
-connection = mysql+pymysql://keystone:Welcome123@192.168.100.197/keystone
+connection = mysql+pymysql://keystone:Welcome123@172.16.69.238/keystone
 
 [token]
 ...
@@ -380,9 +597,9 @@ Bootstrap dịch vụ identity
 
 ```sh
 keystone-manage bootstrap --bootstrap-password Welcome123 \
-  --bootstrap-admin-url http://192.168.100.197:35357/v3/ \
-  --bootstrap-internal-url http://192.168.100.197:35357/v3/ \
-  --bootstrap-public-url http://192.168.100.197:5000/v3/ \
+  --bootstrap-admin-url http://172.16.69.238:35357/v3/ \
+  --bootstrap-internal-url http://172.16.69.238:35357/v3/ \
+  --bootstrap-public-url http://172.16.69.238:5000/v3/ \
   --bootstrap-region-id RegionOne
 ```
 
@@ -420,7 +637,7 @@ export OS_PASSWORD=Welcome123
 export OS_PROJECT_NAME=admin
 export OS_USER_DOMAIN_NAME=Default
 export OS_PROJECT_DOMAIN_NAME=Default
-export OS_AUTH_URL=http://192.168.100.197:35357/v3
+export OS_AUTH_URL=http://172.16.69.238:35357/v3
 export OS_IDENTITY_API_VERSION=3
 ```
 
@@ -489,7 +706,7 @@ Unset biến
 Request authentication token cho admin user
 
 ``` sh
-$ openstack --os-auth-url http://192.168.100.197:35357/v3 \
+$ openstack --os-auth-url http://172.16.69.238:35357/v3 \
   --os-project-domain-name Default --os-user-domain-name Default \
   --os-project-name admin --os-username admin token issue
 
@@ -509,7 +726,7 @@ Password:
 Request authentication token cho demo user
 
 ``` sh
-$ openstack --os-auth-url http://192.168.100.197:5000/v3 \
+$ openstack --os-auth-url http://172.16.69.238:5000/v3 \
   --os-project-domain-name Default --os-user-domain-name Default \
   --os-project-name demo --os-username demo token issue
 
@@ -536,20 +753,20 @@ export OS_USER_DOMAIN_NAME=Default
 export OS_PROJECT_NAME=admin
 export OS_USERNAME=admin
 export OS_PASSWORD=Welcome123
-export OS_AUTH_URL=http://192.168.100.197:35357/v3
+export OS_AUTH_URL=http://172.16.69.238:35357/v3
 export OS_IDENTITY_API_VERSION=3
 export OS_IMAGE_API_VERSION=2
 ```
 
 ```sh
-vi demo-openrc
+vi demo-rc
 
 export OS_PROJECT_DOMAIN_NAME=Default
 export OS_USER_DOMAIN_NAME=Default
 export OS_PROJECT_NAME=demo
 export OS_USERNAME=demo
 export OS_PASSWORD=Welcome123
-export OS_AUTH_URL=http://192.168.100.197:5000/v3
+export OS_AUTH_URL=http://172.16.69.238:5000/v3
 export OS_IDENTITY_API_VERSION=3
 export OS_IMAGE_API_VERSION=2
 ```
@@ -595,9 +812,9 @@ Tạo glance service entity
 Tạo API endpoints cho Image service
 
 ``` sh
-openstack endpoint create --region RegionOne image public http://192.168.100.197:9292
-openstack endpoint create --region RegionOne image internal http://192.168.100.197:9292
-openstack endpoint create --region RegionOne image admin http://192.168.100.197:9292
+openstack endpoint create --region RegionOne image public http://172.16.69.238:9292
+openstack endpoint create --region RegionOne image internal http://172.16.69.238:9292
+openstack endpoint create --region RegionOne image admin http://172.16.69.238:9292
 ```
 
 Cài đặt package
@@ -612,12 +829,12 @@ Chỉnh sửa file config glance-api
 
 ``` sh
 [database]
-connection = mysql+pymysql://glance:Welcome123@192.168.100.197/glance
+connection = mysql+pymysql://glance:Welcome123@172.16.69.238/glance
 
 [keystone_authtoken]
-auth_uri = http://192.168.100.197:5000
-auth_url = http://192.168.100.197:35357
-memcached_servers = 192.168.100.197:11211
+auth_uri = http://172.16.69.238:5000
+auth_url = http://172.16.69.238:35357
+memcached_servers = 172.16.69.238:11211
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -642,12 +859,12 @@ Chỉnh sửa file config glance-registry
 
 ``` sh
 [database]
-connection = mysql+pymysql://glance:Welcome123@192.168.100.197/glance
+connection = mysql+pymysql://glance:Welcome123@172.16.69.238/glance
 
 [keystone_authtoken]
-auth_uri = http://192.168.100.197:5000
-auth_url = http://192.168.100.197:35357
-memcached_servers = 192.168.100.197:11211
+auth_uri = http://172.16.69.238:5000
+auth_url = http://172.16.69.238:35357
+memcached_servers = 172.16.69.238:11211
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -727,9 +944,9 @@ Tạo nova service
 Tạo API endpoint cho Compute service
 
 ``` sh
-openstack endpoint create --region RegionOne compute public http://192.168.100.197:8774/v2.1/%\(tenant_id\)s
-openstack endpoint create --region RegionOne compute internal http://192.168.100.197:8774/v2.1/%\(tenant_id\)s
-openstack endpoint create --region RegionOne compute admin http://192.168.100.197:8774/v2.1/%\(tenant_id\)s
+openstack endpoint create --region RegionOne compute public http://172.16.69.238:8774/v2.1/%\(tenant_id\)s
+openstack endpoint create --region RegionOne compute internal http://172.16.69.238:8774/v2.1/%\(tenant_id\)s
+openstack endpoint create --region RegionOne compute admin http://172.16.69.238:8774/v2.1/%\(tenant_id\)s
 ```
 
 Cài đặt các packages
@@ -748,21 +965,21 @@ Chỉnh sửa file cấu hình `/etc/nova/nova.conf`
 [DEFAULT]
 auth_strategy = keystone
 enabled_apis = osapi_compute,metadata
-transport_url = rabbit://openstack:Welcome123@controller
-my_ip = 192.168.100.197
+transport_url = rabbit://openstack:Welcome123@172.16.69.238
+my_ip = 172.16.69.238
 use_neutron = True
 firewall_driver = nova.virt.firewall.NoopFirewallDriver
 
 [api_database]
-connection = mysql+pymysql://nova:Welcome123@192.168.100.197/nova_api
+connection = mysql+pymysql://nova:Welcome123@172.16.69.238/nova_api
 
 [database]
-connection = mysql+pymysql://nova:Welcome123@192.168.100.197/nova
+connection = mysql+pymysql://nova:Welcome123@172.16.69.238/nova
 
 [keystone_authtoken]
-auth_uri = http://192.168.100.197:5000
-auth_url = http://192.168.100.197:35357
-memcached_servers = 192.168.100.197:11211
+auth_uri = http://172.16.69.238:5000
+auth_url = http://172.16.69.238:35357
+memcached_servers = 172.16.69.238:11211
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -775,7 +992,7 @@ vncserver_listen = $my_ip
 vncserver_proxyclient_address = $my_ip
 
 [glance]
-api_servers = http://192.168.100.197:9292
+api_servers = http://172.16.69.238:9292
 
 [oslo_concurrency]
 lock_path = /var/lib/nova/tmp
@@ -812,17 +1029,17 @@ Chỉnh sửa file cấu hình
 ``` sh
 [DEFAULT]
 auth_strategy = keystone
-transport_url = rabbit://openstack:Welcome123@192.168.100.197
 enabled_apis = osapi_compute,metadata
-my_ip = 192.168.100.198
+transport_url = rabbit://openstack:Welcome123@172.16.69.238
+my_ip = 172.16.69.239
 use_neutron = True
 firewall_driver = nova.virt.firewall.NoopFirewallDriver
 
 [keystone_authtoken]
 ...
-auth_uri = http://192.168.100.197:5000
-auth_url = http://192.168.100.197:35357
-memcached_servers = 192.168.100.197:11211
+auth_uri = http://172.16.69.238:5000
+auth_url = http://172.16.69.238:35357
+memcached_servers = 172.16.69.238:11211
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -834,10 +1051,10 @@ password = Welcome123
 enabled = True
 vncserver_listen = 0.0.0.0
 vncserver_proxyclient_address = $my_ip
-novncproxy_base_url = http://192.168.100.197:6080/vnc_auto.html
+novncproxy_base_url = http://172.16.69.238:6080/vnc_auto.html
 
 [glance]
-api_servers = http://192.168.100.197:9292
+api_servers = http://172.16.69.238:9292
 
 [oslo_concurrency]
 lock_path = /var/lib/nova/tmp
@@ -883,9 +1100,9 @@ openstack compute service list
 ```
 
 <a name="neutron"></a>
-## 6. Cấu hình networking service - neutron
+## 6. Cấu hình networking service - neutron (provider network)
 
-Ở đây sử dụng linux bridge và mix provider network + self-service network
+Ở đây sử dụng OVS và mix provider network + self-service network
 
 <a name="6.1"></a>
 ### 6.1 Cấu hình trên node controller
@@ -914,20 +1131,18 @@ Tạo service neutron
 Tạo Networking service API endpoints
 
 ``` sh
-openstack endpoint create --region RegionOne network public http://192.168.100.197:9696
+openstack endpoint create --region RegionOne network public http://172.16.69.238:9696
 
-openstack endpoint create --region RegionOne network internal http://192.168.100.197:9696
+openstack endpoint create --region RegionOne network internal http://172.16.69.238:9696
 
-openstack endpoint create --region RegionOne network admin http://192.168.100.197:9696
+openstack endpoint create --region RegionOne network admin http://172.16.69.238:9696
 ```
-
-**Cấu hình provider network**
 
 - **Lưu ý:** Để có thể cài được self-service network, trước tiên bạn phải cài provider network
 
 Cài đặt các packages
 
-`yum install openstack-neutron openstack-neutron-ml2 openstack-neutron-linuxbridge ebtables`
+`yum install openstack-neutron openstack-neutron-ml2 openstack-neutron-openvswitch ebtables`
 
 Sao lưu file cấu hình
 
@@ -940,17 +1155,17 @@ Chỉnh sửa file cấu hình `/etc/neutron/neutron.conf`
 auth_strategy = keystone
 core_plugin = ml2
 service_plugins =
-transport_url = rabbit://openstack:Welcome123@192.168.100.197
+transport_url = rabbit://openstack:Welcome123@172.16.69.238
 notify_nova_on_port_status_changes = True
 notify_nova_on_port_data_changes = True
 
 [database]
-connection = mysql+pymysql://neutron:Welcome123@192.168.100.197/neutron
+connection = mysql+pymysql://neutron:Welcome123@172.16.69.238/neutron
 
 [keystone_authtoken]
-auth_uri = http://192.168.100.197:5000
-auth_url = http://192.168.100.197:35357
-memcached_servers = 192.168.100.197:11211
+auth_uri = http://172.16.69.238:5000
+auth_url = http://172.16.69.238:35357
+memcached_servers = 172.16.69.238:11211
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -960,7 +1175,7 @@ password = Welcome123
 
 
 [nova]
-auth_url = http://192.168.100.197:35357
+auth_url = http://172.16.69.238:35357
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -983,35 +1198,34 @@ Chỉnh sửa file cấu hình Modular Layer 2
 [ml2]
 type_drivers = flat,vlan
 tenant_network_types =
-mechanism_drivers = linuxbridge
+mechanism_drivers = openvswitch
 extension_drivers = port_security
 
 [ml2_type_flat]
 flat_networks = provider
 
+[ml2_type_vlan]
+network_vlan_ranges = provider
+
 [securitygroup]
+firewall_driver = neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
 enable_ipset = True
 ```
 
-Sao lưu file cấu hình Linux bridge agent
+Sao lưu file cấu hình open vswitch agent
 
-`cp /etc/neutron/plugins/ml2/linuxbridge_agent.ini /etc/neutron/plugins/ml2/linuxbridge_agent.ini.origin`
+`cp /etc/neutron/plugins/ml2/openvswitch_agent.ini /etc/neutron/plugins/ml2/openvswitch_agent.ini.origin`
 
-Chỉnh sửa file cấu hình Linux bridge agent
+Chỉnh sửa file cấu hình open vswitch agent
 
 ``` sh
-[linux_bridge]
-physical_interface_mappings = provider:ens3
-
-[vxlan]
-enable_vxlan = False
+[ovs]
+bridge_mappings = provider:br-provider
 
 [securitygroup]
 enable_security_group = True
-firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+firewall_driver = iptables_hybrid
 ```
-
-**Lưu ý:** Thay `ens3` bằng tên card mạng kết nối tới dải external của bạn.
 
 Sao lưu file cấu hình DHCP agent
 
@@ -1021,9 +1235,10 @@ Chỉnh sửa file cấu hình DHCP agent
 
 ``` sh
 [DEFAULT]
-interface_driver = neutron.agent.linux.interface.BridgeInterfaceDriver
+interface_driver = openvswitch
 dhcp_driver = neutron.agent.linux.dhcp.Dnsmasq
 enable_isolated_metadata = True
+force_metadata = True
 ```
 
 **Cấu hình metadata agent**
@@ -1036,7 +1251,7 @@ Chỉnh sửa file cấu hình metadata agent
 
 ``` sh
 [DEFAULT]
-nova_metadata_ip = 192.168.100.197
+nova_metadata_ip = 172.16.69.238
 metadata_proxy_shared_secret = Welcome123
 ```
 
@@ -1046,8 +1261,8 @@ Chỉnh sửa file cấu hình `/etc/nova/nova.conf`
 
 ``` sh
 [neutron]
-url = http://192.168.100.197:9696
-auth_url = http://192.168.100.197:35357
+url = http://172.16.69.238:9696
+auth_url = http://172.16.69.238:35357
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -1058,6 +1273,51 @@ password = Welcome123
 service_metadata_proxy = True
 metadata_proxy_shared_secret = Welcome123
 ```
+
+Tạo OVS provider
+
+`ovs-vsctl add-br br-provider`
+
+Gán interface provider vào OVS provider
+`ovs-vsctl add-port br-provider bond0`
+
+Sao lưu file cấu hình ifcfg-bond0
+
+`cp /etc/sysconfig/network-scripts/ifcfg-bond0 /etc/sysconfig/network-scripts/ifcfg-bond0.ori`
+
+Tạo file cấu hình /etc/sysconfig/network-scripts/ifcfg-bond0 mới
+
+``` sh
+DEVICE=bond0
+NAME=bond0
+DEVICETYPE=ovs
+TYPE=OVSPort
+OVS_BRIDGE=br-provider
+ONBOOT=yes
+BOOTPROTO=none
+BONDING_MASTER=yes
+BONDING_OPTS="mode=1 miimon=100"
+NM_CONTROLLED=no
+```
+
+Tạo file cấu hình /etc/sysconfig/network-scripts/ifcfg-br-provider mới
+
+``` sh
+ONBOOT=yes
+IPADDR=172.16.69.238
+NETMASK=255.255.255.0
+GATEWAY=172.16.69.1
+DNS1=8.8.8.8
+DEVICE=br-provider
+NAME=br-provider
+DEVICETYPE=ovs
+OVSBOOTPROTO=none
+TYPE=OVSBridge
+```
+
+Restart network
+
+`systemctl restart network`
 
 Tạo symbolic link giữa `/etc/neutron/plugin.ini` và `/etc/neutron/plugins/ml2/ml2_conf.ini`
 
@@ -1074,12 +1334,153 @@ Restart Compute API service
 Start các service neutron và cho phép khởi động dịch vụ cùng hệ thống
 
 ``` sh
-systemctl enable neutron-server.service neutron-linuxbridge-agent.service neutron-dhcp-agent.service neutron-metadata-agent.service
+systemctl enable neutron-server.service neutron-openvswitch-agent.service neutron-dhcp-agent.service neutron-metadata-agent.service
 
-systemctl start neutron-server.service neutron-linuxbridge-agent.service neutron-dhcp-agent.service neutron-metadata-agent.service
+systemctl start neutron-server.service neutron-openvswitch-agent.service neutron-dhcp-agent.service neutron-metadata-agent.service
+
+systemctl enable neutron-l3-agent.service
+systemctl start neutron-l3-agent.service
 ```
 
-**Cấu hình self-service network**
+<a name="6.2"></a>
+### 6.2 Cấu hình trên node Compute
+
+Cài đặt packages
+
+`yum install openstack-neutron-openvswitch ebtables ipset`
+
+Sao lưu file cấu hình
+
+`cp /etc/neutron/neutron.conf /etc/neutron/neutron.conf.origin`
+
+Chỉnh sửa file cấu hình
+
+``` sh
+[DEFAULT]
+core_plugin = ml2
+auth_strategy = keystone
+transport_url = rabbit://openstack:Welcome123@172.16.69.238
+
+[keystone_authtoken]
+auth_uri = http://172.16.69.238:5000
+auth_url = http://172.16.69.238:35357
+memcached_servers = 172.16.69.238:11211
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+project_name = service
+username = neutron
+password = Welcome123
+
+[oslo_concurrency]
+lock_path = /var/lib/neutron/tmp
+```
+
+**Cấu hình provider network**
+
+Sao lưu file cấu hình open vswitch agent
+
+`cp /etc/neutron/plugins/ml2/openvswitch_agent.ini /etc/neutron/plugins/ml2/openvswitch_agent.ini.origin`
+
+Chỉnh sửa file cấu hình
+
+``` sh
+[ovs]
+bridge_mappings = provider:br-provider
+
+[securitygroup]
+enable_security_group = True
+firewall_driver = iptables_hybrid
+```
+
+**Cấu hình Compute service sử dụng network service**
+
+Chỉnh sửa file cấu hình `/etc/nova/nova.conf`
+
+``` sh
+[neutron]
+...
+url = http://172.16.69.238:9696
+auth_url = http://172.16.69.238:35357
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+region_name = RegionOne
+project_name = service
+username = neutron
+password = Welcome123
+```
+
+Restart compute service
+
+`systemctl restart openstack-nova-compute.service`
+
+Start open vswitch agent và cho phép khởi động cùng hệ thống
+
+``` sh
+systemctl enable neutron-openvswitch-agent.service
+systemctl start neutron-openvswitch-agent.service
+```
+
+Tạo OVS provider
+
+`ovs-vsctl add-br br-provider`
+
+Sao lưu file cấu hình ifcfg-bond1
+`cp /etc/sysconfig/network-scripts/ifcfg-bond0 /etc/sysconfig/network-scripts/ifcfg-bond0.ori`
+
+Tạo file cấu hình /etc/sysconfig/network-scripts/ifcfg-bond0 mới
+
+``` sh
+DEVICE=bond0
+NAME=bond0
+DEVICETYPE=ovs
+TYPE=OVSPort
+OVS_BRIDGE=br-provider
+ONBOOT=yes
+BOOTPROTO=none
+BONDING_MASTER=yes
+BONDING_OPTS="mode=1 miimon=100"
+NM_CONTROLLED=no
+```
+
+Tạo file cấu hình /etc/sysconfig/network-scripts/ifcfg-br-provider mới
+
+``` sh
+ONBOOT=yes
+IPADDR=172.16.69.239
+NETMASK=255.255.255.0
+GATEWAY=172.16.69.1
+DNS1=8.8.8.8
+DEVICE=br-provider
+NAME=br-provider
+DEVICETYPE=ovs
+OVSBOOTPROTO=none
+TYPE=OVSBridge
+```
+
+Restart network
+
+`systemctl restart network`
+
+Restart dịch vụ OVS agent
+
+`systemctl restart neutron-openvswitch-agent.service`
+
+Tiến hành cấu hình tương tự với node compute còn lại.
+
+Kiểm tra lại các cấu hình
+
+``` sh
+. admin-openrc
+neutron ext-list
+openstack network agent list
+```
+
+<a name ="self-service"></a>
+## 7. Cấu hình self-service network
+
+### 7.1 Trên node controller
 
 Chỉnh sửa file `/etc/neutron/neutron.conf`
 
@@ -1095,19 +1496,25 @@ Chỉnh sửa file `/etc/neutron/plugins/ml2/ml2_conf.ini`
 [ml2]
 type_drivers = flat,vlan,vxlan
 tenant_network_types = vxlan
-mechanism_drivers = linuxbridge,l2population
+mechanism_drivers = openvswitch,l2population
 
 [ml2_type_vxlan]
 vni_ranges = 1:1000
 ```
 
-Chỉnh sửa file `/etc/neutron/plugins/ml2/linuxbridge_agent.ini`
+Chỉnh sửa file `/etc/neutron/plugins/ml2/openvswitch_agent.ini.ini`
 
 ``` sh
-[vxlan]
-enable_vxlan = True
-local_ip = 10.10.10.10
+[ovs]
+bridge_mappings = provider:br-provider
+local_ip = 192.168.11.10
+
+[agent]
+tunnel_types = vxlan
 l2_population = True
+
+[securitygroup]
+firewall_driver = iptables_hybrid
 ```
 
 - Cấu hình layer-3 agent
@@ -1120,125 +1527,57 @@ Chỉnh sửa file cấu hình
 
 ``` sh
 [DEFAULT]
-interface_driver = neutron.agent.linux.interface.BridgeInterfaceDriver
+interface_driver = openvswitch
+external_network_bridge =
 ```
 
-Restart các dịch vụ và bật l3-agent
+Restart network
+
+`systemctl restart network`
+
+Khởi động lại các dịch vụ :
 
 ``` sh
-systemctl restart neutron-server.service neutron-linuxbridge-agent.service neutron-dhcp-agent.service neutron-metadata-agent.service
-
-systemctl enable neutron-l3-agent.service
-systemctl start neutron-l3-agent.service
+systemctl restart openvswitch.service
+systemctl restart neutron-server.service
+systemctl restart neutron-openvswitch-agent.service
+systemctl restart neutron-dhcp-agent.service
+systemctl restart neutron-metadata-agent.service
+systemctl restart neutron-l3-agent
 ```
 
-<a name="6.2"></a>
-### 6.2 Cấu hình trên node Compute
+### 7.2 Trên node Compute
 
-Cài đặt packages
-
-`yum install openstack-neutron-linuxbridge ebtables ipset`
-
-Sao lưu file cấu hình
-
-`cp /etc/neutron/neutron.conf /etc/neutron/neutron.conf.origin`
-
-Chỉnh sửa file cấu hình
+Chỉnh sửa file `/etc/neutron/plugins/ml2/openvswitch_agent.ini`
 
 ``` sh
-[DEFAULT]
-auth_strategy = keystone
-transport_url = rabbit://openstack:Welcome123@192.168.100.197
+[ovs]
+local_ip = 192.168.11.11
 
-[keystone_authtoken]
-auth_uri = http://192.168.100.197:5000
-auth_url = http://192.168.100.197:35357
-memcached_servers = 192.168.100.197:11211
-auth_type = password
-project_domain_name = Default
-user_domain_name = Default
-project_name = service
-username = neutron
-password = Welcome123
-
-[oslo_concurrency]
-lock_path = /var/lib/neutron/tmp
-```
-
-**Cấu hình provider network**
-
-Sao lưu file cấu hình Linux bridge agent
-
-`cp /etc/neutron/plugins/ml2/linuxbridge_agent.ini /etc/neutron/plugins/ml2/linuxbridge_agent.ini.origin`
-
-Chỉnh sửa file cấu hình
-
-``` sh
-[linux_bridge]
-physical_interface_mappings = provider:ens3
-
-[vxlan]
-enable_vxlan = False
-
-[securitygroup]
-enable_security_group = True
-firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
-```
-
-- Lưu ý: Thay ens3 bằng card mạng kết nối tới external network của bạn
-
-**Cấu hình self-service network**
-
-Chỉnh sửa file `/etc/neutron/plugins/ml2/linuxbridge_agent.ini`
-
-``` sh
-[vxlan]
-enable_vxlan = True
-local_ip = 10.10.10.11
+[agent]
+tunnel_types = vxlan
 l2_population = True
 ```
 
-**Cấu hình Compute service sử dụng network service**
+Restart network
 
-Chỉnh sửa file cấu hình `/etc/nova/nova.conf`
+`systemctl restart network`
 
-``` sh
-[neutron]
-...
-url = http://192.168.100.197:9696
-auth_url = http://192.168.100.197:35357
-auth_type = password
-project_domain_name = Default
-user_domain_name = Default
-region_name = RegionOne
-project_name = service
-username = neutron
-password = Welcome123
-```
-
-Restart compute service
-
-`systemctl restart openstack-nova-compute.service`
-
-Start Linux bridge agent và cho phép khởi động cùng hệ thống
+Khởi động lại các dịch vụ :
 
 ``` sh
-systemctl enable neutron-linuxbridge-agent.service
-systemctl start neutron-linuxbridge-agent.service
+systemctl restart openvswitch.service
+systemctl restart neutron-openvswitch-agent.service
 ```
 
 Tiến hành cấu hình tương tự với node compute còn lại.
 
-Kiểm tra lại các cấu hình
+Để kiểm tra, trên controller chạy câu lệnh sau
 
-``` sh
-. admin-openrc
-neutron ext-list
-openstack network agent list
-```
+`neutron agent-list`
 
 <a name="horizon"></a>
-## 7. Cấu hình dashboard - horizon
+## 8. Cấu hình dashboard - horizon
 
 **Lưu ý:** Dịch vụ này chạy trên node controller
 
@@ -1253,7 +1592,7 @@ Sao lưu file cấu hình
 Chỉnh sửa file cấu hình
 
 ``` sh
-OPENSTACK_HOST = "192.168.100.197"
+OPENSTACK_HOST = "172.16.69.238"
 
 ALLOWED_HOSTS = ['*', ]
 
@@ -1262,7 +1601,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 CACHES = {
     'default': {
          'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-         'LOCATION': '192.168.100.197:11211',
+         'LOCATION': '172.16.69.239:11211',
     }
 }
 
@@ -1299,10 +1638,10 @@ Restart lại dịch vụ
 Để kiểm tra, dùng trình duyệt kết nối tới địa chỉ `http://controller_ip/dashboard`. Dùng tài khoản admin hoặc demo trên domain default.
 
 <a name="cinder"></a>
-## 8. Cấu hình Block storage service - Cinder
+## 9. Cấu hình Block storage service - Cinder
 
-<a name="8.1"></a>
-### 8.1 Cấu hình trên node controller
+<a name="9.1"></a>
+### 9.1 Cấu hình trên node controller
 
 Tạo database
 
@@ -1328,17 +1667,17 @@ openstack service create --name cinder --description "OpenStack Block Storage" v
 
 openstack service create --name cinderv2 --description "OpenStack Block Storage" volumev2
 
-openstack endpoint create --region RegionOne volume public http://192.168.100.197:8776/v1/%\(tenant_id\)s
+openstack endpoint create --region RegionOne volume public http://172.16.69.238:8776/v1/%\(tenant_id\)s
 
-openstack endpoint create --region RegionOne volume internal http://192.168.100.197:8776/v1/%\(tenant_id\)s
+openstack endpoint create --region RegionOne volume internal http://172.16.69.238:8776/v1/%\(tenant_id\)s
 
-openstack endpoint create --region RegionOne volume admin http://192.168.100.197:8776/v1/%\(tenant_id\)s
+openstack endpoint create --region RegionOne volume admin http://172.16.69.238:8776/v1/%\(tenant_id\)s
 
-openstack endpoint create --region RegionOne volumev2 public http://192.168.100.197:8776/v2/%\(tenant_id\)s
+openstack endpoint create --region RegionOne volumev2 public http://172.16.69.238:8776/v2/%\(tenant_id\)s
 
-openstack endpoint create --region RegionOne volumev2 internal http://192.168.100.197:8776/v2/%\(tenant_id\)s
+openstack endpoint create --region RegionOne volumev2 internal http://172.16.69.238:8776/v2/%\(tenant_id\)s
 
-openstack endpoint create --region RegionOne volumev2 admin http://192.168.100.197:8776/v2/%\(tenant_id\)s
+openstack endpoint create --region RegionOne volumev2 admin http://172.16.69.238:8776/v2/%\(tenant_id\)s
 ```
 
 Cài đặt package
@@ -1354,17 +1693,17 @@ Chỉnh sửa file cấu hình
 ``` sh
 [DEFAULT]
 auth_strategy = keystone
-transport_url = rabbit://openstack:Welcome123@192.168.100.197
-my_ip = 192.168.100.197
+transport_url = rabbit://openstack:Welcome123@172.16.69.238
+my_ip = 172.16.69.238
 
 [database]
-connection = mysql+pymysql://cinder:Welcome123@192.168.100.197/cinder
+connection = mysql+pymysql://cinder:Welcome123@172.16.69.238/cinder
 
 [keystone_authtoken]
 ...
-auth_uri = http://192.168.100.197:5000
-auth_url = http://192.168.100.197:35357
-memcached_servers = 192.168.100.197:11211
+auth_uri = http://172.16.69.238:5000
+auth_url = http://172.16.69.238:35357
+memcached_servers = 172.16.69.238:11211
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -1398,8 +1737,8 @@ systemctl enable openstack-cinder-api.service openstack-cinder-scheduler.service
 systemctl start openstack-cinder-api.service openstack-cinder-scheduler.service
 ```
 
-<a name="8.2"></a>
-### 8.2 Cài đặt trên node storage
+<a name="9.2"></a>
+### 9.2 Cài đặt trên node storage
 
 Cài đặt LVM package
 
@@ -1443,19 +1782,19 @@ Chỉnh sửa file cấu hình
 ``` sh
 [DEFAULT]
 auth_strategy = keystone
-transport_url = rabbit://openstack:Welcome123@192.168.100.197
-my_ip = 192.168.100.200
+transport_url = rabbit://openstack:Welcome123@172.16.69.238
+my_ip = 172.16.69.239
 enabled_backends = lvm
-glance_api_servers = http://192.168.100.197:9292
+glance_api_servers = http://172.16.69.238:9292
 
 [database]
-connection = mysql+pymysql://cinder:Welcome123@192.168.100.197/cinder
+connection = mysql+pymysql://cinder:Welcome123@172.16.69.238/cinder
 
 [keystone_authtoken]
 ...
-auth_uri = http://192.168.100.197:5000
-auth_url = http://192.168.100.197:35357
-memcached_servers = 192.168.100.197:11211
+auth_uri = http://172.16.69.238:5000
+auth_url = http://172.16.69.238:35357
+memcached_servers = 172.16.69.238:11211
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -1488,7 +1827,7 @@ openstack volume service list
 ```
 
 <a name="launch"></a>
-## 9. Launch máy ảo
+## 10. Launch máy ảo
 
 **Provider network**
 
@@ -1496,16 +1835,16 @@ openstack volume service list
 
 ``` sh
 . admin-openrc
-openstack network create  --share --external --provider-physical-network provider --provider-network-type flat provider
+openstack network create --share --provider-physical-network provider \
+  --provider-network-type flat provider1
 ```
 
 - Tạo subnet
 
 ``` sh
-openstack subnet create --network provider \
-  --allocation-pool start=192.168.100.201,end=192.168.100.250 \
-  --dns-nameserver 8.8.8.8 --gateway 192.168.100.1 \
-  --subnet-range 192.168.100.0/24 provider
+openstack subnet create --subnet-range 172.16.69.0/24 --gateway 172.16.69.1 \
+  --network provider1 --allocation-pool start=172.16.69.242,end=172.16.69.250 \
+  --dns-nameserver 8.8.8.8 provider1-v4
 ```
 
 **Self-service network**
@@ -1514,28 +1853,28 @@ openstack subnet create --network provider \
 
 ``` sh
 . demo-openrc
-openstack network create selfservice
+openstack network set --external provider1
+openstack network create selfservice1
 ```
 
 - Tạo subnet
 
 ``` sh
-openstack subnet create --network selfservice \
-  --dns-nameserver 8.8.8.8 --gateway 10.10.10.1 \
-  --subnet-range 10.10.10.0/24 selfservice
+openstack subnet create --subnet-range 192.168.1.0/24 \
+  --network selfservice1 --dns-nameserver 8.8.8.8 selfservice1-v4
 ```
 
 - Tạo router
 
-`openstack router create router`
+`openstack router create router1`
 
 - Thêm self-service vào interface của router
 
-`neutron router-interface-add router selfservice`
+`openstack router add subnet router1 selfservice1-v4`
 
 - Set gateway của router là provider network để ra ngoài internet
 
-`neutron router-gateway-set router provider`
+`neutron router-gateway-set router1 provider1`
 
 - Kiểm tra lại
 
