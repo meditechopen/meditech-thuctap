@@ -4,7 +4,7 @@
 
 [1.  firewalld là gì và để làm gì?](#1)
 
-[2. Lợi ích khi sử dụng firewalld](#)2
+[2. Lợi ích khi sử dụng firewalld](#2)
 
 [3. Các tính năng chính của firewalld](#3)
 
