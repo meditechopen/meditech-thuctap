@@ -2,18 +2,21 @@
 
 ## Mục lục
 
-1. Giới thiệu chung
+[1. Giới thiệu chung](#1)
 
-2. Các khái niện trong HAProxy
+[2. Các khái niện trong HAProxy](#2)
 
-3. Các kiểu load balancing
+[3. Các kiểu load balancing](#3)
 
-4. Các giải thuật load balancing phổ biến
+[4. Các giải thuật load balancing phổ biến](#4)
 
-5. So sánh HAProxy và một số giải pháp LB khác
+[5. Mô hình kết hợp với keepalived](#5)
+
+[6. So sánh HAProxy và một số giải pháp LB khác](#6)
 
 ----------
 
+<a name="1"></a>
 ## 1. Giới thiệu chung
 
 HAProxy, viết tắt của High Availability Proxy, là phần mềm mã nguồn mở cân bằng tải TCP/HTTP và giải pháp proxy mã nguồn mở phổ biến, có thể chạy trên Linux, Solaris, và FreeBSD. Nó thường dùng để cải thiện hiệu suất (performance) và sự tin cậy (reliability) của môi trường máy chủ bằng cách phân tán lưu lượng tải (workload) trên nhiều máy chủ (như web, application, database). Nó cũng thường dùng cho môi trường cao cấp gồm: GitHub, Imgur, Instagram, và Twiter.
@@ -24,6 +27,7 @@ Load Balancing hay cân bằng tải là một phương pháp phân phối khố
 
 HAProxy thường được kết hợp với KeepAlive (sẽ giải thích chi tiết ở phần dưới) để tạo thành một giải pháp HA rất hiệu quả với giá thành thấp.
 
+<a name="2"></a>
 ## 2. Các khái niện trong HAProxy
 
 **Proxy**
@@ -101,6 +105,7 @@ Nếu một máy chủ không sẵn sàng khi health check, và vì thê�
 là 1 phần mềm định tuyến được viết bằng C, cung cấp 1 công cụ đơn giản và mạnh mẽ cho việc cần bằng tải và HA cho hệ thống. Nói đơn giản hơn là keepalived dùng để cung cấp IP Failover cho 1 cluster. Cho phép 2 bộ cân bằng tải cài đặt cùng với nó hoạt động theo cơ chế active/backup.
 
 
+<a name="3"></a>
 ## 3. Các kiểu load balancing
 
 **Không cân bằng tải**
@@ -148,6 +153,7 @@ Dòng use_backend blog-backend if url_blog dùng ACL để proxy lưu lượ
 
 Dòng default_backend web-backend chỉ định rằng tất cả các lưu lượng khác sẽ chuyển hướng đến web-backend.
 
+<a name="4"></a>
 ## 4. Các giải thuật cân bằng tải phổ biến
 
 Thuật toán cân bằng tải dùng để xác định máy chủ nào, trong 1 backend, sẽ được chọn khi cân bằng tải. HAProxy cung cấp một số tùy chọn thuật toán. Ngoài việc cân bằng tải dựa trên các thuật toán, các máy chủ có thể được gán tham số weight để tính toán tần số mà máy chủ được chọn, so với các máy chủ khác.
@@ -166,6 +172,7 @@ Chọn máy chủ đang có ít kết nối đến nhất – khuyên du�
 
 Chọn máy chủ dựa trên 1 hash của source IP, ví dụ IP address của người dùng của bạn. Đây là 1 phương pháp nhằm đảm bảo rằng 1 người dùng sẽ kết nối đến cùng 1 máy chủ.
 
+<a name="5"></a>
 ## 5. Mô hình kết hợp với keepalived
 
 Đối với các cài đặt load balancing layer 4/7 phía trên , chúng sử dụng 1 load balancer để điều khiển traffic tới một hoặc nhiều backend server. tuy nhiên nếu load balancer bị lỗi thì dữ liệu sẽ bị ứ đọng dẫn tới downtime (bottleneck - nghẽn cổ chai). keepalived sinh ra để giải quyết vấn đề này.
@@ -174,6 +181,7 @@ Chọn máy chủ dựa trên 1 hash của source IP, ví dụ IP address cu�
 
 Ở ví dụ trên, ta có nhiều load balancer (1 active và một hoặc nhiều passive). Khi người dùng kết nối đến một server thông qua ip public của active load balancer, nếu load balancer ấy fails, phương thức failover sẽ detect nó và tự động gán ip tới 1 passive server khác.
 
+<a name="6"></a>
 ## 6. So sánh HAProxy và một số giải pháp LB khác
 
 **Một số giải pháp LB khác**
