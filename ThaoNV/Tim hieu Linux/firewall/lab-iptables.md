@@ -17,7 +17,9 @@
 <img src="https://i.imgur.com/OxtRKF3.png">
 
 Server: CentOS 7 (1 NIC Bridge)
+
 Client: Windows 7 (1 NIC Bridge)
+
 Môi trường lab: KVM
 
 **Yêu cầu**
@@ -89,6 +91,11 @@ my_host='192.168.100.32'
 service iptables save
 systemctl restart iptables
 ```
+
+- Chạy script và kiểm tra
+
+`sh iptables.sh `
+
 
 **Link tham khảo**
 
