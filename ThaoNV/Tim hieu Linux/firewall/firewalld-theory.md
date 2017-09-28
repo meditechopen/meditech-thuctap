@@ -10,6 +10,8 @@
 
 [4. Cơ chế hoạt động của firewalld](#4)
 
+[5. Các câu lệnh của firewalld](#5)
+
 ------------------
 
 <a name="1"></a>
@@ -92,6 +94,11 @@ firewalld có 2 thư mục chứa cấu hình:
   - CleanupOnExit=yes
   - Lockdown=no (nếu được set bằng yes thì các kết nối tới D-bus sẽ bị limit theo file lockdown-whitelist.xml)
   - LogDenied=off
+
+<a name="5"></a>
+## 5. Các câu lệnh của firewalld
+
+Tham khảo [tại đây](https://fedoraproject.org/wiki/Firewalld?rd=FirewallD#Working_with_firewalld)
 
 **Link tham khảo**
 
