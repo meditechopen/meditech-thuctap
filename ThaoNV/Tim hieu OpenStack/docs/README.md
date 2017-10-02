@@ -22,7 +22,7 @@
 
 ### Project Nova
 
-[1. Tìm hiểu Compute Service - Nova]
+[1. Tìm hiểu Compute Service - Nova](./Nova/nova-overview.md)
 
 [2. Các lệnh cơ bản thường dùng trong Nova](./docs/Nova/cli-nova.md)
 
