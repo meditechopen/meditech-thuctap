@@ -24,84 +24,84 @@
 
 [1. Tìm hiểu Compute Service - Nova](./Nova/nova-overview.md)
 
-[2. Các lệnh cơ bản thường dùng trong Nova](./docs/Nova/cli-nova.md)
+[2. Các lệnh cơ bản thường dùng trong Nova](./Nova/cli-nova.md)
 
-[3. Tìm hiểu các main options trong file config của Nova](./docs/Nova/file-config-nova.md)
+[3. Tìm hiểu các main options trong file config của Nova](./Nova/file-config-nova.md)
 
-[4. Các thao tác quản trị cơ bản với Nova](./docs/Nova/manage-nova.md)
+[4. Các thao tác quản trị cơ bản với Nova](./docs/manage-nova.md)
 
-[5. Tìm hiểu cơ chế filtering và weighting của nova-scheduler](./docs/Nova/nova-scheduler.md)
+[5. Tìm hiểu cơ chế filtering và weighting của nova-scheduler](./docs/nova-scheduler.md)
 
-[6. Quá trình khởi tạo máy ảo trong Nova](./docs/Nova/request-flow-for-provisioning-instance.md)
+[6. Quá trình khởi tạo máy ảo trong Nova](./Nova/request-flow-for-provisioning-instance.md)
 
-[7. Hướng dẫn resize máy ảo được boot từ volume](./docs/Nova/resize.md)
+[7. Hướng dẫn resize máy ảo được boot từ volume](./Nova/resize.md)
 
 ### Project Neutron
 
-[1. OpenStack Networking cơ bản](./docs/Neutron/OpenStack-Networking-basic.md)
+[1. OpenStack Networking cơ bản](./Neutron/OpenStack-Networking-basic.md)
 
-[2. Tìm hiểu Open vSwitch](./docs/Neutron/openvswitch.md)
+[2. Tìm hiểu Open vSwitch](./Neutron/openvswitch.md)
 
-[3. Kiến trúc Network trong OpenStack (Open vSwitch) và đường đi của gói tin trong OPS](./docs/Neutron/neutron-openvswitch.md)
+[3. Kiến trúc Network trong OpenStack (Open vSwitch) và đường đi của gói tin trong OPS](./Neutron/neutron-openvswitch.md)
 
-[4. Tìm hiểu Network Bonding](./docs/Neutron/bonding.md)
+[4. Tìm hiểu Network Bonding](./Neutron/bonding.md)
 
-[5. Lab cơ bản với neutron](./docs/Neutron/manage-neutron.md)
+[5. Lab cơ bản với neutron](./Neutron/manage-neutron.md)
 
-[6. Ghi chép file cấu hình Neutron](./docs/Neutron/file-config.md)
+[6. Ghi chép file cấu hình Neutron](./Neutron/file-config.md)
 
-[7. Các lệnh cơ bản thường dùng trong Neutron](./docs/Neutron/cli-neutron.md)
+[7. Các lệnh cơ bản thường dùng trong Neutron](./Neutron/cli-neutron.md)
 
 
 ### Project Keystone
 
-[1. Tìm hiểu tổng quan về keystone](./docs/Keystone/Fundamental-keystone.md)
+[1. Tìm hiểu tổng quan về keystone](./Keystone/Fundamental-keystone.md)
 
-[2.Tìm hiểu về các loại Token trong keystone](./docs/Keystone/token-format.md)
+[2.Tìm hiểu về các loại Token trong keystone](./Keystone/token-format.md)
 
-[3. Tìm hiểu file config của Keystone](./docs/Keystone/configuration-file.md)
+[3. Tìm hiểu file config của Keystone](./Keystone/configuration-file.md)
 
-[4. Sử dụng keystone](./docs/Keystone/using-keystone.md)
+[4. Sử dụng keystone](./Keystone/using-keystone.md)
 
-[5. Các câu lệnh thường dùng trong Keystone](./docs/Keystone/cli-keystone.md)
+[5. Các câu lệnh thường dùng trong Keystone](./Keystone/cli-keystone.md)
 
-[6. Tìm hiểu file policy.json và cách define role trong keystone](./docs/Keystone/file-policy.json.md)
+[6. Tìm hiểu file policy.json và cách define role trong keystone](./Keystone/file-policy.json.md)
 
 
 ### Project Glance
 
-[1. Tìm hiểu tổng quan Image Service - Glance](./docs/Glance/glance-overview.md)
+[1. Tìm hiểu tổng quan Image Service - Glance](./Glance/glance-overview.md)
 
-[2. Tìm hiểu các thao tác sử dụng Glance](./docs/Glance/manage-glance.md)
+[2. Tìm hiểu các thao tác sử dụng Glance](./Glance/manage-glance.md)
 
-[3. Các lệnh cơ bản thường dùng trong Glance](./docs/Glance/cli-glance.md)
+[3. Các lệnh cơ bản thường dùng trong Glance](./Glance/cli-glance.md)
 
-[4. Tìm hiểu file cấu hình của glance](./docs/Glance/file-config-glance.md)
+[4. Tìm hiểu file cấu hình của glance](./Glance/file-config-glance.md)
 
 ### Project Cinder
 
-[1. Tổng quan về project Cinder](./docs/Cinder/tongquan-cinder.md)
+[1. Tổng quan về project Cinder](./Cinder/tongquan-cinder.md)
 
-[2. Workflow của Cinder](./docs/Cinder/cinder-workflow.md)
+[2. Workflow của Cinder](./Cinder/cinder-workflow.md)
 
-[3. Các lệnh cơ bản với cinder](./docs/Cinder/cli-cinder.md)
+[3. Các lệnh cơ bản với cinder](./Cinder/cli-cinder.md)
 
-[4. Cài đặt và cấu hình dịch vụ Cinder](./docs/Cinder/OPS-cinder.md)
+[4. Cài đặt và cấu hình dịch vụ Cinder](./Cinder/OPS-cinder.md)
 
-[5. Cơ chế filter và weight của cinder-scheduler](./docs/Cinder/cinder-scheduler.md)
+[5. Cơ chế filter và weight của cinder-scheduler](./Cinder/cinder-scheduler.md)
 
-[6. Hướng dẫn cấu hình multiple Cinder và thực hiện tính năng migrate volume](./docs/Cinder/cinder.md)
+[6. Hướng dẫn cấu hình multiple Cinder và thực hiện tính năng migrate volume](./Cinder/cinder.md)
 
-[7. Giải thích file cấu hình Cinder](./docs/Cinder/cinder-config-explain.md)
+[7. Giải thích file cấu hình Cinder](./Cinder/cinder-config-explain.md)
 
 ### Cloud-init
 
-[1. Tìm hiểu về cloud-init](./docs/cloud-init/cloud-init-intro.md)
+[1. Tìm hiểu về cloud-init](./cloud-init/cloud-init-intro.md)
 
-[2. Một số ví dụ với cloud-config](./docs/cloud-init/examples.md)
+[2. Một số ví dụ với cloud-config](./cloud-init/examples.md)
 
-[3. Một số module phổ biến thường được dùng trong cloud-init](./docs/cloud-init/module.md)
+[3. Một số module phổ biến thường được dùng trong cloud-init](./cloud-init/module.md)
 
 ### Metadata
 
-[1. Tìm hiểu về metadata service](./docs/metadata/metadata.md)
+[1. Tìm hiểu về metadata service](./metadata/metadata.md)
