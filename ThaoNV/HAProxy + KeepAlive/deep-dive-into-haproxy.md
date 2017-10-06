@@ -31,7 +31,7 @@
 <a name="1"></a>
 ## 1. Giới thiệu chung về load balancing và load balancer
 
-Load Balancing bao gồm việc kết hợp lại nhiều thành phần để có được tổng hợp khả năng xử lí trên các thiết bị riêng lẻ mà không cần có sự can thiệp nào từ phía người dùng và có khả năng mở rộng. Như vậy sẽ có nhiều quá trình xử lí diễn ra trong cùng thời gian mà nó xử lí một tiến trình riêng lẻ.
+Load Balancing bao gồm việc kết hợp lại nhiều thành phần để có được tổng hợp khả năng xử lí trên các thiết bị riêng lẻ. Như vậy, sẽ có nhiều quá trình xử lí diễn ra trong cùng thời gian mà nó xử lí một tiến trình riêng lẻ.
 
 Lợi ích chính của load balancing đó là sử dụng hết tất cả tài nguyên để đem lại hiệu suất tốt nhất. Ví dụ ngoài đời thường, một tuyến đường có nhiều làn sẽ cho phép nhiều xe đi qua hơn trong cùng một thời điểm mà không cần phải tăng tốc độ của các xe chạy qua.
 
@@ -78,7 +78,7 @@ HAProxy là:
 
 HAProxy là single-threaded, event-driven, non-blocking engine kết hợp các I/O layer với priority-based scheduler. Vì nó được thiết kế với mục tiêu vận chuyển dữ liệu, kiến trúc của nó được tối ưu hóa để chuyển dữ liệu nhanh nhất có thể. Nó có những layer model với những cơ chế riêng để đảm bảo dữ liệu không đi tới những level cao hơn nếu không cần thiết. Phần lớn những quá trình xử lí diễn ra ở kernel và HAProxy làm mọi thứ tốt nhất để giúp kernel làm việc nhanh nhất có thể.
 
-HAProxy (product) chỉ yêu cầu haproxy (programs) được thực thi và file cấu hình để chạy. File cấu hình sẽ được đọc trước khi nó khởi động, sau đó HAProxy sẽ cố gắng gộp tất cả listening sockets và từ chối khởi động nếu có cái gì đó lỗi. Vì thế sẽ không có bất cứ một lỗi run-time nào, một khi đã chạy, nó sẽ chỉ dừng lại nếu có lệnh.
+HAProxy (product) chỉ yêu cầu haproxy (programs) được thực thi và file cấu hình để chạy. File cấu hình sẽ được đọc trước khi nó khởi động, sau đó HAProxy sẽ cố gắng gộp tất cả listening sockets và sẽ từ chối khởi động nếu có lỗi.
 
 Một khi HAProxy được bật lên, nó thực hiện 3 điều:
 
