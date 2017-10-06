@@ -65,7 +65,7 @@ Các thành phần của VRRP:
 <a name="3.1"></a>
 ### 3.1 Cấu trúc tổng quan
 
-<img src="https://i.imgur.com/eBpFQBb.png">
+<img src="../images/k1.png">
 
 kiến trúc của keepalived làm việc với 4 thành phần trong linux kernel:
 
@@ -77,7 +77,7 @@ kiến trúc của keepalived làm việc với 4 thành phần trong linux kern
 <a name="3.2"></a>
 ### 3.2 Cấu trúc chi tiết
 
-<img src="https://i.imgur.com/lumokT6.png">
+<img src="../images/k2.png">
 
 Ta có thể thấy 2 thành phần chính đó là:
 
