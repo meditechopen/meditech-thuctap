@@ -2,16 +2,33 @@
 
 ## Mục lục
 
-1. Giới thiệu chung về load balancing và load balancer
+[1. Giới thiệu chung về load balancing và load balancer](#1)
 
-2. Giới thiệu về HAProxy
+[2. Giới thiệu về HAProxy](#2)
 
-3. Chi tiết các tùy chọn cấu hình quan trọng trong HAProxy
+  - [2.1 HAProxy là gì](#2.1)
+  - [2.2 Cách thức hoạt động](#2.2)
+  - [2.3 Các tính năng cơ bản](#2.3)
 
-4. Hướng dẫn quản lí HAProxy
+[3. Chi tiết các tùy chọn cấu hình quan trọng trong HAProxy](#3)
+
+  - [3.1 Định dạng file cấu hình](#3.1)
+  - [3.2 Biến môi trường](#3.2)
+  - [3.3 Time format](#3.3)
+  - [3.4 Ví dụ](#3.4)
+  - [3.5 Global parameters](#3.5)
+  - [3.6 Proxies](#3.6)
+  - [3.7 Proxy keywords matrix](#3.7)
+  - [3.8 main keywords reference](#3.8)
+
+[4. Hướng dẫn quản lí HAProxy](#4)
+
+  - [4.1 Tổng quan về kiến trúc của HAProxy](#4.1)
+  - [4.2 Hướng dẫn cấu hình để HAProxy đẩy log ra syslog](#4.2)
 
 ----------------
 
+<a name="1"></a>
 ## 1. Giới thiệu chung về load balancing và load balancer
 
 Load Balancing bao gồm việc kết hợp lại nhiều thành phần để có được tổng hợp khả năng xử lí trên các thiết bị riêng lẻ mà không cần có sự can thiệp nào từ phía người dùng và có khả năng mở rộng. Như vậy sẽ có nhiều quá trình xử lí diễn ra trong cùng thời gian mà nó xử lí một tiến trình riêng lẻ.
@@ -37,8 +54,10 @@ Loại thứ nhất hoạt động ở packet level. Mối quan hệ giữa inpu
 
 Loại thứ 2 hoạt động trên các nội dung của phiên làm việc. Nội dung có thể được thay đổi và output stream được phân lại thành các packets khác nhau. Loại này thường hoạt động bằng proxies và được gọi là layer 7 load balancer. Công nghệ này rất phù hợp với server load balancing.
 
+<a name="2"></a>
 ## 2. Giới thiệu về HAProxy
 
+<a name="2.1"></a>
 ### 2.1 HAProxy là gì
 
 HAProxy là:
@@ -54,6 +73,7 @@ HAProxy là:
 - traffic regulator: thực hiện một số rule để limit traffic
 - protection against DDoS: nó có thể lưu giữ danh số liệu về địa chỉ ip, url,... và thực hiện các hành động (làm chậm, block,...)
 
+<a name="2.2"></a>
 ### 2.2 Cách thức hoạt động
 
 HAProxy là single-threaded, event-driven, non-blocking engine kết hợp các I/O layer với priority-based scheduler. Vì nó được thiết kế với mục tiêu vận chuyển dữ liệu, kiến trúc của nó được tối ưu hóa để chuyển dữ liệu nhanh nhất có thể. Nó có những layer model với những cơ chế riêng để đảm bảo dữ liệu không đi tới những level cao hơn nếu không cần thiết. Phần lớn những quá trình xử lí diễn ra ở kernel và HAProxy làm mọi thứ tốt nhất để giúp kernel làm việc nhanh nhất có thể.
@@ -78,6 +98,7 @@ Quá trình xử lí các incoming connections là phần phức tạp nhất v�
 - Tạo log để ghi lại những gì đã xảy ra
 - Đối với http, lặp lại bước 2 để đợi một request mới, nếu không có, tiến hành đóng kết nối.
 
+<a name="2.3"></a>
 ### 2.3 Các tính năng cơ bản
 
 - Proxying
@@ -94,8 +115,10 @@ Quá trình xử lí các incoming connections là phần phức tạp nhất v�
 - Logging
 - Statistics
 
+<a name="3"></a>
 ## 3. Chi tiết các tùy chọn cấu hình quan trọng trong HAProxy
 
+<a name="3.1"></a>
 ### 3.1 Định dạng file cấu hình
 
 Quá trình cấu hình cho HAProxy bao gồm 3 nguồn chính:
@@ -104,17 +127,22 @@ Quá trình cấu hình cho HAProxy bao gồm 3 nguồn chính:
 - "global" sections, nơi chứa process-wide parameters
 - proxies sections, có thể lấy từ "defaults", "listen", "frontend" và "backend"
 
+<a name="3.2"></a>
 ### 3.2 Biến môi trường
 
 Bến trong HAProxy được bao bọc bởi dấu nháy kép. Nó phải được bắt đầu bằng "$" và nằm bên trong dấu ngoặc nhọn ({}). Nó có thể chứa chữ cái hoặc dấu gạch dưới ( _ ) nhưng không được phép bắt đầu bằng chữ số.
 
 Ví dụ:
+
+``` sh
         bind "fd@${FD_APP1}"
 
         log "${LOCAL_SYSLOG}:514" local0 notice   # send to local server
 
         user "$HAPROXY_USER"
+```
 
+<a name="3.3"></a>
 ### 3.3 Time format
 
 Thông thường các dịnh dạng thời gian trong HAProxy thường được biểu diễn theo định dạng milliseconds, tuy nhiên HAProxy cũng hỗ trợ nhiều định dạng khác:
@@ -126,6 +154,7 @@ Thông thường các dịnh dạng thời gian trong HAProxy thường được
   - h  : hours.   1h = 60m = 3600s = 3600000ms
   - d  : days.    1d = 24h = 1440m = 86400s = 86400000ms
 
+<a name="3.4"></a>
 ### 3.4 Ví dụ
 
 ``` sh
@@ -171,6 +200,7 @@ Test cấu hình bằng câu lệnh sau:
 
 `$ sudo haproxy -f configuration.conf -c`
 
+<a name="3.5"></a>
 ### 3.5 Global parameters
 
 Các parameters trong secions global thường được sử dụng trong suốt quá chình xử lí và một số cũng là dành riêng cho hệ điều hành (process-wide and often OS-specific)
@@ -270,6 +300,7 @@ Dưới đây là một số keywords được hỗ trợ trong section này:
 
 Trên đây chỉ là những tùy chọn thông dụng, xem thêm [tại đây](http://www.haproxy.org/download/1.8/doc/configuration.txt)
 
+<a name="3.6"></a>
 ### 3.6 Proxies
 
 Các cấu hình proxy có thể được đặt trong 4 secions:
@@ -288,6 +319,7 @@ Trong đó:
 
 Hiện tại thì có 2 proxy mode được hỗ trợ đó là "tcp" và "http". Nếu sử dụng "tcp" thì HAProxy đơn giản chỉ forward các traffic giữa 2 sides. Nếu sử dụng "http" mode thì nó sẽ phần tích giao thức và có thể tương tác với chúng bằng cách chặn, chuyển hướng, thêm, sửa, xóa nội dung trong request hoặc responses.
 
+<a name="3.7"></a>
 ### 3.7 Proxy keywords matrix
 
 Dưới đây là một số keywords được hỗ trợ. Những keywords có dấu ( * ) có thể sử dụng ngược lại nếu thêm prefix "no":
@@ -448,6 +480,7 @@ use-server                                -          -         X         X
 
 Xem thêm [tại đây](http://www.haproxy.org/download/1.8/doc/configuration.txt)
 
+<a name="3.8"></a>
 ### 3.8 main keywords reference
 
 - acl <aclname> <criterion> [flags] [operator] <value> ...
@@ -521,8 +554,10 @@ Khai báo server trong phần backend
 
 Trên đây chỉ là những keywords thường được sử dụng, xem thêm [tại đây](http://www.haproxy.org/download/1.8/doc/configuration.txt)
 
+<a name="4"></a>
 ## 4. Hướng dẫn quản lí HAProxy
 
+<a name="4.1"></a>
 ### 4.1 Tổng quan về kiến trúc của HAProxy
 
 HAProxy là một single-threaded, event-driven, non-blocking daemon. Có nghĩa rằng nó sử dụng event multiplexing để schedule tất cả các hoạt động của nó. Vậy nên ta chỉ thấy nó hoạt động như một process duy nhất khi sử dụng lệnh "ps aux" để show.
@@ -535,6 +570,7 @@ HAProxy sử dụng đồng hồ bên trong nó để xác định timeouts, th�
 
 HAProxy là tcp proxy chứ không phải router. Nó làm việc với các kết nối đã được thiết lập và kiểm chứng bởi kernel.
 
+<a name="4.2"></a>
 ### 4.2 Hướng dẫn cấu hình để HAProxy đẩy log ra syslog
 
 Vì HAProxy không cho phép nó access tới file system nên cách duy nhất đó là gửi logs thông qua UDP server (mặc định ở port 514).
