@@ -112,7 +112,7 @@ là 1 phần mềm định tuyến được viết bằng C, cung cấp 1 công 
 
 Một môi trường ứng dụng web đơn giản không hỗ trợ cân bằng tải:
 
-<img src="https://i.imgur.com/tT8zGxe.png">
+<img src="../images/i1.png">
 
 Trong ví dụ này, người dùng kết nối trực tiếp đến ứng dụng web, tại yourdomain.com và không có cơ chế cân bằng tải. Nếu máy chủ web (duy nhất) bị lỗi, người dùng sẽ không thể truy xuất đến web. Ngoài ra, nếu nhiều người dùng cùng truy xuất đến máy chủ web đồng thời và nó sẽ không thể xử lý kịp lượng tải gây ra chậm hoặc người dùng không thể kết nối đến web.
 
@@ -120,7 +120,7 @@ Trong ví dụ này, người dùng kết nối trực tiếp đến ư
 
 Cách đơn giản nhất để cân bằng lưu lượng mạng đến nhiều máy chủ là dùng cân bằng tải layer 4 (transport lalyer). Cân bằng tải theo cách này sẽ chuyển hướng lưu lượng người dùng dựa trên IP range và port (vd: nếu 1 request đến http://yourdomain.com/anything, lưu lượng sẽ được chuyển hướng đến backend mà xử lý tất cả các request cho yourdomain.com trên port 80). Xem thêm [tại đây](https://www.digitalocean.com/community/tutorials/an-introduction-to-networking-terminology-interfaces-and-protocols#protocols)
 
-<img src="https://i.imgur.com/G5gLWug.png">
+<img src="../images/i2.png">
 
 Người dùng truy xuất load balancer, nó sẽ chuyển hướng request đến các máy chủ của web-backend. Máy chủ backend được chọn sẽ hồi đáp trực tiếp request người dùng. Thường, tất cả các máy chủ trong web-backend phải phục vụ nội dung giống hệt nhau – nếu không, người dùng có thể nhận nội dung không phù hợp. Lưu ý rằng cả 2 máy chủ web kết nối đến cùng máy chủ database.
 
@@ -128,7 +128,7 @@ Người dùng truy xuất load balancer, nó sẽ chuyển hướng reque
 
 Một cách phức tạp hơn để cân bằng tải lưu lượng mạng là dùng layer 7 (application layer). Dùng layer 7 cho phép load balancer chuyển hướng request đến các máy chủ backend khác nhau dựa trên nội dung request. Chế độ cân bằng tải này cho phép bạn chạy nhiều máy chủ ứng dụng web dưới cùng domain và port. Thêm thông tin về layer 7, xem phần HTTP của [Introduction Networking](https://www.digitalocean.com/community/tutorials/an-introduction-to-networking-terminology-interfaces-and-protocols#protocols)
 
-<img src="https://i.imgur.com/drdMS6L.png">
+<img src="../images/i3.png">
 
 Trong ví dụ này, nếu người dùng yêu cầu yourdomain.com/blog, họ sẽ được chuyển hướng đến blog-backend, là tập các máy chủ chạy ứng dụng blog. Các request khác được chuyển hướng đến web-backend, mà có thể chạy các ứng dụng khác. Trong ví dụ này, cả 2 backend dùng cùng máy chủ database.
 
@@ -177,7 +177,7 @@ Chọn máy chủ dựa trên 1 hash của source IP, ví dụ IP address cu�
 
 Đối với các cài đặt load balancing layer 4/7 phía trên , chúng sử dụng 1 load balancer để điều khiển traffic tới một hoặc nhiều backend server. tuy nhiên nếu load balancer bị lỗi thì dữ liệu sẽ bị ứ đọng dẫn tới downtime (bottleneck - nghẽn cổ chai). keepalived sinh ra để giải quyết vấn đề này.
 
-<img src="https://i.imgur.com/RgC5BdX.gif">
+<img src="../images/i4.gif">
 
 Ở ví dụ trên, ta có nhiều load balancer (1 active và một hoặc nhiều passive). Khi người dùng kết nối đến một server thông qua ip public của active load balancer, nếu load balancer ấy fails, phương thức failover sẽ detect nó và tự động gán ip tới 1 passive server khác.
 
