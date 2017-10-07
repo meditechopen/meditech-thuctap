@@ -307,8 +307,10 @@ mkdir /root/test
 
 ## Bước 8: Tạo menu boot
 
-``cobbler profile edit --name=CentOS7-x86_64 --kickstart=/var/lib/cobbler/kickstarts/CentOS7.ks``
-``cobbler profile edit --name=Ubuntu16-x86_64 --kickstart=/var/lib/cobbler/kickstarts/u16.cfg.ks``
+```sh
+cobbler profile edit --name=CentOS7-x86_64 --kickstart=/var/lib/cobbler/kickstarts/CentOS7.ks
+cobbler profile edit --name=Ubuntu16-x86_64 --kickstart=/var/lib/cobbler/kickstarts/u16.cfg.ks
+```
 
 
 Đồng bộ dữ liệu
