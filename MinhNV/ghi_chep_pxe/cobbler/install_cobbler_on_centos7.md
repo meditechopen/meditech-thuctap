@@ -176,7 +176,7 @@ cobbler import --arch=x86_64 --path=/mnt/iso2 --name=Ubuntu16
 
 - Xem trên web
 
-<img src="https://i.imgur.com/xQ71pO3.png">
+<img src="https://i.imgur.com/DIkZQS4.png">
 
 ## Bước 6: Tạo file kickstart
 
@@ -319,6 +319,6 @@ cobbler profile edit --name=Ubuntu16-x86_64 --kickstart=/var/lib/cobbler/kicksta
 
 ## Bước 9: Tiến hành boot OS 
 
-<img src="https://i.imgur.com/dTEwuYu.png">
+<img src="https://i.imgur.com/CGksMxk.png">
 
 <img src="https://i.imgur.com/HHuHEI0.png">
