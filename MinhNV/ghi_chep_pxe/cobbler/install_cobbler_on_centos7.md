@@ -312,6 +312,20 @@ cobbler profile edit --name=CentOS7-x86_64 --kickstart=/var/lib/cobbler/kickstar
 cobbler profile edit --name=Ubuntu16-x86_64 --kickstart=/var/lib/cobbler/kickstarts/u16.cfg.ks
 ```
 
+Chỉnh sửa file đối với label Ubuntu
+
+``vi /var/lib/tftpboot/pxelinux.cfg/default``
+
+```sh
+LABEL Ubuntu16-x86_64
+        kernel /images/Ubuntu16-x86_64/linux
+        MENU LABEL Ubuntu16-x86_64
+        append initrd=/images/Ubuntu16-x86_64/initrd.gz ksdevice=bootif lang=  text   priority=critical ks=http://172.16.2.12/cblr/svc/op/ks/profile/Ubuntu16-x86_64 hostname=Ubuntu16-x8664 domain=local.lan suite=xenial
+        ipappend 2
+```
+
+
+
 
 Đồng bộ dữ liệu
 
