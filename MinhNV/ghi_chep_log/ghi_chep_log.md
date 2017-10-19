@@ -93,8 +93,32 @@ Tag field là tên chương trình tạo ra thông báo. Content field chứa c�
 
 Rsyslog - "The rocket-fast system for log processing" được bắt đầu phát triển từ năm 2004 bởi Rainer Gerhards rsyslog là một phần mềm mã nguồn mở sử dụng trên Linux dùng để chuyển tiếp các log message đến một địa chỉ trên mạng (log receiver, log server) Nó thực hiện giao thức syslog cơ bản, đặc biệt là sử dụng TCP cho việc truyền tải log từ client tới server. Hiện nay rsyslog là phần mềm được cài đặt sẵn trên hầu hết hệ thống Unix và các bản phân phối của Linux như : Fedora, openSUSE, Debian, Ubuntu, Red Hat Enterprise Linux, FreeBSD…
 
+## File log trong centos7
+
+- /var/log/auth.log: Lưu các log về xác thực
+
+- /var/log/boot.log : Log các hoạt động trong quá trình khởi động hệ thống
+
+- /var/log/cron: Log lưu các lịch hoạt động tự động
+
+- /var/log/dmesg : Giống log message bên dưới nhưng chủ yếu là log bộ đệm
+
+- /var/log/message: Log lưu thông tin chung của hệ thống
+
+- /var/log/httpd/: Thư mục chứa log của dịch vụ Apache
+
+- /var/log/maillog: Các log hoạt động mail trên máy chủ
+
+- /var/log/secure: Log bảo mật
+
+- /var/log/wtmp  : Ghi log đăng nhập
+
+- /var/log/yum.log: Các log của Yum
+
 ## Tài liệu tham khảo 
 
 - http://en.wikipedia.org/wiki/Syslog
 - http://en.wikipedia.org/wiki/Rsyslog
 - https://mangmaytinh.net/threads/tim-hieu-ve-log-files-trong-linux.138/
+
+
