@@ -97,11 +97,17 @@ Rsyslog - "The rocket-fast system for log processing" được bắt đầu phá
 
 - /var/log/auth.log: Lưu các log về xác thực
 
+Authorization log lưu các thông tin về các hệ thống ủy quyền, các cơ chế ủy quyền các user, nhắc nhở về user password, ví dụ như hệ thống PAM (Pluggable Authentication Module), *sudo* command, các đăng nhập tới *sshd*. Các thông tin này được lưu lại trong **/var/log/auth.log**. File log cung cấp các thông tin về đăng nhập user, việc sử dụng *sudo* command.
+
 - /var/log/boot.log : Log các hoạt động trong quá trình khởi động hệ thống
+
+Kịch bản khởi tạo hệ thống, `/etc/init.d/bootmisc.sh` gửi tất cả các tin nhắn khởi động đến tệp nhật ký này. Bạn nên phân tích tệp nhật ký này để điều tra các vấn đề liên quan đến tắt máy không đúng cách, khởi động lại không khởi động hoặc khởi động thất bại. Tệp nhật ký này có thể hữu ích để xác định thời gian downtime của hệ thống do tắt máy bất ngờ.
 
 - /var/log/cron: Log lưu các lịch hoạt động tự động
 
 - /var/log/dmesg : Giống log message bên dưới nhưng chủ yếu là log bộ đệm
+
+Đây không hẳn là một file log, phần nào giống một khu vực trong một kernal đang chạy, bạn có thể query tới các message về việc kernal bootup thông qua *dmesg*.
 
 - /var/log/message: Log lưu thông tin chung của hệ thống
 
@@ -109,11 +115,21 @@ Rsyslog - "The rocket-fast system for log processing" được bắt đầu phá
 
 - /var/log/maillog: Các log hoạt động mail trên máy chủ
 
+Đây là tệp nhật ký nơi bạn có thể tìm thông tin về postfix, smtpd, MailScanner,  SpamAssassain hoặc bất kỳ dịch vụ liên quan đến email nào khác đang chạy trên máy chủ mail
+
+Hơn nữa, file log này có thể giúp bạn điều tra vấn đề gửi nhận mail không thành công. Thông tin về các nỗ lực gửi mail có thể bị chặn bởi máy chủ mail cũng được hiển thị tại đây. Bạn cũng có thể theo dõi nguồn gốc của một email đến bằng cách xem xét kỹ lưỡng file log này.
+
 - /var/log/secure: Log bảo mật
+
+Các hệ thống dựa trên RedHat và CentOS sử dụng tệp nhật ký này thay vì /var/log/auth.log.
 
 - /var/log/wtmp  : Ghi log đăng nhập
 
+Sử dụng wtmp bạn có thể tìm ra ai đăng nhập vào hệ thống
+
 - /var/log/yum.log: Các log của Yum
+
+Tệp nhật ký này theo dõi việc cài đặt các thành phần hệ thống và gói phần mềm. Bạn có thể kiểm tra các thông báo đăng nhập ở đây để biết liệu một gói đã được cài đặt đúng hay không. Nó cũng có thể giúp bạn gỡ rối các vấn đề liên quan đến cài đặt phần mềm. 
 
 ## Tài liệu tham khảo 
 
