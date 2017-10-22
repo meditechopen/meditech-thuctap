@@ -25,6 +25,7 @@
 
   - [4.1 Tổng quan về kiến trúc của HAProxy](#4.1)
   - [4.2 Hướng dẫn cấu hình để HAProxy đẩy log ra syslog](#4.2)
+  - [4.3 Tóm tắt và giải thích các lệnh trong HAproxy](#4.3)
 
 ----------------
 
@@ -597,6 +598,35 @@ $UDPServerRun 514
 Cuối cùng là restart lại haproxy. Test lại bằng cách chạy câu lệnh sau
 
 `strace -tt -s100 -etrace=sendmsg -p <haproxy's pid>`
+
+<a name="4.3"></a>
+### 4.3 Tóm tắt và giải thích các lệnh trong HAproxy
+
+Cấu trúc câu lệnh
+
+`$ haproxy [<options>]*`
+
+Trong đó `[<options>]*` là các tùy chọn đi kèm, nếu không có options nào được khai báo thì nó sẽ hiển thị help page.
+
+Danh sách các options:
+
+- -- <cfgfile>* : tất cả các câu lệnh phía sau kí tự `--` đều là đường dẫn tới thư mục hoặc file cần được load và process theo thứ tự được khai báo. nó thường được dùng khi phải load nhiều file cùng lúc. Gần giống với `-f`, khác ở chỗ `-f` phải xuất hiện ở mỗi một file được khai báo đơn lẻ.
+- -f <cfgfile|cfgdir> : Thêm <cfgfile> vào danh sách các file cấu hình được load. Mỗi một file chứa cấu hình của một hoặc nhiều section vì thế nó cần được bắt đầu bằng ` "global", "defaults", "peers", "listen", "frontend", "backend"`
+- -C <dir> : Thay đổi thư mục trước khi load files cấu hình
+- -D : Khởi động như một daemon. Lỗi sẽ không được thông báo trên terminal.
+- -Ds: chạy ở mode systemd
+- -L <name> : thay đổi local peer name thành <name>
+- -N <limit> : Thiết lập maxconn trên mỗi proxy (mặc định là 2000)
+- -V : bật verbose mode
+- -c : Check file cấu hình, nếu mọi thứ ok thì output của nó sẽ không hiện gì
+- -d : bật debug mode, mặc định sẽ tắt daemon mode
+- -dG : tắt hàm getaddrinfo() để chuyển host names thành địa chỉ.
+- -m <limit> : giới hạn số memory theo megabytes trên từng tiến trình
+- -n <limit> : giới hạn các connection trên từng process. giống với <maxconn> trong global section.
+- -p <file> : ghi tất cả các processes' pids vào một file trong quá trình khởi động, giống với `pidfile` trong section global
+- -q: đặt mode quiet
+- -v : thông báo version, ngày cài đặt
+
 
 **Link tham khảo**
 
