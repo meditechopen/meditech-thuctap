@@ -34,7 +34,10 @@ Superuser created successfully.
 
 ### Bước 3: Cài đặt nginx
 
-``sudo mv webvirtmgr /var/www/``
+```sh
+mkdir /var/www/webvirtmgr
+sudo mv webvirtmgr /var/www/webvirtmgr
+```
 
 Thêm file webvirtmgr.conf trong /etc/nginx/conf.d: 
 
@@ -152,6 +155,12 @@ Restart supervisor
 ```sh
 sudo service supervisor stop
 sudo service supervisor start
+```
+```sh
+cd /var/www/webvirtmgr
+sudo git pull
+sudo ./manage.py collectstatic
+sudo service supervisor restart
 ```
 
 ### Bước 6: 
