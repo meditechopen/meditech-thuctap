@@ -100,9 +100,7 @@ Khởi động lại nginx
 
 `` sudo service nginx restart``
 
-Update SELinux policy
-
-``/usr/sbin/setsebool httpd_can_network_connect true`` 
+ 
 
 ### Bước 4: Setup supervisor
 
