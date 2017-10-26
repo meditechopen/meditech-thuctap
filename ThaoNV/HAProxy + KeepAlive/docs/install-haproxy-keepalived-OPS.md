@@ -2,37 +2,40 @@
 
 ## Mục lục
 
-1. Mô hình
+[1. Mô hình](#)
 
-2. Tạo VIP
+[2. Tạo VIP](#)
 
-3. Cấu hình haproxy + keepalived
+[3. Cấu hình haproxy + keepalived](#)
 
-4. Cấu hình trên OPS
+[4. Cấu hình trên OPS](#)
 
 -------------------
 
+<a name="1"></a>
 ## 1. Mô hình
 
-<img src="">
+<img src="https://i.imgur.com/0jaqpCU.png">
 
 OS: Ubuntu 14.04
 
+<a name="2"></a>
 ## 2. Tạo VIP
 
 Sử dụng câu lệnh
 
 `openstack port create --network <net-id> vip`
 
-<img src="">
+<img src="https://i.imgur.com/62OIVyW.png">
 
 Bạn có thể chỉ định ip bằng tùy chọn `--fixed-ip`
 
 Ta sẽ sử dụng port này sau.
 
+<a name="3"></a>
 ## 3.Cấu hình haproxy + keepalived
 
-Tham khảo [tại đây]()
+Tham khảo [tại đây](https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/HAProxy%20%2B%20KeepAlive/docs/lab-haproxy-keepalived.md)
 
 Ở đây mình sẽ cấu hình haproxy và keepalived cơ bản với 2 web-server cài apache2
 
@@ -61,11 +64,11 @@ backend web-servers
 
 Trong đó `192.168.100.52` và `192.168.100.55` là 2 web server của mình. Trên đây mình có cấu hình một trang web đơn giản:
 
-<img src="">
+<img src="https://i.imgur.com/PvwTTtB.png">
 
 Tương tự với web server còn lại
 
-<img src="">
+<img src="https://i.imgur.com/PYA4Kv2.png">
 
 **Cấu hình keepalived trên haproxy1**
 
@@ -110,6 +113,7 @@ service haproxy restart
 service keepalived restart
 ```
 
+<a name="4"></a>
 ## 4. Cấu hình trên OPS
 
 **Cấu hình Security Groups**
@@ -128,51 +132,51 @@ Vì thế ta cần cấu hình để port lắng nghe nhiều IP. Đầu tiên t
 
 `nova interface-list haproxy1`
 
-<img src="">
+<img src="https://i.imgur.com/tSz8Z7p.png">
 
 `nova interface-list haproxy2`
 
-<img src="">
+<img src="https://i.imgur.com/rnDSw32.png">
 
 - Sau đó xem thông tin chi tiết các port
 
 `openstack port show 16cb05d9-9694-499e-8412-64ed3943cb84`
 
-<img src="">
+<img src="https://i.imgur.com/2Egfh1i.png">
 
 Tương tự với port còn lại
 
 `openstack port show b1ef066b-05a3-4c71-bf5a-71a8f6a2d557`
 
-<img src="">
+<img src="https://i.imgur.com/5KafhYM.png">
 
 - Cuối cùng ta phải thêm VIP vào từng port bằng câu lệnh
 
 `neutron port-update 16cb05d9-9694-499e-8412-64ed3943cb84 --allowed_address_pairs list=true type=dict ip_address=192.168.100.51`
 
-<img src="">
+<img src="https://i.imgur.com/wGfgvAs.png">
 
 `neutron port-update b1ef066b-05a3-4c71-bf5a-71a8f6a2d557 --allowed_address_pairs list=true type=dict ip_address=192.168.100.51`
 
-<img src="">
+<img src="https://i.imgur.com/BRoS61E.png">
 
 **Kiểm tra lại**
 
 Ta thấy IP đã lên trên phía haproxy1
 
-<img src="">
+<img src="https://i.imgur.com/L0gM6pL.png">
 
 Trong khi đó haproxy2 chỉ có 1 IP
 
-<img src="">
+<img src="https://i.imgur.com/nKUWX4z.png">
 
 Nếu haproxy1 bị tắt, ngay lập tức IP sẽ chuyển sang phía haproxy2
 
-<img src="">
+<img src="https://i.imgur.com/UJPeKGs.png">
 
 Kiểm tra VIP :
 
-<img src="">
+<img src="https://i.imgur.com/JMXR036.png">
 
 **Tài liệu tham khảo**
 
