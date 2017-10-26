@@ -40,6 +40,45 @@ sudo mv webvirtmgr /var/www/
 ```
 Kiểm tra trong thư mục /var/www/ đã có webvirtmgr chưa. Chưa có thì phải kiểm tra lại
 
+Kết quả oke:
+
+```sh
+root@ubuntu:~# cd /var/www/webvirtmgr/
+root@ubuntu:/var/www/webvirtmgr# ls -alh
+total 168K
+drwxr-xr-x 21 www-data www-data 4.0K Oct 26 23:26 .
+drwxr-xr-x  3 root     root     4.0K Oct 26 23:18 ..
+drwxr-xr-x  6 www-data www-data 4.0K Oct 26 23:14 conf
+drwxr-xr-x  2 www-data www-data 4.0K Oct 26 23:22 console
+drwxr-xr-x  3 www-data www-data 4.0K Oct 26 23:22 create
+drwxr-xr-x  4 www-data www-data 4.0K Oct 26 23:14 deploy
+-rw-r--r--  1 www-data www-data   85 Oct 26 23:14 dev-requirements.txt
+drwxr-xr-x  8 www-data www-data 4.0K Oct 26 23:22 .git
+-rw-r--r--  1 www-data www-data  154 Oct 26 23:14 .gitignore
+drwxr-xr-x  2 www-data www-data 4.0K Oct 26 23:22 hostdetail
+drwxr-xr-x  2 www-data www-data 4.0K Oct 26 23:14 images
+drwxr-xr-x  3 www-data www-data 4.0K Oct 26 23:22 instance
+drwxr-xr-x  2 www-data www-data 4.0K Oct 26 23:22 interfaces
+drwxr-xr-x  5 www-data www-data 4.0K Oct 26 23:14 locale
+-rwxr-xr-x  1 www-data www-data  253 Oct 26 23:14 manage.py
+-rw-r--r--  1 www-data www-data  722 Oct 26 23:14 MANIFEST.in
+drwxr-xr-x  2 www-data www-data 4.0K Oct 26 23:22 networks
+-rw-r--r--  1 www-data www-data 2.5K Oct 26 23:14 README.rst
+-rw-r--r--  1 www-data www-data  147 Oct 26 23:14 requirements.txt
+drwxr-xr-x  2 www-data www-data 4.0K Oct 26 23:22 secrets
+drwxr-xr-x  2 www-data www-data 4.0K Oct 26 23:14 serverlog
+drwxr-xr-x  2 www-data www-data 4.0K Oct 26 23:22 servers
+-rw-r--r--  1 www-data www-data 2.3K Oct 26 23:14 setup.py
+drwxr-xr-x  6 www-data www-data 4.0K Oct 26 23:16 static
+drwxr-xr-x  2 www-data www-data 4.0K Oct 26 23:22 storages
+drwxr-xr-x  2 www-data www-data 4.0K Oct 26 23:14 templates
+-rw-r--r--  1 www-data www-data  497 Oct 26 23:14 .travis.yml
+-rw-r--r--  1 www-data www-data  580 Oct 26 23:14 Vagrantfile
+drwxr-xr-x  2 www-data www-data 4.0K Oct 26 23:22 vrtManager
+drwxr-xr-x  5 www-data www-data 4.0K Oct 26 23:22 webvirtmgr
+-rw-r--r--  1 www-data www-data  42K Oct 26 23:26 webvirtmgr.sqlite3
+```
+
 Thêm file webvirtmgr.conf trong /etc/nginx/conf.d: 
 
 ```sh
