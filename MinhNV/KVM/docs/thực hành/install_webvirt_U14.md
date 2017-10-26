@@ -35,9 +35,10 @@ Superuser created successfully.
 ### Bước 3: Cài đặt nginx
 
 ```sh
-mkdir /var/www/webvirtmgr
-sudo mv webvirtmgr /var/www/webvirtmgr
+mkdir /var/www
+sudo mv webvirtmgr /var/www/
 ```
+Kiểm tra trong thư mục /var/www/ đã có webvirtmgr chưa. Chưa có thì phải kiểm tra lại
 
 Thêm file webvirtmgr.conf trong /etc/nginx/conf.d: 
 
@@ -165,7 +166,7 @@ sudo service supervisor restart
 
 ### Bước 6: 
 
-Tuy nhiên sau khi cài web-virt chúng ta sẽ chưa console được các máy ảo đã cài đặt trước sẵn có thông qua novnc. Thế nên ta phải đi chỉnh sửa file VM.xml như sau:
+Tuy nhiên sau khi cài web-virt chúng ta sẽ chưa console được các máy ảo đã cài đặt trước sẵn có thông qua novnc. Thế nên ta phải đi chỉnh sửa file VM.xml trên `máy KVM` như sau:
 
 ```sh 
 .........................
@@ -175,7 +176,7 @@ Tuy nhiên sau khi cài web-virt chúng ta sẽ chưa console được các máy
 .........................
 ```
 
-### Bước 7: Chỉnh sửa file cấu hình của libvirt như sau 
+### Bước 7: Chỉnh sửa file cấu hình của libvirt trên `KVM` như sau 
 
 - file libvirt.conf
 ``vi /etc/libvirt/libvirtd.conf``
