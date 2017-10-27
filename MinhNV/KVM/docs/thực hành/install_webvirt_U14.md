@@ -208,12 +208,14 @@ sudo service supervisor restart
 Tuy nhiên sau khi cài web-virt chúng ta sẽ chưa console được các máy ảo đã cài đặt trước sẵn có thông qua novnc. Thế nên ta phải đi chỉnh sửa file VM.xml trên `máy KVM` như sau:
 
 ```sh 
+virsh shutdown <name_VM>
 virsh edit <name_VM>
 .........................
 <graphics type='vnc' port='-1' autoport='yes' listen='0.0.0.0'>
       <listen type='address' address='0.0.0.0'/>
 </graphics>
 .........................
+virsh start <name_VM>
 ```
 
 ### Bước 7: Chỉnh sửa file cấu hình của libvirt trên `KVM` như sau 
