@@ -20,17 +20,17 @@
 
 - Tiến hành đổi password 
 
-<img src="https://i.imgur.com/D4uQBM4.png"
+<img src="https://i.imgur.com/D4uQBM4.png">
 
 - Đăng nhập lại 
+
+<img src="https://i.imgur.com/SSpqssv.png">
 
 ### Bước 2: Liên lạc với admin để add bạn vào repo
 
 ### Bước 3: Fork repo về bằng github destop
 
 - Chọn repo muốn fork về 
-
-<img src="https://i.imgur.com/SSpqssv.png">
 
 - Copy đường dẫn https 
 
