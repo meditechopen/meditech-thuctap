@@ -36,6 +36,7 @@ Superuser created successfully.
 
 ```sh
 mkdir /var/www
+cd ..
 sudo mv webvirtmgr /var/www/
 ```
 Kiểm tra trong thư mục /var/www/ đã có webvirtmgr chưa. Chưa có thì phải kiểm tra lại
@@ -81,6 +82,8 @@ drwxr-xr-x  5 www-data www-data 4.0K Oct 26 23:22 webvirtmgr
 
 Thêm file webvirtmgr.conf trong /etc/nginx/conf.d: 
 
+``vi /etc/nginx/conf.d/webvirtmgr.conf``
+
 ```sh
 server {
     listen 80 default_server;
@@ -108,6 +111,8 @@ server {
 ```
 
 Vào thư mục /etc/nginx/sites-enabled/default comment lại section Server
+
+``vi /etc/nginx/sites-enabled/default``
 
 ```sh
 #    server {
@@ -169,6 +174,8 @@ Cấp quyền
 ``sudo chown -R www-data:www-data /var/www/webvirtmgr``
 
 Thêm file webvirtmgr.conf vào thư mục /etc/supervisor/conf.d:
+
+``vi /etc/supervisor/conf.d/webvirtmgr.conf``
 
 ```sh
 [program:webvirtmgr]
