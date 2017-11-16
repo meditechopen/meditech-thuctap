@@ -23,14 +23,16 @@
   - [6.1 Cài đặt trên node controller](#6.1)
   - [6.2 Cài đặt trên node compute](#6.2)
 
-[7. Cài đặt dashboard - horizon](#horizon)
+[7. Cài đặt self-service network](#self-service)
 
-[8. Cài đặt block storage service - cinder](#cinder)
+[8. Cài đặt dashboard - horizon](#horizon)
 
-  - [8.1 Cài đặt trên node controller](#8.1)
-  - [8.2 Cài đặt trên node storage](#8.2)
+[9. Cài đặt block storage service - cinder](#cinder)
 
-[9. Launch máy ảo](#launch)
+  - [9.1 Cài đặt trên node controller](#8.1)
+  - [9.2 Cài đặt trên node storage](#8.2)
+
+[10. Launch máy ảo](#launch)
 
 
 --------
@@ -1079,59 +1081,6 @@ systemctl enable neutron-server.service neutron-linuxbridge-agent.service neutro
 systemctl start neutron-server.service neutron-linuxbridge-agent.service neutron-dhcp-agent.service neutron-metadata-agent.service
 ```
 
-**Cấu hình self-service network**
-
-Chỉnh sửa file `/etc/neutron/neutron.conf`
-
-``` sh
-[DEFAULT]
-service_plugins = router
-allow_overlapping_ips = True
-```
-
-Chỉnh sửa file `/etc/neutron/plugins/ml2/ml2_conf.ini`
-
-``` sh
-[ml2]
-type_drivers = flat,vlan,vxlan
-tenant_network_types = vxlan
-mechanism_drivers = linuxbridge,l2population
-
-[ml2_type_vxlan]
-vni_ranges = 1:1000
-```
-
-Chỉnh sửa file `/etc/neutron/plugins/ml2/linuxbridge_agent.ini`
-
-``` sh
-[vxlan]
-enable_vxlan = True
-local_ip = 10.10.10.10
-l2_population = True
-```
-
-- Cấu hình layer-3 agent
-
-Sao lưu file cấu hình
-
-`cp /etc/neutron/l3_agent.ini /etc/neutron/l3_agent.ini.origin`
-
-Chỉnh sửa file cấu hình
-
-``` sh
-[DEFAULT]
-interface_driver = neutron.agent.linux.interface.BridgeInterfaceDriver
-```
-
-Restart các dịch vụ và bật l3-agent
-
-``` sh
-systemctl restart neutron-server.service neutron-linuxbridge-agent.service neutron-dhcp-agent.service neutron-metadata-agent.service
-
-systemctl enable neutron-l3-agent.service
-systemctl start neutron-l3-agent.service
-```
-
 <a name="6.2"></a>
 ### 6.2 Cấu hình trên node Compute
 
@@ -1187,17 +1136,6 @@ firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
 
 - Lưu ý: Thay ens3 bằng card mạng kết nối tới external network của bạn
 
-**Cấu hình self-service network**
-
-Chỉnh sửa file `/etc/neutron/plugins/ml2/linuxbridge_agent.ini`
-
-``` sh
-[vxlan]
-enable_vxlan = True
-local_ip = 10.10.10.11
-l2_population = True
-```
-
 **Cấu hình Compute service sử dụng network service**
 
 Chỉnh sửa file cấu hình `/etc/nova/nova.conf`
@@ -1237,8 +1175,95 @@ neutron ext-list
 openstack network agent list
 ```
 
+<a name="self-service"></a>
+## 7. Cài đặt self-service network
+
+**Trên node controller**
+
+**Cấu hình self-service network**
+
+Chỉnh sửa file `/etc/neutron/neutron.conf`
+
+``` sh
+[DEFAULT]
+service_plugins = router
+allow_overlapping_ips = True
+```
+
+Chỉnh sửa file `/etc/neutron/plugins/ml2/ml2_conf.ini`
+
+``` sh
+[ml2]
+type_drivers = flat,vlan,vxlan
+tenant_network_types = vxlan
+mechanism_drivers = linuxbridge,l2population
+
+[ml2_type_vxlan]
+vni_ranges = 1:1000
+```
+
+Chỉnh sửa file `/etc/neutron/plugins/ml2/linuxbridge_agent.ini`
+
+``` sh
+[vxlan]
+enable_vxlan = True
+local_ip = 10.10.10.10
+l2_population = True
+```
+
+- Cấu hình layer-3 agent
+
+Sao lưu file cấu hình
+
+`cp /etc/neutron/l3_agent.ini /etc/neutron/l3_agent.ini.origin`
+
+Chỉnh sửa file cấu hình
+
+``` sh
+[DEFAULT]
+interface_driver = neutron.agent.linux.interface.BridgeInterfaceDriver
+```
+
+Restart các dịch vụ và bật l3-agent
+
+``` sh
+systemctl restart neutron-server.service neutron-linuxbridge-agent.service neutron-dhcp-agent.service neutron-metadata-agent.service
+
+systemctl enable neutron-l3-agent.service
+systemctl start neutron-l3-agent.service
+```
+
+**Trên node compute**
+
+**Cấu hình self-service network**
+
+Chỉnh sửa file `/etc/neutron/plugins/ml2/linuxbridge_agent.ini`
+
+``` sh
+[vxlan]
+enable_vxlan = True
+local_ip = 10.10.10.11
+l2_population = True
+```
+
+Restart Linux bridge agent
+
+``` sh
+systemctl restart neutron-linuxbridge-agent.service
+```
+
+Tiến hành cấu hình tương tự với node compute còn lại.
+
+Kiểm tra lại các cấu hình
+
+``` sh
+. admin-openrc
+neutron ext-list
+openstack network agent list
+```
+
 <a name="horizon"></a>
-## 7. Cấu hình dashboard - horizon
+## 8. Cấu hình dashboard - horizon
 
 **Lưu ý:** Dịch vụ này chạy trên node controller
 
@@ -1299,10 +1324,10 @@ Restart lại dịch vụ
 Để kiểm tra, dùng trình duyệt kết nối tới địa chỉ `http://controller_ip/dashboard`. Dùng tài khoản admin hoặc demo trên domain default.
 
 <a name="cinder"></a>
-## 8. Cấu hình Block storage service - Cinder
+## 9. Cấu hình Block storage service - Cinder
 
 <a name="8.1"></a>
-### 8.1 Cấu hình trên node controller
+### 9.1 Cấu hình trên node controller
 
 Tạo database
 
@@ -1399,7 +1424,7 @@ systemctl start openstack-cinder-api.service openstack-cinder-scheduler.service
 ```
 
 <a name="8.2"></a>
-### 8.2 Cài đặt trên node storage
+### 9.2 Cài đặt trên node storage
 
 Cài đặt LVM package
 
@@ -1488,7 +1513,7 @@ openstack volume service list
 ```
 
 <a name="launch"></a>
-## 9. Launch máy ảo
+## 10. Launch máy ảo
 
 **Provider network**
 

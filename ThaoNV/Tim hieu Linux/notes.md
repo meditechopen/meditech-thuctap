@@ -156,7 +156,7 @@ Hai câu lệnh này sẽ xử lí luôn những gói phụ thuộc trong quá t
 
 2. Sử dụng rpm và dpkg
 
-Đây được coi là công cụ "cấp thấp" để cài đặt package. Để có thể dùng rpm và dpkg để cài, nười dùng cần tải các file cài đặt (đuôi .deb đối với Debian based distributions và đuôi rpm đối với RPM based Linux distributions). Ưu điểm của phương pháp này đó là có thể tùy chỉnh được các phiên bản của gói cần cài đặt. Tuy nhiên nó sẽ không tự động điều chỉnh cài đặt cho người dùng những gói phụ thuộc.
+Đây được coi là công cụ "cấp thấp" để cài đặt package. Để có thể dùng rpm và dpkg để cài, người dùng cần tải các file cài đặt (đuôi .deb đối với Debian based distributions và đuôi rpm đối với RPM based Linux distributions). Ưu điểm của phương pháp này đó là có thể tùy chỉnh được các phiên bản của gói cần cài đặt. Tuy nhiên nó sẽ không tự động điều chỉnh cài đặt cho người dùng những gói phụ thuộc.
 
 3. Sử dụng git clone
 

@@ -2,19 +2,20 @@
 
 ## Mục lục
 
-1. How a rule is built in iptables?
+[1. How a rule is built in iptables?](#1)
 
-2. Matches
+[2. Matches](#2)
 
-3. Targets and jumps
+[3. Targets and jumps](#3)
 
 -----------
 
 **Lưu ý:**
 
-Tìm hiểu về concepts của iptables tại đây[https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/Tim%20hieu%20Linux/iptables/intro.md] trước khi đọc bài viết này.
+Tìm hiểu về concepts của iptables [tại đây](https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/Tim%20hieu%20Linux/iptables/intro.md) trước khi đọc bài viết này.
 
 
+<a name="1"></a>
 ## 1. How a rule is built in iptables?
 
 ### 1.1 Cấu trúc câu lệnh cơ bản
@@ -55,6 +56,7 @@ Lưu ý:
 | -c, --set-counters | Thường dùng khi tạo mới rule. Ta có thể dùng nó để khai báo số packet và byte counter ban đầu | --insert, --append, --replace |
 | --modprobe | Khai báo modules nào sẽ được sử dụng | All |
 
+<a name="2"></a>
 ## 2. Matches
 
 ### 2.1 Generic matches
@@ -88,6 +90,7 @@ Lưu ý:
 Hoạt động tương tự như TCP
 
 
+<a name="3"></a>
 ## 3. Targets and jumps
 
 **Jumps**
