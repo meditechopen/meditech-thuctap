@@ -266,7 +266,7 @@ Kết quả:
 | OS-EXT-SRV-ATTR:instance_name        | instance-00000003                                                                                        |
 ```
 
-Như vậy máy ảo nằm trên node compute1 với KVM name là `instance-00000003`
+Như vậy máy ảo nằm trên node compute2 với KVM name là `instance-00000003`
 
 Kiểm tra trên máy compute2 để tìm file socket kết nối tới máy ảo
 
@@ -302,7 +302,7 @@ Kết quả:
 
 Chèn password mới vào máy ảo, lưu ý máy ảo phải đang bật
 
-virsh  qemu-agent-command instance-00000003 '{ "execute": "guest-set-user-password","arguments": { "crypted": false,"username": "root","password": "dGhhb2RlcHRyYWk=" } }'
+`virsh  qemu-agent-command instance-00000003 '{ "execute": "guest-set-user-password","arguments": { "crypted": false,"username": "root","password": "dGhhb2RlcHRyYWk=" } }'`
 
 Kết quả:
 
