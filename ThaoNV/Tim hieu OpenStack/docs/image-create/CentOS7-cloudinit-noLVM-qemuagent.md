@@ -122,6 +122,13 @@ Sử dụng câu lệnh sau để check
 # yum update
 ```
 
+- Để cho phép hypervisor có thể reboot hoặc shutdown instance, bạn sẽ phải cài acpi service.
+
+``` sh
+# yum install acpid
+# systemctl enable acpid
+```
+
 - Cài đặt qemu guest agent, cloud-init và cloud-utils:
 
 `yum install qemu-guest-agent cloud-init cloud-utils`
