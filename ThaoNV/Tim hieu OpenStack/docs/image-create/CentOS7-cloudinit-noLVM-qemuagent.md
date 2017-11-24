@@ -61,6 +61,10 @@ với `centos` là tên máy ảo
 ...
 ```
 
+**Lưu ý:**
+
+Các bước dưới đây chỉ cần thực hiện một lần ở lần đóng image đầu tiên
+
 - Tạo thêm thư mục cho channel vừa tạo và phân quyền cho thư mục đó
 
 ``` sh
@@ -85,9 +89,9 @@ service libvirt-bin restart
 service apparmor reload
 ```
 
-- Bật máy ảo lên
-
 ## Bước 3: Cấu hình máy ảo và cài đặt các package
+
+- Bật máy ảo lên
 
 - Xóa file hostname
 
@@ -194,7 +198,17 @@ ssh_pwauth: True
 
 `# poweroff`
 
-## Bước 5: Xóa bỏ MAC address details
+## Bước 5: Cài libguestfs-tools để xử lý image
+
+`apt-get install libguestfs-tools -y`
+
+**Lưu ý:**
+
+Từ bước này thực hiện trên host KVM.
+
+Bước 5 chỉ cần thực hiện ở lần đóng image đầu tiên.
+
+## Bước 6: Xóa bỏ MAC address details
 
 `# virt-sysprep -d centos`
 

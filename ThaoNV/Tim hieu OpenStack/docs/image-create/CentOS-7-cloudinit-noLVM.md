@@ -131,15 +131,23 @@ users:
 
 **Thực hiện các bước phía dưới trên KVM host**
 
-## Bước 6: Xóa bỏ MAC address details
+## Bước 6: Cài libguestfs-tools để xử lý image
+
+`apt-get install libguestfs-tools -y`
+
+**Lưu ý:**
+
+Bước 6 chỉ cần thực hiện ở lần đóng image đầu tiên.
+
+## Bước 7: Xóa bỏ MAC address details
 
 `# virt-sysprep -d centos`
 
-## Bước 7: Undefine the libvirt domain
+## Bước 8: Undefine the libvirt domain
 
 `# virsh undefine centos`
 
-## Bước 8: Giảm kích thước image
+## Bước 9: Giảm kích thước image
 
 `# virt-sparsify --compress /tmp/centos.qcow2 /tmp/centos_shrink.img`
 
