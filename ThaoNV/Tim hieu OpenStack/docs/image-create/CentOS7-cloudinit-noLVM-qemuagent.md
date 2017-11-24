@@ -294,7 +294,7 @@ Kết quả:
 
 Sinh password mới `thaodeptrai`
 
-`echo -n "new" | base64`
+`echo -n "thaodeptrai" | base64`
 
 Kết quả:
 
