@@ -15,7 +15,7 @@
 **Một số lưu ý**
 
 - Môi trường LAB: KVM
-- Distro: CentOS 2 NIC (1 bridge + 1 hostonly)
+- Distro: CentOS 7.3-1611 2 NIC (1 bridge + 1 hostonly)
 - OPS version: PIKE
 - Mô hình sử dụng Linux Bridge, không có HA và chỉ cài đặt các project: keystone, glance, neutron, nova
 - Không áp dụng cho tất cả các mô hình OPS
@@ -71,13 +71,13 @@ Hoặc các bạn có thể dùng 1 con apt-cacher-ng để lưu lại cache (�
 - Set up ip giống với Controller cũ
 
 ``` sh
-nmcli con modify eth0 ipv4.addresses 192.168.100.32
+nmcli con modify eth0 ipv4.addresses 192.168.100.32/24
 nmcli con modify eth0 ipv4.gateway 192.168.100.1
 nmcli con modify eth0 ipv4.dns 8.8.8.8
 nmcli con modify eth0 ipv4.method manual
 nmcli con modify eth0 connection.autoconnect yes
 
-nmcli con modify eth1 ipv4.addresses 10.10.10.32
+nmcli con modify eth1 ipv4.addresses 10.10.10.32/24
 nmcli con modify eth1 ipv4.method manual
 nmcli con modify eth1 connection.autoconnect yes
 
@@ -267,7 +267,7 @@ source /root/admin-openrc
 
 `openstack user list`
 
-**Bước 3: Cài đặt glance*
+**Bước 4: Cài đặt glance**
 
 - Cài đặt package
 
@@ -313,7 +313,7 @@ systemctl start openstack-glance-registry.service
 
 `openstack image list`
 
-**Bước 4: Cài compute*
+**Bước 5: Cài compute**
 
 - Cài đặt package
 
@@ -365,7 +365,7 @@ openstack-nova-conductor.service openstack-nova-novncproxy.service
 
 `openstack compute service list`
 
-**Bước 5: Cài neutron**
+**Bước 6: Cài neutron**
 
 - Cài packages
 
@@ -429,7 +429,7 @@ systemctl start neutron-l3-agent.service
 
 `openstack network agent list`
 
-**Bước 6: Cài horizone
+**Bước 7: Cài horizone
 
 - Cài packages
 
