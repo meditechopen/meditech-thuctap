@@ -244,6 +244,10 @@ glance image-create --name centos \
 
 <img src="https://i.imgur.com/PrsfYj0.png">
 
+**Lưu ý:**
+
+Đối với các image của Windows, bạn cần thêm metadata `os_type = windows`
+
 - Image đã sẵn sàng để launch máy ảo.
 
 ## Hướng dẫn thay đổi password

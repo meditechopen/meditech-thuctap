@@ -242,6 +242,11 @@ glance image-create --name ubuntu \
 
 <img src="https://i.imgur.com/whh1wh0.png">
 
+**Lưu ý:**
+
+Đối với các image của Windows, bạn cần thêm metadata `os_type = windows`
+
+
 - Image đã sẵn sàng để launch máy ảo.
 
 ## Hướng dẫn thay đổi password
