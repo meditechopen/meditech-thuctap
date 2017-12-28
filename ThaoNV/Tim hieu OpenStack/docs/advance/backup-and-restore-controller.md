@@ -2,12 +2,13 @@
 
 ## Mục lục
 
-1. Mô hình và những lưu ý
-2. Những file cần phải backup từ controller
-3. Hướng dẫn cấu hình và restore controller từ những file backup
+[1. Mô hình và những lưu ý](#1)
+[2. Những file cần phải backup từ controller](#2)
+[3. Hướng dẫn cấu hình và restore controller từ những file backup](#3)
 
 ------------------------------
 
+<a name="1"></a>
 ## 1. Mô hình
 
 <img src="https://i.imgur.com/NtxxvC3.png">
@@ -24,6 +25,7 @@ Các bạn có thể tham khảo và sử dụng script sau để cài đặt OP
 
 https://github.com/congto/openstack-tools/tree/master/scripts/OpenStack-Pike-No-HA
 
+<a name="2"></a>
 ## 2. Những file cần backup từ controller
 
 - All packages dùng để cài đặt, các bạn có thể cache lại nó trong lần tải về đầu tiên bằng cách chỉnh sửa trong file `/etc/yum.conf`:
@@ -64,6 +66,7 @@ Hoặc các bạn có thể dùng 1 con apt-cacher-ng để lưu lại cache (�
 - `/root/admin-openrc`
 - `/root/demo-openrc`
 
+<a name="3"></a>
 ## 3. Hướng dẫn cấu hình và restore controller từ những file backup
 
 **Bước 1: Cấu hình preparation cho Controller**
