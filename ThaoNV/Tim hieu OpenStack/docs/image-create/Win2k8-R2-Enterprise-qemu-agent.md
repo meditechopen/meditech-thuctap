@@ -68,11 +68,12 @@ service apparmor reload
 ```
 
 ### Bước 4: Bật máy ảo để cài đặt OS
-![Create VM 10](/images/Screenshot_1.png)
 
-### Bước 5: Lựa chọn phiên bản cài đặt (Windows Server 2012 R2 Standard Evaluation GUI)
-![Create VM 11](/images/win2k12_standard/win2k12_11.jpg)
-![Create VM 12](/images/win2k12_standard/win2k12_12.jpg)
+<img src="/images/Screenshot_1.png">
+
+### Bước 5: Lựa chọn cài đặt
+
+<img src="/images/Screenshot_2.png">
 
 ### Bước 6: Lựa chọn chỉ cài đặt Windows không tự động Upgrade
 ![Create VM 13](/images/win2k12_standard/win2k12_13.jpg)
