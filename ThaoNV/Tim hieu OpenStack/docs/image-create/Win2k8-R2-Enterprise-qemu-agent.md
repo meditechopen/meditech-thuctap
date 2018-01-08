@@ -169,7 +169,9 @@ Kiểm tra lại version của qemu-guest-agent (phải đảm bảo version >= 
 <img src="https://i.imgur.com/KoPdQmt.png">
 
 ### Bước 7: Cài đặt cloud-init bản mới nhất
+
 Download cloud base init cho Windows bản mới nhất tại [đây](https://cloudbase.it/cloudbase-init/)
+
 
 <img src="https://i.imgur.com/6rBY09l.png">
 
