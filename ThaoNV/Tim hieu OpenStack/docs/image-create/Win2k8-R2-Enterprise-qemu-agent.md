@@ -121,7 +121,7 @@ Chọn Next để cài đặt
 <img src="https://i.imgur.com/HVCAuIx.png">
 
 ### Bước 4: Cài đặt Baloon driver cho Memory
-Copy `/virtio-win-0.1.1/Baloon/2k12R2/amd64` từ CD Drive vào `C:\`
+Copy `/virtio-win-0.1.1/Baloon/2k8R2/amd64` từ CD Drive vào `C:\`
 
 <img src="https://i.imgur.com/u4OV2jB.png">
 
@@ -171,7 +171,7 @@ Kiểm tra lại version của qemu-guest-agent (phải đảm bảo version >= 
 ### Bước 7: Cài đặt cloud-init bản mới nhất
 Download cloud base init cho Windows bản mới nhất tại [đây](https://cloudbase.it/cloudbase-init/)
 
-<img src="https://i.imgur.com/cfBCMKL.png">
+<img src="https://i.imgur.com/6rBY09l.png">
 
 Tiến hành cài đặt
 
