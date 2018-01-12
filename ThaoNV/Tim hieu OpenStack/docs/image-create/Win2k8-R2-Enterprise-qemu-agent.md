@@ -149,7 +149,7 @@ Kiểm tra lại việc cài đặt Driver cho `PCI Simple Communication Control
 
 <img src="https://i.imgur.com/9HRlNAX.png">
 
-Cài đặt qemu-guest-agent cho Windows Server 2k12, vào CD ROM virio và cài đặt phiên bản qemu-ga (ở đây là `qemu-ga-x64`)
+Cài đặt qemu-guest-agent cho Windows Server 2k8R2, vào CD ROM virio và cài đặt phiên bản qemu-ga (ở đây là `qemu-ga-x64`)
 
 <img src="https://i.imgur.com/UjYgQol.png">
 
