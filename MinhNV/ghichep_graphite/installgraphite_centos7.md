@@ -158,12 +158,6 @@ sudo cp /opt/graphite/examples/example-graphite-vhost.conf /etc/httpd/conf.d/gra
 sudo systemctl start httpd
 sudo systemctl enable httpd
 ```
-- Mở filewall:
-
-```sh
-sudo firewall-cmd --permanent --add-service=http
-sudo firewall-cmd --reload
-```
 
 ## Bước 3: Cấu hình carbon
 
