@@ -32,9 +32,11 @@ sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/selinux/config
 - Tải graphite-web và carbon từ Github
 
 ```sh
-cd /usr/local/src
-sudo git clone https://github.com/graphite-project/graphite-web.git
-sudo git clone https://github.com/graphite-project/carbon.git
+sudo cd /root
+sudo git clone https://github.com/MinhKMA/graphite
+sudo cd graphite/
+sudo cp -r cacbon /usr/local/src
+sudo cp -r graphite-web /usr/local/src
 ```
 
 - Kiểm tra requirements:
@@ -221,9 +223,13 @@ hoặc phải sử dụng lệnh
 
 - Chỉnh sửa file cấu hình collectD để metric ghi thông tin vào filesystem trong graphite-server
 
-``vi /etc/collectd.conf`` trên centos7
+    + Trên centos7
 
-``vi /etc/collectd/collectd.conf`` trên Ubuntu14
+``vi /etc/collectd.conf`` 
+    
+    + Trên Ubuntu14
+
+``vi /etc/collectd/collectd.conf`` 
 
 Thêm plugin write_graphite
 
@@ -233,13 +239,13 @@ LoadPlugin write_graphite
   <Node "localhost">
     Host "localhost"
     Port "2003"
-  Protocol "tcp"
- LogSendErrors true
-  Prefix "collectd."
+    Protocol "tcp"
+    LogSendErrors true
+    Prefix "collectd."
     # Postfix "collectd"
-  StoreRates true
-   AlwaysAppendDS false
-  EscapeCharacter "_"
+    StoreRates true
+    AlwaysAppendDS false
+    EscapeCharacter "_"
   </Node>
 </Plugin>
 ```
