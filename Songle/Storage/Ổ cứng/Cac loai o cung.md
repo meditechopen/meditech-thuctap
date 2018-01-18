@@ -29,6 +29,7 @@ này càng tốt thì dữ liệu bạn lưu trên này sẽ an toàn hơn.
 ngoài ra HDD cũng có nhiều thế hệ để đánh giá khả năng xử lý như trước thì có Sata 1, 
 cao hơn có Sata 2 (tốc độ đọc/ghi 200 MB/s), Sata 3 (tốc độ đọc/ghi 6 Gbp/s).
 
+- Các yếu tố ảnh hưởng đến tốc độ ổ cứng : https://github.com/Skyaknt/Storage/blob/master/%E1%BB%94%20c%E1%BB%A9ng/Cac%20yeu%20to%20anh%20huong%20toc%20do%20o%20cung%20HDD.md
 
 ![Imgur](https://i.imgur.com/yghQJeE.jpg)
 
@@ -52,6 +53,8 @@ Hiện nay các chuẩn kết nối của hầu hết các máy tính là SATA I
 - NVMe: Được viết tắt bởi cụm từ Memory Non-Volatile Express, nó là một công nghệ khá mới mẻ, được thiết kế đặc biệt cho các ổ nhớ SSD với mục đích sửa những vấn đề người dùng thường hay gặp phải khi sử dụng chuẩn kết nối SATA
  
 **Các loại chíp nhớ của ổ cứng SSD:**
+
+![Imgur](https://i.imgur.com/CG5lytp.png)
 
 - SLC được viết tắt bởi cụm từ NAND Single Layer Cell: Đây là loại chíp nhớ ổn định và bền nhất trong các loại ổ cứng SSD, số lần ghi xóa có thể lên đến 100.000 lần, tuy nhiên tốc độ sẽ không được cao so với các chíp nhớ MLC, TLC. Loại thiết bị này chỉ sử dụng ô nhớ 1 cấp, điều đó có nghĩa rằng trên 1 ô nhớ chỉ lưu được 1 bit dữ liệu. Các sản phẩm SSD sử dụng loại chip nhớ này có giá thành rất cao nên chủ yếu ổ cứng này chuyên sử dụng dành cho các doanh nghiệp lớn.
 
