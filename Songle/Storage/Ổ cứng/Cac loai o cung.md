@@ -42,6 +42,23 @@ Tuy nhiên giá thành cao.
 - Khác với việc sử dụng các đĩa từ để lưu dữ liệu như HDD, SSD lưu dữ liệu trên các chip nhớ, do
  đó giảm được thời gian quay đĩa mà dữ liệu được truy xuất trực tiếp đến luôn, seek time là rất nhỏ.
  
+
+Hiện nay các chuẩn kết nối của hầu hết các máy tính là SATA III, SATA M.2, PCI E, NVMe
+
+- SATA III: Đây là chuẩn kết nối thông dụng nhất của Laptop và PC, có tốc độ 6Gbps, trên một máy tính có thể có một hoặc nhiều cổng kết nối SATA III này để có thể kết nối nhiều ổ cứng với nhau.
+   
+- SATA M.2: Một số chiếc Laptop hoặc PC đời mới hiện nay đã có trang bị thêm cổng kết nối này, ổ cứng SSD dạng M.2 thường có kích thước rất nhỏ (bé bằng thanh RAM) nên không gây tốn diện tích quá nhiều cho chiếc PC hoặc Laptop của bạn
+- PCI E: Một số ổ cứng SSD có thể kết nối qua cổng PCI E này có tốc độ truy xuất và đọc ghi dữ liệu cực nhanh (có thể vượt ngưỡng 1GB/ giây) giá thành của những loại ổ cứng SSD này rất là cao nên các bạn cân nhắc trước khi mua.
+- NVMe: Được viết tắt bởi cụm từ Memory Non-Volatile Express, nó là một công nghệ khá mới mẻ, được thiết kế đặc biệt cho các ổ nhớ SSD với mục đích sửa những vấn đề người dùng thường hay gặp phải khi sử dụng chuẩn kết nối SATA
+ 
+**Các loại chíp nhớ của ổ cứng SSD:**
+
+- SLC được viết tắt bởi cụm từ NAND Single Layer Cell: Đây là loại chíp nhớ ổn định và bền nhất trong các loại ổ cứng SSD, số lần ghi xóa có thể lên đến 100.000 lần, tuy nhiên tốc độ sẽ không được cao so với các chíp nhớ MLC, TLC. Loại thiết bị này chỉ sử dụng ô nhớ 1 cấp, điều đó có nghĩa rằng trên 1 ô nhớ chỉ lưu được 1 bit dữ liệu. Các sản phẩm SSD sử dụng loại chip nhớ này có giá thành rất cao nên chủ yếu ổ cứng này chuyên sử dụng dành cho các doanh nghiệp lớn.
+
+- MLC là từ viết tắt bởi cụm từ NAND Multi Layer Cell: Tốc độ truy xuất dữ liệu của loại chip nhớ này tăng lên đáng kể so với chíp nhớ SLC, tuy nhiên loại chíp nhớ này lại không đảm bảo được độ ổn định. Ổ SSD sử dụng chíp nhớ MLC thì trên 1 ô nhớ có thể lưu được 2 bit dữ liệu bởi nó sử dụng ô nhớ nhiều cấp. Giá thành cũng có phần "mềm" hơn một chút so với các ổ cứng sử dụng chíp nhớ SLC, phù hợp với người dùng phổ thông.
+
+- TLC là từ viết tắt bởi cụm từ NAND Triple Layer Cell: Tốc độ truy xuất dữ liệu cực kỳ cao, tuy nhiên độ bền của sản phẩm này rất kém (kém hơn các ổ cứng sử dụng chíp nhớ SLC hàng trăm lần), chỉ đạt tối đa 1.000 lần ghi và xóa dữ liệu. Giá thành loại ổ cứng sử dụng chíp nhớ này hầu như rất rẻ.
+
 - Các ưu điểm của SSD so với HDD:
 
 	+ Thời gian khởi động hệ điều hành nhanh hơn
