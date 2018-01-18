@@ -46,6 +46,11 @@ Tuy nhiên giá thành cao.
  đó giảm được thời gian quay đĩa mà dữ liệu được truy xuất trực tiếp đến luôn, seek time là rất nhỏ.
  	-  Tốc độ trung bình của ssd từ 200 - 550mb/s, trong khi HDD giao động từ 50-120mb/s
 
+**Cơ chế hoạt động:**
+- Cấu tạo của NAND flash bao gồm nhiều transitor đặc biệt có tên gọi floating gate transistor, khác với transisitor dùng trong bộ nhớ DRAM vốn phải Refresh nhiều lần mỗi giây, NAND flash được thiết kế để giữ nguyên trạng thái của nó kể cả khi không được cấp nguồn.
+
+- Cơ cấu tổ chức của NAND flash theo hình lưới, gồm page và block. Mỗi page gồm nhiều cell hợp thành, và nhiều page sẽ tạo thành một block.
+
 **Hiện nay các chuẩn kết nối của hầu hết các máy tính là SATA III, SATA M.2, PCI E, NVMe**
 
 - SATA III: Đây là chuẩn kết nối thông dụng nhất của Laptop và PC, có tốc độ 6Gbps, trên một máy tính có thể có một hoặc nhiều cổng kết nối SATA III này để có thể kết nối nhiều ổ cứng với nhau.
@@ -64,6 +69,7 @@ Tuy nhiên giá thành cao.
 
 - TLC là từ viết tắt bởi cụm từ NAND Triple Layer Cell: Tốc độ truy xuất dữ liệu cực kỳ cao, tuy nhiên độ bền của sản phẩm này rất kém (kém hơn các ổ cứng sử dụng chíp nhớ SLC hàng trăm lần), chỉ đạt tối đa 1.000 lần ghi và xóa dữ liệu. Giá thành loại ổ cứng sử dụng chíp nhớ này hầu như rất rẻ.
 
+*Khả năng lưu trữ của chip MLC sẽ nhiều gấp đôi so với chip SLC. Tuy nhiên tốc độ đọc trung bình của chip MLC sẽ chậm hơn hai lần (2x) và tốc độ ghi sẽ chậm hơn ba lần (3x) so với chip SLC*
 
 **Chức năng sửa lỗi ECC**
 
