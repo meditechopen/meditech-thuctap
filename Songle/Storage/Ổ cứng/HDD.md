@@ -123,5 +123,4 @@ nhỏ và đảo chiều tùy theo tín hiệu đưa vào là 0 hay 1.
 có từ trường biến đổi và cảm ứng lên cuộn dây tạo thành một xung điện, xung điện này rất yếu được đưa vào khuếch đại 
 để lấy tín hiệu 0,1 ban đầu. 
 
-- Thông tin được ghi và đọc từ cả hai mặt của đĩa, sử dụng cơ chế mounted on arms, di chuyển cơ học qua lại giữa phần trung tâm và rìa ngoài đĩa. Quá trình di chuyển này được gọi là “seeking” (tìm kiếm) và tốc độ di chuyển qua lại được gọi là “seek time” (thời gian tìm kiếm). Các thông tin đầu đọc (ghi) tìm kiếm nằm trên các track (rãnh), là những đường tròn dữ liệu đồng tâm trên ổ. Các track được chia thành nhiều đơn vị logic gọi là sector (cung từ). Mỗi một sector có địa chỉ riêng (số track cộng với số sector), được dùng để tổ chức và định vị dữ liệu. 
-
+- Trong các ổ mới hiện nay, người ta thay thế cơ chế ghi từ tính theo chiều dọc bằng một quá trình gọi là perpendicular magnetic recording (ghi từ tính trực giao). Trong kiểu ghi này các phần tử được sắp xếp vuông góc với bề mặt platter. Do đó chúng có thể được gói gần nhau hơn với mật độ lớn, lưu trữ được nhiều dữ liệu hơn. Mật độ bit trong mỗi inch dày hơn có nghĩa là thông lượng của các dòng dữ liệu dưới đầu đọc (ghi) sẽ nhanh hơn. 
