@@ -27,12 +27,12 @@ vì người dùng có thể làm việc trên một hoặc nhiều tác vụ m�
 
 **Các bước đọc/ghi dữ liệu của ổ cứng sử dụng cache:**
 
-	- Bước 1: Khi có chương trình yêu cầu dữ liệu từ ổ cứng, ổ cứng trích xuất dữ liệu từ platter.
+- Bước 1: Khi có chương trình yêu cầu dữ liệu từ ổ cứng, ổ cứng trích xuất dữ liệu từ platter.
 	
-	- Bước 2: Ổ cứng không chỉ lấy mình dữ liệu mà chương trình cần, nó cũng trích xuất các dữ liệu xung quanh platter mà nó vừa 
+- Bước 2: Ổ cứng không chỉ lấy mình dữ liệu mà chương trình cần, nó cũng trích xuất các dữ liệu xung quanh platter mà nó vừa 
 	lấy dữ liệu ra.
 	
-	- Bước 3: Ổ cứng lưu dữ liệu chính và các dữ liệu xung quanh lên cache. Việc này được thực hiện bằng cơ chế đoán biết được lập trình sẵn 
+- Bước 3: Ổ cứng lưu dữ liệu chính và các dữ liệu xung quanh lên cache. Việc này được thực hiện bằng cơ chế đoán biết được lập trình sẵn 
 	trên ổ cứng, nó tính toán để bù đắp lại các mặt hạn chế về tốc độ của các bộ phận vật lý bằng việc lưu cả những dữ liệu gần khu vực ổ cứng 
 	vừa trích xuất dữ liệu lên cache, vì rất có khả năng người dùng sẽ lại sử dụng những dữ liệu đó.
 	
