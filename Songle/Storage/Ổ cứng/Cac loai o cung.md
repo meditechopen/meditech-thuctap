@@ -31,6 +31,8 @@ cao hơn có Sata 2 (tốc độ đọc/ghi 200 MB/s), Sata 3 (tốc độ đọ
 
 - Các yếu tố ảnh hưởng đến tốc độ ổ cứng : https://github.com/Skyaknt/Storage/blob/master/%E1%BB%94%20c%E1%BB%A9ng/Cac%20yeu%20to%20anh%20huong%20toc%20do%20o%20cung%20HDD.md
 
+- Cấu tạo ổ cứng: https://github.com/Skyaknt/meditech-thuctap/blob/master/Songle/Storage/%E1%BB%94%20c%E1%BB%A9ng/HDD.md
+
 ![Imgur](https://i.imgur.com/yghQJeE.jpg)
 
 ### b. Ổ SSD ( Solid State Drive )
@@ -62,19 +64,24 @@ Tuy nhiên giá thành cao.
 
 - TLC là từ viết tắt bởi cụm từ NAND Triple Layer Cell: Tốc độ truy xuất dữ liệu cực kỳ cao, tuy nhiên độ bền của sản phẩm này rất kém (kém hơn các ổ cứng sử dụng chíp nhớ SLC hàng trăm lần), chỉ đạt tối đa 1.000 lần ghi và xóa dữ liệu. Giá thành loại ổ cứng sử dụng chíp nhớ này hầu như rất rẻ.
 
-- Các ưu điểm của SSD so với HDD:
 
-	+ Thời gian khởi động hệ điều hành nhanh hơn
+**Chức năng sửa lỗi ECC**
 
-	+ Việc chép/xuất dữ liệu ra thiết bị khác nhanh hơn
+- ECC (Error Correcting Code) là một chức năng giúp SSD có thể tự phát hiện và sửa các lỗi dữ liệu phát sinh trong quá trình sử dụng, giúp hạn chế tình trạng dữ liệu của chúng ta không may bị mất mát hoặc hư hỏng. Tuy nhiên ECC chỉ được trang bị trên những SSD cao cấp và do đó giá thành của chúng cũng đắt hơn SSD thông thường rất nhiều, tương tự thông số MLC/SLC và chuẩn Sata, ECC cũng được nhà sản xuất công bố và ghi rõ trên bao bì (cũng như trang web) của sản phẩm cho người sử dụng được biết.
 
-	+ Hoạt động các phần mềm trên máy nhanh hơn
+**Các ưu điểm của SSD so với HDD:**
 
-	+ Bảo vể dữ liệu cực tốt do có khả năng chống sốc cao cộng với được làm bằng linh kiện tốt nên bền hơn
++ Thời gian khởi động hệ điều hành nhanh hơn
 
-	+ Hoạt động ít tiếng ồn hơn, tản nhiệt hiệu quả hơn
++ Việc chép/xuất dữ liệu ra thiết bị khác nhanh hơn
 
-	+ Băng thông truyền tải để đọc/ghi dữ liệu lớn vì vậy giúp tăng khả năng làm việc của máy tính
++ Hoạt động các phần mềm trên máy nhanh hơn
+
++ Bảo vể dữ liệu cực tốt do có khả năng chống sốc cao cộng với được làm bằng linh kiện tốt nên bền hơn
+
++ Hoạt động ít tiếng ồn hơn, tản nhiệt hiệu quả hơn
+
++ Băng thông truyền tải để đọc/ghi dữ liệu lớn vì vậy giúp tăng khả năng làm việc của máy tính
 
 ### c. Hybrid HD ( ổ cứng lai )
 
