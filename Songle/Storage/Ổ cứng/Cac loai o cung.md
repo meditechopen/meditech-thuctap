@@ -44,7 +44,7 @@ Tuy nhiên giá thành cao.
  đó giảm được thời gian quay đĩa mà dữ liệu được truy xuất trực tiếp đến luôn, seek time là rất nhỏ.
  
 
-Hiện nay các chuẩn kết nối của hầu hết các máy tính là SATA III, SATA M.2, PCI E, NVMe
+**Hiện nay các chuẩn kết nối của hầu hết các máy tính là SATA III, SATA M.2, PCI E, NVMe**
 
 - SATA III: Đây là chuẩn kết nối thông dụng nhất của Laptop và PC, có tốc độ 6Gbps, trên một máy tính có thể có một hoặc nhiều cổng kết nối SATA III này để có thể kết nối nhiều ổ cứng với nhau.
    
