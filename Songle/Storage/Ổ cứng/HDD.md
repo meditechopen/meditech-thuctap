@@ -119,10 +119,15 @@ vào ( khi ghi) hay lấy ra ( khi đọc ), khe hở là khe từ lướt trên
 - Trong quá trình ghi, tín hiệu điện ở dạng tín hiệu số 0,1 được đưa vào đầu từ ghi lên bề mặt đĩa thành các nam châm rất 
 nhỏ và đảo chiều tùy theo tín hiệu đưa vào là 0 hay 1.
 
-- Trong qá trình phát, đầu từ đọc lướt qa bề mặt đãi dọc theo các đường Track đã được ghi tín hiệu, tại điểm giao nhau của các nam châm 
+- Trong qá trình đọc, sau khi CPU nhận thông tin từ bảng FAT ( File allocation table) để nắm được vị trí dữ liệu cần lấy, bộ điều kiển đầu từ sẽ đưa đầu từ đọc lướt qa bề mặt đĩa dọc theo các đường Track đã được ghi tín hiệu, tại điểm giao nhau của các nam châm 
 có từ trường biến đổi và cảm ứng lên cuộn dây tạo thành một xung điện, xung điện này rất yếu được đưa vào khuếch đại 
 để lấy tín hiệu 0,1 ban đầu. 
 
 - Trong các ổ mới hiện nay, người ta thay thế cơ chế ghi từ tính theo chiều dọc bằng một quá trình gọi là perpendicular magnetic recording (ghi từ tính trực giao). Trong kiểu ghi này các phần tử được sắp xếp vuông góc với bề mặt platter. Do đó chúng có thể được gói gần nhau hơn với mật độ lớn, lưu trữ được nhiều dữ liệu hơn. Mật độ bit trong mỗi inch dày hơn có nghĩa là thông lượng của các dòng dữ liệu dưới đầu đọc (ghi) sẽ nhanh hơn. 
 
 ![Imgur](https://i.imgur.com/Ug96473.gif)
+
+
+## Tham khảo:
+
+1. https://www.computerhope.com/jargon/h/harddriv.htm
