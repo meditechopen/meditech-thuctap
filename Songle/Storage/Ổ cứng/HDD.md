@@ -124,3 +124,5 @@ có từ trường biến đổi và cảm ứng lên cuộn dây tạo thành m
 để lấy tín hiệu 0,1 ban đầu. 
 
 - Trong các ổ mới hiện nay, người ta thay thế cơ chế ghi từ tính theo chiều dọc bằng một quá trình gọi là perpendicular magnetic recording (ghi từ tính trực giao). Trong kiểu ghi này các phần tử được sắp xếp vuông góc với bề mặt platter. Do đó chúng có thể được gói gần nhau hơn với mật độ lớn, lưu trữ được nhiều dữ liệu hơn. Mật độ bit trong mỗi inch dày hơn có nghĩa là thông lượng của các dòng dữ liệu dưới đầu đọc (ghi) sẽ nhanh hơn. 
+
+![Imgur](https://i.imgur.com/Ug96473.gif)
