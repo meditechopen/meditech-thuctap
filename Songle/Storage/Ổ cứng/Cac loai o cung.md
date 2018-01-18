@@ -42,7 +42,7 @@ Tuy nhiên giá thành cao.
 
 - Khác với việc sử dụng các đĩa từ để lưu dữ liệu như HDD, SSD lưu dữ liệu trên các chip nhớ, do
  đó giảm được thời gian quay đĩa mà dữ liệu được truy xuất trực tiếp đến luôn, seek time là rất nhỏ.
- 
+ 	-  Tốc độ trung bình của ssd từ 200 - 550mb/s, trong khi HDD giao động từ 50-120mb/s
 
 **Hiện nay các chuẩn kết nối của hầu hết các máy tính là SATA III, SATA M.2, PCI E, NVMe**
 
