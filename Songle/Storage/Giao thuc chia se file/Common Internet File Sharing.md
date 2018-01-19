@@ -109,11 +109,80 @@ Chức năng chia sẻ của CIFS có những ảnh hưởng sau đến hiệu s
 Chia sẻ CIFS chủ yếu áp dụng cho việc chia sẻ tệp tin của khách hàng Windows. 
 CIFS được chia thành 2 loại hình thức chia sẻ file : CIFS Nomal và CIFS Homedir.
 
-CIFS Nomal SHare trong Môi trường không có miền quảng bá (Non - Domain Enviroment)
+### CIFS Nomal SHare trong Môi trường không có miền quảng bá (Non - Domain Enviroment)
+
+- Với sự mở rộng liên tục của các doanh nghiệp, ngày càng nhiều dữ liệu cần được chia sẻ trong các doanh nghiệp. 
+Do đó, các doanh nghiệp đòi hỏi phải có không gian chia sẻ lớn để người dùng lưu trữ dữ liệu được chia sẻ và quản lý không gian chia sẻ đơn giản.
+
+Hệ thống lưu trữ OceanStor S2600T / S5500T / S5600T / S5800T / S6800T chia sẻ hệ thống tệp tin cho tất cả người dùng của doanh nghiệp ở chế độ CIFS bình thường. 
+Hệ thống tệp chia sẻ sẽ xuất hiện dưới dạng thư mục. Tất cả người dùng có thể truy cập thư mục chia sẻ. 
+Bên cạnh đó, quản lý sự cho phép dựa trên local group cho phép các doanh nghiệp kiểm soát quyền của người dùng đối với thư mục chia sẻ. 
+Trong khi đó, hệ thống lưu trữ OceanStor S2600T / S5500T / S5600T / S5800T / S6800T cho phép các 
+doanh nghiệp thiết lập hạn ngạch không gian chung cho các phòng ban và người sử dụng. 
+Quản lý hạn ngạch người dùng đảm bảo rằng tất cả người dùng có thể thực hiện các thao tác đọc 
+và ghi trong hệ thống tệp bằng cách ngăn không cho một số người dùng chiếm quá nhiều không gian chia sẻ.
+
+- Trong hình 1-1, tất cả local user có thể truy cập không gian chia sẻ được cung cấp bởi hệ thống 
+lưu trữ OceanStor S2600T / S5500T / S5600T / S5800T / S6800T ở chế độ CIFS bình thường. 
+Tuy nhiên, local user thuộc các local group khác nhau và mỗi nhóm có các quyền khác 
+nhau cho không gian dùng chung. Vì vậy, một số local user đã được phép đọc / ghi cho 
+không gian dùng chung, trong khi một số local user chỉ có quyền truy cập chỉ đọc cho 
+không gian dùng chung. Hệ thống lưu trữ OceanStor S2600T / S5500T / S5600T / S5800T / S6800T 
+có thể thiết lập một hạn ngạch không gian dùng chung cho mỗi local user.
 
 
+Hình 1-1 Chia sẻ tệp trong CIFS Chế độ bình thường trong môi trường không thuộc miền.
 
+![Imgur](https://i.imgur.com/3MLUlu3.png)
 
+### CIFS Homedir Share trong môi trường không thuộc miền quảng bá
+
+Số lượng người dùng tăng lên, nhu cầu lưu trữ cá nhân xuất hiện và những không gian riêng tư như vậy không cho phép 
+những người dùng khác truy cập vào.
+
+Hệ thống lưu trữ OceanStor S2600T / S5500T / S5600T / S5800T / S6800T chia sẻ hệ thống tệp tin với người dùng ở chế độ CIFS Homedir. 
+Hệ thống tệp chia sẻ sẽ xuất hiện dưới dạng thư mục. Tên thư mục giống với tên người dùng. Người dùng này chỉ có thể truy cập vào thư mục chia sẻ của riêng mình. 
+Trong khi đó, hệ thống lưu trữ OceanStor S2600T / S5500T / S5600T / S5800T / S6800T cho phép các doanh nghiệp thiết lập hạn ngạch 
+không gian chung cho các phòng ban và người sử dụng. Quản lý hạn ngạch người dùng đảm bảo rằng tất cả người dùng đều có thể truy cập 
+hệ thống tập tin và các tệp bằng cách ngăn không cho một số người dùng chiếm quá nhiều không gian chia sẻ.
+
+Trong hình 1-2, mỗi local user chỉ có thể truy cập thư mục chia sẻ có tên giống với tên người dùng. 
+Hệ thống lưu trữ OceanStor S2600T / S5500T / S5600T / S5800T / S6800T có thể thiết lập một hạn ngạch không 
+gian dùng chung cho mỗi local user. Hạn ngạch của local user có thể lớn hơn khả năng của hệ thống tệp sở hữu của local user.
+
+![Imgur](https://i.imgur.com/GFc7NMz.png)
+
+### CIFS chia sẻ bình thường trong miền AD
+
+Với việc phát triển của mạng LAN và mạng WAN, nhiều doanh nghiệp sử dụng miền AD để quản lý mạng trên Windows một cách đơn giản và linh hoạt.
+
+Hệ thống lưu trữ OceanStor S2600T / S5500T / S5600T / S5800T / S6800T có thể được thêm vào một miền AD như một máy khách, 
+cụ thể là nó có thể được tích hợp liền mạch với miền AD. Bộ điều khiển miền AD lưu thông tin về tất cả các máy khách và nhóm trong miền. 
+Tất cả khách hàng trong miền AD có thể truy cập chia sẻ CIFS Normal được cung cấp bởi hệ thống lưu trữ OceanStor S2600T / S5500T / S5600T / S5800T / S6800T. 
+Trước khi truy cập, họ cần phải được chứng thực bởi bộ điều khiển miền AD. Quản trị viên miền AD có thể thực hiện quản lý cho phép tệp cụ thể. 
+Các máy khách khác nhau có quyền truy cập khác nhau cho mỗi thư mục chia sẻ.
+
+Trong hình 1-3, tất cả các máy khách miền có thể truy cập không gian chia sẻ được cung cấp bởi hệ thống lưu trữ OceanStor S2600T / S5500T / S5600T / S5800T / S6800T. 
+Trước khi truy cập vào không gian dùng chung, các máy khách miền cần chứng thực bởi bộ điều khiển tên miền AD.
+Trước khi truy cập vào không gian dùng chung, các máy khách miền cần chứng thực bởi bộ điều khiển tên miền AD. 
+Hệ thống lưu trữ OceanStor S2600T / S5500T / S5600T / S5800T / S6800T có thể thiết lập một hạn ngạch không gian dùng chung cho mỗi máy khách miền.
+
+![Imgur](https://i.imgur.com/z8pX1WD.png)
+
+###  CIFS chia sẻ Homedir trong miền AD 
+
+Hệ thống lưu trữ OceanStor S2600T / S5500T / S5600T / S5800T / S6800T có thể được thêm vào một miền AD như một máy khách, cụ thể là nó có thể được tích hợp liền mạch với miền AD. 
+Bộ điều khiển miền AD lưu thông tin về tất cả các máy khách và nhóm trong miền. Một khách hàng trong miền AD chỉ có thể truy cập thư mục có tên giống với tên khách hàng, 
+như thể hiện trong hình 1-4.
+
+![Imgur](https://i.imgur.com/eVaE8Wf.png)
+
+## 1.5 Hệ thống quản lý các chế độ lưu trữ
+
+Hệ thống lưu trữ S2900T / S5500T / S5600T / S5800T / S6800T của OceanStor hỗ trợ giao diện người dùng đồ họa (GUI) và các tùy chọn giao diện dòng lệnh (CLI). 
+Trình Quản lý Lưu trữ tích hợp (Integrated Storage Manager - ISM) cung cấp quản lý dựa trên GUI. CLI cung cấp quản lý dòng lệnh. 
+Để dễ dàng quản lý hệ thống lưu trữ của người dùng ở các mức khác nhau, tài liệu này giải thích làm thế nào để cấu hình tính năng trên ISM và cách quản lý, 
+và duy trì tính năng trên CLI.
 
 
 
