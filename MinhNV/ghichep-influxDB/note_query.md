@@ -1,6 +1,7 @@
 # influxDB 
 
 - Một số note ngắn gọn để ghi nhớ syntax query influxDB 
+- Database metric được thu thập bởi collectd plugin virt 
 
 
 ### Hiển thị thông tin về một MEASUREMENTS
