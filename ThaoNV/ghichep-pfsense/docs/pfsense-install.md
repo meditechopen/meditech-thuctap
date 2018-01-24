@@ -5,7 +5,7 @@
 
 **Tạo máy ảo với 2 card mạng (1 Bridge + 1 Host-only)**
 
-<img src="./images/1.png">
+<img src="../images/1.png">
 
 - Sau khi khởi động VM
 
