@@ -16,6 +16,13 @@ Cài đặt epel-release:
 sudo yum -y install epel-release
 sudo yum -y update
 ```
+Tắt firewalld và selinux 
+
+```sh
+sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/sysconfig/selinux
+sed -i 's/\(^SELINUX=\).*/\SELINUX=disabled/' /etc/selinux/config
+```
+``setenforce 0``
 
 ## Bước 1: Cài đặt Graphite và Carbon
 - Tải các gói cài đặt
@@ -25,9 +32,11 @@ sudo yum -y update
 - Tải graphite-web và carbon từ Github
 
 ```sh
-cd /usr/local/src
-sudo git clone https://github.com/graphite-project/graphite-web.git
-sudo git clone https://github.com/graphite-project/carbon.git
+sudo cd /root
+sudo git clone https://github.com/MinhKMA/graphite
+sudo cd graphite/
+sudo cp -r cacbon /usr/local/src
+sudo cp -r graphite-web /usr/local/src
 ```
 
 - Kiểm tra requirements:
@@ -151,18 +160,14 @@ sudo cp /opt/graphite/examples/example-graphite-vhost.conf /etc/httpd/conf.d/gra
 sudo systemctl start httpd
 sudo systemctl enable httpd
 ```
-- Mở filewall:
-
-```sh
-sudo firewall-cmd --permanent --add-service=http
-sudo firewall-cmd --reload
-```
 
 ## Bước 3: Cấu hình carbon
 
-- Ta sẽ cần phải chỉnh sửa storage-schemas.conf để cấu hình tần số datapoint trong whisper. Đầu tiên, tạo một bản sao của tệp ví dụ:
+- Ta sẽ cần phải chỉnh sửa storage-schemas.conf để cấu hình tần số datapoint trong whisper. Đầu tiên, tạo file cấu hình theo file conf mẫu
 
 ``sudo cp /opt/graphite/conf/storage-schemas.conf.example /opt/graphite/conf/storage-schemas.conf``
+
+``sudo cp /opt/graphite/conf/carbon.conf.example /opt/graphite/conf/carbon.conf``
 
 - Mở tệp và chỉnh sửa
 
@@ -199,6 +204,11 @@ sudo chmod +x /etc/init.d/carbon-*
 - Start carbon-cache
 
 ``sudo systemctl start carbon-cache``
+
+hoặc phải sử dụng lệnh 
+
+``/etc/init.d/carbon-cache start``
+
 ``sudo systemctl enable carbon-cache``
 
 ## Bước 4: cài đặt collectD client
@@ -213,9 +223,13 @@ sudo chmod +x /etc/init.d/carbon-*
 
 - Chỉnh sửa file cấu hình collectD để metric ghi thông tin vào filesystem trong graphite-server
 
-``vi /etc/collectd.conf`` trên centos7
+    + Trên centos7
 
-``vi /etc/collectd/collectd.conf`` trên Ubuntu14
+``vi /etc/collectd.conf`` 
+    
+    + Trên Ubuntu14
+
+``vi /etc/collectd/collectd.conf`` 
 
 Thêm plugin write_graphite
 
@@ -225,13 +239,13 @@ LoadPlugin write_graphite
   <Node "localhost">
     Host "localhost"
     Port "2003"
-  Protocol "tcp"
- LogSendErrors true
-  Prefix "collectd."
+    Protocol "tcp"
+    LogSendErrors true
+    Prefix "collectd."
     # Postfix "collectd"
-  StoreRates true
-   AlwaysAppendDS false
-  EscapeCharacter "_"
+    StoreRates true
+    AlwaysAppendDS false
+    EscapeCharacter "_"
   </Node>
 </Plugin>
 ```
@@ -256,9 +270,4 @@ Khởi động lại collectD
 
 http://ip_graphite_server
 
-## Sửa lỗi khi cài đặt 
 
-### Lỗi không start được carbon-cache : 
-Ở bước tải project/carbon hãy tải thư mục carbon trên git của mình ``https://github.com/nguyenminh12051997/meditech-thuctap/tree/master/MinhNV/ghichep_graphite``
-### Lỗi k start được http
-Tắt firewall, selinux và khởi động lại máy sau đó mới start httpd
