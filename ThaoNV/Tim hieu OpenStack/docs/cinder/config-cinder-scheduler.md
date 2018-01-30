@@ -2,12 +2,13 @@
 
 ## Mục lục
 
-1. Tổng quan về driver filter và weigher, tại sao cần sử dụng chúng
+[1. Tổng quan về driver filter và weigher, tại sao cần sử dụng chúng](#1)
 
-2. Hướng dẫn thực hành với vô hình multi backend
+[2. Hướng dẫn thực hành với vô hình multi backend](#2)
 
 --------------------
 
+<a name="1"></a>
 ## 1. Tổng quan về driver filter và weigher, tại sao cần sử dụng chúng
 
 Cinder cho phép bạn lựa chọn volume backend phù hợp dựa vào những đặc tính riêng bằng cách sử dụng `DriverFilter` và `GoodnessWeigher`.
@@ -124,6 +125,7 @@ filter_function = "stats.total_capacity_gb >= 500"
 goodness_function = "(volume.size >= 25) ? 100 : 75"
 ```
 
+<a name="2"></a>
 ## 2. Hướng dẫn thực hành với vô hình multi backend
 
 - Cấu hình multibackend với lvm và glusterfs. Tham khảo [tại đây](https://github.com/hocchudong/ghichep-OpenStack/blob/master/05-Cinder/docs/cinder-multiplebackdends-lvm-gfs-nfs.md)
