@@ -95,14 +95,14 @@ Data Base Updated
 
 - Copy các file ca, crt và key ra thư mục /etc/openvpn
 
-`cp /etc/openvpn/easy-rsa/keys/{MyCloudVNN.crt,MyCloudVNN.key,ca.crt} /etc/openvpn`
+`cp /etc/openvpn/easy-rsa/keys/{server.crt,server.key,ca.crt} /etc/openvpn`
 
 - Sửa file `/etc/openvpn/server.conf`
 
 `vim /etc/openvpn/server.conf`
 
 ``` sh
-dev tap0
+dev tap
 #Khai báo các cert, key và CA của VPN server
 ca ca.crt
 cert server.crt
@@ -285,7 +285,11 @@ update-rc.d: see <http://wiki.debian.org/LSBInitScripts>
 
 - Đã hoàn tất cài đặt server, tiến hành gen keys cho client 1
 
-`./build-key client1`
+```
+cd /etc/openvpn/easy-rsa
+source vars
+./build-key client1
+```
 
 Ấn ENTER để bỏ qua
 
