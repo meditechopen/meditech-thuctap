@@ -195,7 +195,11 @@ cluster.
 [root@localhost ~]# gluster peer probe gluster2.songle.local
 peer probe: success.
 ```
+Nếu không muốn peer 2 node với nhau :
 
+```
+# gluster peer detach gluster2.songle.local
+```
 Kiểm tra trạng thái của trusted storage pool:
 
 ```
