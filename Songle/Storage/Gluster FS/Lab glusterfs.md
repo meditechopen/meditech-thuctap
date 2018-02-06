@@ -216,7 +216,7 @@ f0a9778d-1e0a-4c17-b617-112f1204c49a    gluster2.songle.local   Connected
 309587ed-7177-473f-91a4-0d898cde9df3    localhost               Connected
 ```
 
-### cài đặt GlusterFS Volume:
+### Cài đặt GlusterFS Volume:
 
 Tạo một brick (directory) gọi là **gv0** trên 2 thư mục mount đã tạo trên cả 2 node:
 
