@@ -4,7 +4,7 @@
 
 Bài lab thực hành trên mô hình glusterFS với 2 server storage và 1 client sẽ sử dụng Volume của cụm 
 gluster để lưu trữ. 
-- Thực hiện lab trên KVM, ổ /dev/Sda là ổ thêm vào để tạo các brick trên mỗi server.
+- Thực hiện lab trên KVM, ổ `/dev/sda` là ổ thêm vào để tạo các brick trên mỗi server.
 - Mode: replicated gluster.
 
 |Hostname|IP Address|OS|RAM|Disk|Mục đích|
