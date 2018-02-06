@@ -181,7 +181,7 @@ mount /dev/sda1 /data/gluster
 
 Thêm thông số cho **/etc/fstab** để hệ điều hành giữ phân vùng mount mỗi khi khởi động lại.
 
-`echo "/dev/sdb1 /data/gluster ext4 defaults 0 0" | tee --append /etc/fstab`
+`echo "/dev/sda1 /data/gluster ext4 defaults 0 0" | tee --append /etc/fstab`
 
 ### Cấu hình GlusterFS trên CentOS 7:
 
