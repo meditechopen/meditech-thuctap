@@ -277,6 +277,10 @@ apt-get install -y glusterfs-client
 
 Tạo thư mục để mount GlusterFS filesystem, phục vụ cho việc lưu trữ dữ liệu của client trên server.
 
+`mkdir -p /mnt/glusterfs`
+
+Tiến hành mount:
+
 `mount -t glusterfs gluster1.songle.local:/gv0 /mnt/glusterfs`
 
 Nếu bạn thấy có lỗi xảy ra phía dưới:
