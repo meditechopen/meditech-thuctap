@@ -289,3 +289,4 @@ Yêu cầu cuối cùng sẽ đến VFS và sau đó sẽ liên lạc với hệ
 4. https://vngeek.com/cong-nghe/2017/06/glusterfs-la-gi/
 5. https://www.itzgeek.com/how-tos/linux/centos-how-tos/install-and-configure-glusterfs-on-centos-7-rhel-7.html
 6. https://github.com/libfuse/libfuse
+7. https://github.com/fuse4x/fuse
