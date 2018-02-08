@@ -186,7 +186,7 @@ Bạn có thể cấu hình Geo-Replication để sao lưu dữ liệu qua mạn
 
 Có 2 lĩnh vực chính khi đồng bộ sao lưu dữ liệu:
 
-1. Change detection ( xác định thay đổi) : Việc này bao gồm thông tin chi tiết hoạt động của file. Có 2 phương pháp để đồng bộ 
+1. **Change detection** ( xác định thay đổi) : Việc này bao gồm thông tin chi tiết hoạt động của file. Có 2 phương pháp để đồng bộ 
 nhưng thay đổi đó:
 
 - Changelogs - Changelogs là một translator ghi lại những thông tin quan trọng phòng khi có sự cố xảy ra. Những 
@@ -249,7 +249,7 @@ các file cấu hình (vol files) sẽ được xuất ra trong thư mục `/var
 Chúng sẽ chứa tất cả thông tin chi tiết về brick đó. Configuration files được yêu cầu bởi một tiến trình của client sẽ được tạo ra. Bây giờ filesystem của ta 
 đã sẵn sàng để sử dụng. Ta có thể mount volume đó trên máy client rất dễ dàng và sử dụng nó như một bộ phận lưu trữ local:
 
-`mount.glusterfs `<IP or hostname>`:`<volume_name>` `<mount_point>`
+`mount.glusterfs <IP or hostname>:<volume_name> <mount_point>`
 
 IP hoặc hostname có thể là của bất cứ node nào trong TSP.
 
