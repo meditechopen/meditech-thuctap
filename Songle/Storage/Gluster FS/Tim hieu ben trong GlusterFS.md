@@ -280,3 +280,12 @@ Trong storage server node, yêu cầu lại đi qua một loạt các translator
 	- POSIX translator.
 	
 Yêu cầu cuối cùng sẽ đến VFS và sau đó sẽ liên lạc với hệ thống tập tin gốc. Phản hồi sẽ lặp lại cùng một đường dẫn.
+
+### Tham khảo
+
+1. http://docs.gluster.org/en/latest/Quick-Start-Guide/Architecture/
+2. https://vi.wikipedia.org/wiki/H%C3%A0m_b%C4%83m_%E1%BB%95n_%C4%91%E1%BB%8Bnh
+3. https://www.slideshare.net/GlusterCommunity/glusterfs-architectur-roadmap-linuxcon-eu-2013
+4. https://vngeek.com/cong-nghe/2017/06/glusterfs-la-gi/
+5. https://www.itzgeek.com/how-tos/linux/centos-how-tos/install-and-configure-glusterfs-on-centos-7-rhel-7.html
+6. https://github.com/libfuse/libfuse
