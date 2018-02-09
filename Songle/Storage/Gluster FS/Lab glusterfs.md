@@ -262,15 +262,16 @@ nfs.disable: on
 performance.client-io-threads: off
 ```
 
-**Muốn thêm brick sử dụng command sau:
+**Muốn thêm brick sử dụng command sau:**
 
 `# gluster volume add-brick VOLNAME NEW_BRICK`
 
 Ví dụ:
 
-`# gluster volume add-brick test-volume server4:/exp4
+```
+# gluster volume add-brick test-volume server4:/exp4
 Add Brick successful
-`
+```
 Nếu muốn thay đổi định dạng replica/stripe count, bạn phải thêm replica/stripe count vào add-brick command. 
 
 ### Cài đặt GlusterFS Client:
