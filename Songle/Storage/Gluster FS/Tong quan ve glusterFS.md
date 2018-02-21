@@ -89,7 +89,7 @@ Với concept này, dữ liệu sẽ được copy sang các bricks trong cùng 
 Nhìn vào concept này chúng ta thấy rõ ưu điểm đó là dữ liệu sẽ có tính sẵn sàng 
 cao và luôn trong trạng thái dự phòng tương tự Raid 1.
 
-![Imgur](https://i.imgur.com/oJCasHz.png)
+![Imgur](https://i.imgur.com/0YiZAgK.png)
 
 Tổng dung lượng của volume sẽ chỉ bằng một dung lượng của một brick trong volume.
 
@@ -111,7 +111,7 @@ Please start the volume to access data
 Nhìn vào hình ảnh trên bạn có thể thấy, Tập tin cần lưu trữ được chia nhỏ thành nhiều phần, và mỗi phần nhỏ được lưu lần lượt trên các server tham gia vào hệ thống. 
 Không có sự trùng lặp nào. Hầu hết được sử dụng trong trường hợp lưu trữ một tập tin lớn và cần sự truy xuất dữ liệu nhanh.
 
-![Imgur](https://i.imgur.com/91v9DZO.png)
+![Imgur](https://i.imgur.com/ZVJbtUP.png)
 
 **Ưu điểm:** Phù hợp với việc lưu trữ mà dữ liệu cần truy xuất với hiệu năng cao, 
 đặc biệt là truy cập vào những tệp tin lớn.
@@ -132,7 +132,8 @@ Please start the volume to access data
 
 ### 4. Distributed Replicated Glusterfs Volume
 
-![Imgur](https://i.imgur.com/0YiZAgK.png)
+
+![Imgur](https://i.imgur.com/oJCasHz.png)
 
 Nhìn vào hình trên bạn có thể thấy File 1 được chia nhỏ (Strip) và lưu trữ lần lượt trên mỗi Brick thuộc Server 1. Tương tự File 2 được chia nhỏ và lưu trữ lần lượt trên mỗi Brick thuộc server 2. 
 File 1 và File 2 được lưu trữ phân tán trên 2 server. Phương pháp sử dụng cho các tập tin lớn được lưu trữ đồng thời trong hệ thống. Tận dụng được tiềm lực lưu trữ tối đa của mỗi máy chủ tham gia. 
@@ -160,8 +161,8 @@ Please start the volume to access data
 
 ### 6. Striped Replicated Volumes
 
-![Imgur](https://i.imgur.com/ZVJbtUP.png)
 
+![Imgur](https://i.imgur.com/91v9DZO.png)
 Nếu không chú ý kỹ, bạn có thể nhầm lẫn giữa các loại Volume trong GlusterFS. Đối với Striped Replicated Volumes. 
 Tập tin lưu trữ thường rất lớn,  nó vừa được chia nhỏ rải rác trên các Brick, đồng thời được sao lưu với mỗi phần được chia nhỏ. 
 Điều này đảm bảo an toàn để lưu trữ tập tin có khối lượng lớn cũng như tốc độ truy xuất đến tập tin.
