@@ -138,6 +138,14 @@ Nhìn vào hình trên bạn có thể thấy File 1 được chia nhỏ (Strip)
 File 1 và File 2 được lưu trữ phân tán trên 2 server. Phương pháp sử dụng cho các tập tin lớn được lưu trữ đồng thời trong hệ thống. Tận dụng được tiềm lực lưu trữ tối đa của mỗi máy chủ tham gia. 
 Nhưng với mỗi Brick hỏng nó sẽ ảnh hưởng đến chính tập tin đã được Striped lưu trữ trên chính server đó.
 
+- Lệnh cấu hình: 
+**# gluster volume create NEW-VOLNAME [stripe COUNT] [transport tcp | rdma | tcp,rdma] NEW-BRICK...**
+
+- Ví dụ với 4 servers:
+
+```
+# gluster volume create test-volume stripe 2 transport tcp server1:/exp1 server1:/exp2 server2:/exp3 server2:/exp4
+```
 ### 5. Distributed Replicated Volumes
 
 ![Imgur](https://i.imgur.com/oJCasHz.png)
