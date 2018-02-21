@@ -107,7 +107,6 @@ Please start the volume to access data
 
 ### 3. Striped Glusterfs Volume
 
-
 Nhìn vào hình ảnh trên bạn có thể thấy, Tập tin cần lưu trữ được chia nhỏ thành nhiều phần, và mỗi phần nhỏ được lưu lần lượt trên các server tham gia vào hệ thống. 
 Không có sự trùng lặp nào. Hầu hết được sử dụng trong trường hợp lưu trữ một tập tin lớn và cần sự truy xuất dữ liệu nhanh.
 
@@ -141,7 +140,6 @@ Nhưng với mỗi Brick hỏng nó sẽ ảnh hưởng đến chính tập tin 
 
 ### 5. Distributed Replicated Volumes
 
-
 ![Imgur](https://i.imgur.com/oJCasHz.png)
 
 Các tập tin được lưu trữ phân tán, trên mỗi Volume Replicated chính bản thân tập tin lại được sao lưu trên các Brick 
@@ -162,8 +160,8 @@ Please start the volume to access data
 
 ### 6. Striped Replicated Volumes
 
-
 ![Imgur](https://i.imgur.com/91v9DZO.png)
+
 Nếu không chú ý kỹ, bạn có thể nhầm lẫn giữa các loại Volume trong GlusterFS. Đối với Striped Replicated Volumes. 
 Tập tin lưu trữ thường rất lớn,  nó vừa được chia nhỏ rải rác trên các Brick, đồng thời được sao lưu với mỗi phần được chia nhỏ. 
 Điều này đảm bảo an toàn để lưu trữ tập tin có khối lượng lớn cũng như tốc độ truy xuất đến tập tin.
