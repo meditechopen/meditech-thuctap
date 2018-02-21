@@ -130,7 +130,7 @@ Creation of test-volume has been successful
 Please start the volume to access data
 ```
 
-### 4. Distributed Replicated Glusterfs Volume
+### 4. Distributed Striped Volume
 
 
 ![Imgur](https://i.imgur.com/oJCasHz.png)
