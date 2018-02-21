@@ -205,3 +205,6 @@ các nền tảng của Red Hat.
 gluster volume create test-volume stripe 2 replica 2 transport tcp server1:/exp1 server1:/exp2 server2:/exp3 server2:/exp4 
 server3:/exp5 server3:/exp6 server4:/exp7 server4:/exp8
 ```
+
+## Tham khảo: 
+https://access.redhat.com/documentation/en-US/Red_Hat_Storage/2.1/html/Administration_Guide/chap-User_Guide-Storage-pool.html
