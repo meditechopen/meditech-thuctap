@@ -133,7 +133,7 @@ Please start the volume to access data
 ### 4. Distributed Striped Volume
 
 
-![Imgur](https://i.imgur.com/oJCasHz.png)
+![Imgur](https://i.imgur.com/DNFQ4IW.png)
 
 Nhìn vào hình trên bạn có thể thấy File 1 được chia nhỏ (Strip) và lưu trữ lần lượt trên mỗi Brick thuộc Server 1. Tương tự File 2 được chia nhỏ và lưu trữ lần lượt trên mỗi Brick thuộc server 2. 
 File 1 và File 2 được lưu trữ phân tán trên 2 server. Phương pháp sử dụng cho các tập tin lớn được lưu trữ đồng thời trong hệ thống. Tận dụng được tiềm lực lưu trữ tối đa của mỗi máy chủ tham gia. 
@@ -141,7 +141,8 @@ Nhưng với mỗi Brick hỏng nó sẽ ảnh hưởng đến chính tập tin 
 
 ### 5. Distributed Replicated Volumes
 
-![Imgur](https://i.imgur.com/DNFQ4IW.png)
+
+![Imgur](https://i.imgur.com/oJCasHz.png)
 
 Các tập tin được lưu trữ phân tán, trên mỗi Volume Replicated chính bản thân tập tin lại được sao lưu trên các Brick 
 của Volume Replicated. Mô hình trên sử dụng cho các tập tin quan trọng và cần hệ thống để có thể mở rộng lưu trữ dễ dàng, 
