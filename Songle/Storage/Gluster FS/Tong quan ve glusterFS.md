@@ -166,4 +166,17 @@ Nếu không chú ý kỹ, bạn có thể nhầm lẫn giữa các loại Volum
 Tập tin lưu trữ thường rất lớn,  nó vừa được chia nhỏ rải rác trên các Brick, đồng thời được sao lưu với mỗi phần được chia nhỏ. 
 Điều này đảm bảo an toàn để lưu trữ tập tin có khối lượng lớn cũng như tốc độ truy xuất đến tập tin.
 
+**# gluster volume create NEW-VOLNAME [stripe COUNT] [replica COUNT] [transport tcp | rdma | tcp,rdma] NEW-BRICK...**
+
+ví dụ: 
+
+- Trên 4 servers 
+```
+gluster volume create test-volume stripe 2 replica 2 transport tcp server1:/exp1 server2:/exp3 server3:/exp2 server4:/exp4
+```
+- Trên 6 servers 
+```
+ gluster volume create test-volume stripe 3 replica 2 transport tcp server1:/exp1 server2:/exp2 server3:/exp3 server4:/exp4 
+ server5:/exp5 server6:/exp6
+ ```
 
