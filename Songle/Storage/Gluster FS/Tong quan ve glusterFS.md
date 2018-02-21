@@ -179,4 +179,21 @@ gluster volume create test-volume stripe 2 replica 2 transport tcp server1:/exp1
  gluster volume create test-volume stripe 3 replica 2 transport tcp server1:/exp1 server2:/exp2 server3:/exp3 server4:/exp4 
  server5:/exp5 server6:/exp6
  ```
+ 
+### 7. Distributed Replicated Striped Volume 
 
+Hình thức glusterfs này vẫn đang trong quá trình thử nghiệm và chưa hỗ trợ hoàn toàn 
+các nền tảng của Red Hat.
+
+![Imgur](https://i.imgur.com/AhacLXE.png)
+
+- Cấu hình với 4 server:
+
+**gluster volume create NEW-VOLNAME [stripe COUNT] [replica COUNT] [transport tcp | rdma | tcp,rdma] NEW-BRICK...**
+
+- Ví dụ:
+
+```
+gluster volume create test-volume stripe 2 replica 2 transport tcp server1:/exp1 server1:/exp2 server2:/exp3 server2:/exp4 
+server3:/exp5 server3:/exp6 server4:/exp7 server4:/exp8
+```
