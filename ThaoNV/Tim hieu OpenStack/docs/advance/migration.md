@@ -293,7 +293,7 @@ block_migration_flag=VIR_MIGRATE_UNDEFINE_SOURCE, VIR_MIGRATE_PEER2PEER, VIR_MIG
 
 Máy ảo sẽ chuyển sang trạng thái `MIGRATING`.
 
-<img src="../images/migrate4.png">
+<img src="https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/Tim%20hieu%20OpenStack/images/migrate4.png?raw=true">
 
 Sau một khoảng thời gian, máy ảo sẽ được migrate sang node compute mới.
 
