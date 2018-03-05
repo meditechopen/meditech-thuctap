@@ -31,7 +31,7 @@ Lưu ý rằng bạn chỉ có thể evacuate máy ảo khi host đã bị tắt
 
 **Workflow khi evacuate máy ảo**
 
-<img src="../images/evacuate1.png">
+<img src="https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/Tim%20hieu%20OpenStack/images/evacuate1.png?raw=true">
 
 1. User gửi yêu cầu evacuate máy ảo tới Nova API
 2. Nova API tiếp nhận yêu cầu, kiểm tra các tùy chọn
@@ -75,11 +75,11 @@ Ví dụ:
 
 Ở đây mình có một máy ảo đang chạy trên compute1 (mô hình có 2 node compute là compute1 và compute2). Nó được boot từ volume.
 
-<img src="../images/evacuate2.png">
+<img src="https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/Tim%20hieu%20OpenStack/images/evacuate2.png?raw=true">
 
 Giả sử compute1 đột nhiên bị chết, nova cũng đã nhận ra điều ấy
 
-<img src="../images/evacuate3.png">
+<img src="https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/Tim%20hieu%20OpenStack/images/evacuate3.png?raw=true">
 
 Ta tiến hành evacuate máy ảo sang compute2 bằng câu lệnh:
 
@@ -87,11 +87,11 @@ Ta tiến hành evacuate máy ảo sang compute2 bằng câu lệnh:
 
 `task-state` lúc này là `rebuilding` và máy ảo đang có status REBUILD.
 
-<img src="../images/evacuate4.png">
+<img src="https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/Tim%20hieu%20OpenStack/images/evacuate4.png?raw=true">
 
 Đợi một lúc thì máy ảo sẽ chuyển lại về trạng thái ACTIVE sau khi quá trình evacuation hoàn thành. Máy ảo lúc này đã được chuyển sang host compute2.
 
-<img src="../images/evacuate5.png">
+<img src="https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/Tim%20hieu%20OpenStack/images/evacuate5.png?raw=true">
 
 <a name="all"></a>
 ## 4. Hướng dẫn evacuate toàn bộ máy ảo
