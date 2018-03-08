@@ -2,23 +2,30 @@
 
 ## Mục lục
 
-1. Mô hình
+[1. Mô hình](#1)
 
-2. Hướng dẫn cấu hình
+[2. Hướng dẫn cấu hình](#2)
 
 -----------------
 
+<a name="1"></a>
 ## 1. Mô hình
 
-<img src="">
+<img src="https://i.imgur.com/jagBAhF.png">
 
 Môi trường lab: KVM
+
 Phiên bản OPS sử dụng: Pike
 
-IP Planing
+Phiên bản OS sử dụng: CentOS 7
 
-<img src="">
+Lưu ý: Hướng dẫn dưới đây sử dụng linuxbridge và dành cho node controller
 
+**IP Planning**
+
+<img src="https://i.imgur.com/PXNCeSf.png">
+
+<a name="2"></a>
 ## 2. Hướng dẫn cấu hình
 
 ### 2.1 Cấu hình môi trường
@@ -125,7 +132,7 @@ systemctl start memcached.service
 
   `cp /etc/my.cnf.d/server.cnf  /etc/my.cnf.d/server.cnf.orig`
 
-  - Khởi động mysql
+  - Khởi động mysql trên node ctl1
 
   `systemctl start mariadb`
 
@@ -136,7 +143,7 @@ systemctl start memcached.service
   cat << EOF | mysql -uroot
   GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$password_galera_root';FLUSH PRIVILEGES;
   GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '$password_galera_root';FLUSH PRIVILEGES;
-  GRANT ALL PRIVILEGES ON *.* TO 'root'@'ctl3' IDENTIFIED BY '$password_galera_root';FLUSH PRIVILEGES;
+  GRANT ALL PRIVILEGES ON *.* TO 'root'@'ctl1' IDENTIFIED BY '$password_galera_root';FLUSH PRIVILEGES;
   GRANT ALL PRIVILEGES ON *.* TO 'root'@'127.0.0.1' IDENTIFIED BY '$password_galera_root';FLUSH PRIVILEGES;
   EOF
   ```
@@ -240,11 +247,11 @@ systemctl start memcached.service
   EOF
   ```
 
-  - Tắt mariadb trên node đã bật
+  - Tắt mariadb trên node ctl1 đã bật
 
   `systemctl stop mariadb`
 
-  - Tạo cluster, thực hiện trên 1 node bất kỳ
+  - Tạo cluster, thực hiện trên ctl1
 
   `galera_new_cluster`
 
@@ -252,7 +259,7 @@ systemctl start memcached.service
 
   `systemctl start mariadb`
 
-- Cấu hình để haproxy check dịch vụ mysql
+- Cấu hình để haproxy check dịch vụ mysql trên cả 3 node
 
   - Cài đặt git
 
@@ -287,7 +294,7 @@ systemctl start memcached.service
 
   `echo 'mysqlchk      9200/tcp    # MySQL check' >> /etc/services`
 
-  - Tạo user cho mysql và phân quyền
+  - Tạo user cho mysql và phân quyền, thực hiện trên 1 node
 
   ```
   mysql> GRANT PROCESS ON *.* TO 'clustercheckuser'@'localhost' IDENTIFIED BY 'clustercheckpassword!';
@@ -705,7 +712,10 @@ keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
 keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
 ```
 
-- Copy 2 thư mục là `/etc/keystone/credential-keys` và `/etc/keystone/fernet-keys` sang 2 con ctl còn lại. Hoặc ta có thể dùng rsync hoặc nfs, miễn sao 2 thư mục này được đồng bộ trên cả 3 node.
+**Lưu ý:**
+
+Copy 2 thư mục là `/etc/keystone/credential-keys` và `/etc/keystone/fernet-keys` sang 2 con ctl còn lại.
+Hoặc ta có thể dùng rsync hoặc nfs, miễn sao 2 thư mục này được đồng bộ trên cả 3 node.
 
 - Bootstrap keystone
 
@@ -1020,4 +1030,441 @@ yum install -y openstack-nova-api openstack-nova-conductor \
   openstack-nova-scheduler openstack-nova-placement-api
 ```
 
--
+- Cấu hình file `/etc/nova/nova.conf` trên cả 3 node
+
+Lưu ý: Thay đổi `my_ip, osapi_compute_listen, metadata_host, metadata_listen` cho phù hợp đối với từng node
+
+```
+[DEFAULT]
+my_ip = 192.168.100.40
+enabled_apis = osapi_compute,metadata
+use_neutron = True
+firewall_driver = nova.virt.firewall.NoopFirewallDriver
+osapi_compute_listen=192.168.100.40
+metadata_host=192.168.100.40
+metadata_listen=192.168.100.40
+metadata_listen_port=8775
+transport_url = rabbit://openstack:Welcome123@ctl1:5672,openstack:Welcome123@ctl2:5672,openstack:Welcome123@ctl3:5672
+[api]
+auth_strategy = keystone
+[api_database]
+connection = mysql+pymysql://nova:Welcome123@192.168.100.45/nova_api
+[barbican]
+[cache]
+[cells]
+[cinder]
+[compute]
+[conductor]
+[console]
+[consoleauth]
+[cors]
+[crypto]
+[database]
+connection = mysql+pymysql://nova:Welcome123@192.168.100.45/nova
+[ephemeral_storage_encryption]
+[filter_scheduler]
+[glance]
+api_servers = http://192.168.100.45:9292
+[guestfs]
+[healthcheck]
+[hyperv]
+[ironic]
+[key_manager]
+[keystone]
+[keystone_authtoken]
+auth_uri = http://192.168.100.45:5000
+auth_url = http://192.168.100.45:35357
+memcached_servers = 192.168.100.40:11211,192.168.100.41:11211,192.168.100.42:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = nova
+password = Welcome123
+[libvirt]
+[matchmaker_redis]
+[metrics]
+[mks]
+[neutron]
+[notifications]
+[osapi_v21]
+[oslo_concurrency]
+lock_path = /var/lib/nova/tmp
+[oslo_messaging_amqp]
+[oslo_messaging_kafka]
+[oslo_messaging_notifications]
+[oslo_messaging_rabbit]
+rabbit_ha_queues = true
+rabbit_retry_interval = 1
+rabbit_retry_backoff = 2
+amqp_durable_queues= true
+[oslo_messaging_zmq]
+[oslo_middleware]
+[oslo_policy]
+[pci]
+[placement]
+os_region_name = RegionOne
+project_domain_name = Default
+project_name = service
+auth_type = password
+user_domain_name = Default
+auth_url = http://192.168.100.45:35357/v3
+username = placement
+password = Welcome123
+[quota]
+[rdp]
+[remote_debug]
+[scheduler]
+[serial_console]
+[service_user]
+[spice]
+[trusted_computing]
+[upgrade_levels]
+[vendordata_dynamic_auth]
+[vmware]
+[vnc]
+novncproxy_host=192.168.100.40
+enabled = true
+vncserver_listen = $my_ip
+vncserver_proxyclient_address = $my_ip
+novncproxy_base_url=http://192.168.100.45:6080/vnc_auto.html
+[workarounds]
+[wsgi]
+[xenserver]
+[xvp]
+```
+- Thêm vào file `/etc/httpd/conf.d/00-nova-placement-api.conf`
+
+```
+<Directory /usr/bin>
+   <IfVersion >= 2.4>
+      Require all granted
+   </IfVersion>
+   <IfVersion < 2.4>
+      Order allow,deny
+      Allow from all
+   </IfVersion>
+</Directory>
+```
+
+- Restart lại httpd
+
+`systemctl restart httpd`
+
+- Đồng bộ `nova-api` db, thực hiện trên 1 node
+
+`su -s /bin/sh -c "nova-manage api_db sync" nova`
+
+- Register cell0 db, thực hiện trên 1 node
+
+`su -s /bin/sh -c "nova-manage cell_v2 map_cell0" nova`
+
+- Tạo cell cell1, thực hiện trên 1 node
+
+`su -s /bin/sh -c "nova-manage cell_v2 create_cell --name=cell1 --verbose" nova`
+
+- Đồng bộ nova db, thực hiện trên 1 node
+
+`su -s /bin/sh -c "nova-manage db sync" nova`
+
+- Kiểm tra
+
+`nova-manage cell_v2 list_cells`
+
+- Bật dịch vụ và cho phép khởi động cùng hệ thống, thực hiện trên cả 3 node
+
+```
+systemctl enable openstack-nova-api.service \
+  openstack-nova-consoleauth.service openstack-nova-scheduler.service \
+  openstack-nova-conductor.service openstack-nova-novncproxy.service
+
+systemctl start openstack-nova-api.service \
+  openstack-nova-consoleauth.service openstack-nova-scheduler.service \
+  openstack-nova-conductor.service openstack-nova-novncproxy.service
+```
+
+- Kiểm tra lại
+
+`openstack compute service list`
+
+### 2.7 Cấu hình dịch vụ neutron
+
+- Tạo db, thực hiện trên 1 node
+
+```
+mysql -u root -pWelcome123
+CREATE DATABASE neutron;
+GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'localhost' \
+  IDENTIFIED BY 'Welcome123';
+GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%' \
+  IDENTIFIED BY 'Welcome123';
+```
+
+- Tạo user, gán quyền và tạo service enity
+
+```
+openstack user create --domain default --password Welcome123 neutron
+openstack role add --project service --user neutron admin
+openstack service create --name neutron \
+  --description "OpenStack Networking" network
+```
+
+- Tạo endpoint
+
+```
+openstack endpoint create --region RegionOne \
+    network public http://192.168.100.45:9696
+openstack endpoint create --region RegionOne \
+  network internal http://192.168.100.45:9696
+openstack endpoint create --region RegionOne \
+  network admin http://192.168.100.45:9696
+```
+
+- Cài packages
+
+```
+yum install -y openstack-neutron openstack-neutron-ml2 \
+  openstack-neutron-linuxbridge ebtables
+```
+
+- Chỉnh sửa file `/etc/neutron/neutron.conf`
+
+Lưu ý: Thay `bind_host` cho phù hợp trên từng node
+
+```
+[DEFAULT]
+bind_host = 192.168.100.40
+core_plugin = ml2
+service_plugins = router
+allow_overlapping_ips = true
+transport_url = rabbit://openstack:Welcome123@ctl1:5672,openstack:Welcome123@ctl2:5672,openstack:Welcome123@ctl3:5672
+auth_strategy = keystone
+notify_nova_on_port_status_changes = true
+notify_nova_on_port_data_changes = true
+[agent]
+[cors]
+[database]
+connection = mysql+pymysql://neutron:Welcome123@192.168.100.45/neutron
+[keystone_authtoken]
+auth_uri = http://192.168.100.45:5000
+auth_url = http://192.168.100.45:35357
+memcached_servers = 192.168.100.40:11211,192.168.100.41:11211,192.168.100.42:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = neutron
+password = Welcome123
+[matchmaker_redis]
+[nova]
+auth_url = http://192.168.100.45:35357
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+region_name = RegionOne
+project_name = service
+username = nova
+password = Welcome123
+[oslo_concurrency]
+lock_path = /var/lib/neutron/tmp
+[oslo_messaging_amqp]
+[oslo_messaging_kafka]
+[oslo_messaging_notifications]
+[oslo_messaging_rabbit]
+rabbit_retry_interval = 1
+rabbit_retry_backoff = 2
+amqp_durable_queues = true
+rabbit_ha_queues = true
+[oslo_messaging_zmq]
+[oslo_middleware]
+[oslo_policy]
+[quotas]
+[ssl]
+```
+
+- Chỉnh sửa file `/etc/neutron/plugins/ml2/ml2_conf.ini`
+
+```
+[DEFAULT]
+[l2pop]
+[ml2]
+type_drivers = flat,vlan,vxlan
+tenant_network_types = vxlan
+mechanism_drivers = linuxbridge,l2population
+extension_drivers = port_security
+[ml2_type_flat]
+flat_networks = provider
+[ml2_type_geneve]
+[ml2_type_gre]
+[ml2_type_vlan]
+[ml2_type_vxlan]
+vni_ranges = 1:1000
+[securitygroup]
+enable_ipset = true
+```
+
+- Chỉnh sửa file `/etc/neutron/plugins/ml2/linuxbridge_agent.ini`
+
+Lưu ý: Chỉnh sửa `local_ip` cho phù hợp trên từng node
+
+```
+[DEFAULT]
+[agent]
+[linux_bridge]
+physical_interface_mappings = provider:ens3
+[securitygroup]
+enable_security_group = true
+firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+[vxlan]
+enable_vxlan = true
+local_ip = 10.10.10.40
+l2_population = true
+```
+
+- Chỉnh sửa file `/etc/neutron/l3_agent.ini`
+
+```
+[DEFAULT]
+interface_driver = linuxbridge
+[agent]
+[ovs]
+```
+
+- Chỉnh sửa file `/etc/neutron/dhcp_agent.ini`
+
+```
+[DEFAULT]
+interface_driver = linuxbridge
+dhcp_driver = neutron.agent.linux.dhcp.Dnsmasq
+enable_isolated_metadata = true
+[agent]
+[ovs]
+```
+
+- Chỉnh sửa file `/etc/neutron/metadata_agent.ini`
+
+```
+[DEFAULT]
+nova_metadata_host = 192.168.100.45
+metadata_proxy_shared_secret = Welcome123
+[agent]
+[cache]
+```
+
+- Chỉnh sửa file `/etc/nova/nova.conf`
+
+```
+[neutron]
+url = http://192.168.100.45:9696
+auth_url = http://192.168.100.45:35357
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+region_name = RegionOne
+project_name = service
+username = neutron
+password = Welcome123
+service_metadata_proxy = true
+metadata_proxy_shared_secret = Welcome123
+```
+
+- Tạo symbolink
+
+`ln -s /etc/neutron/plugins/ml2/ml2_conf.ini /etc/neutron/plugin.ini`
+
+- Đồng bộ db
+
+```
+su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf \
+  --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron
+```
+
+- Restart lại nova-api
+
+`systemctl restart openstack-nova-api.service`
+
+- Bật dịch vụ
+
+```
+systemctl enable neutron-server.service \
+  neutron-linuxbridge-agent.service neutron-dhcp-agent.service \
+  neutron-metadata-agent.service neutron-l3-agent.service
+
+systemctl start neutron-server.service \
+  neutron-linuxbridge-agent.service neutron-dhcp-agent.service \
+  neutron-metadata-agent.service neutron-l3-agent.service
+```
+
+- Kiểm tra lại
+
+`openstack network agent list`
+
+### 2.8 Cấu hình horizon
+
+- Tải package
+
+`yum install -y openstack-dashboard`
+
+- Chỉnh sửa file `/etc/openstack-dashboard/local_settings`
+
+Thay đổi các option sau
+
+`OPENSTACK_HOST = 192.168.100.40`
+
+Lưu ý: Thay đổi cho phù hợp với từng node
+
+`ALLOWED_HOSTS = ['*',]`
+
+```
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
+CACHES = {
+    'default': {
+         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+         'LOCATION': ['192.168.100.40:11211', '192.168.100.41:11211', '192.168.100.42:11211']
+    }
+}
+```
+
+`OPENSTACK_KEYSTONE_URL = "http://%s:5000/v3" % OPENSTACK_HOST`
+
+`OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT = True`
+
+```
+OPENSTACK_API_VERSIONS = {
+    "identity": 3,
+    "image": 2,
+    "volume": 2,
+}
+```
+
+`OPENSTACK_KEYSTONE_DEFAULT_DOMAIN = "Default"`
+`OPENSTACK_KEYSTONE_DEFAULT_ROLE = "user"`
+
+
+```
+OPENSTACK_NEUTRON_NETWORK = {
+    ...
+    'enable_router': False,
+    'enable_quotas': False,
+    'enable_distributed_router': False,
+    'enable_ha_router': False,
+    'enable_lb': False,
+    'enable_firewall': False,
+    'enable_vpn': False,
+    'enable_fip_topology_check': False,
+}
+```
+
+- Restart lại httpd và memcache
+
+`systemctl restart httpd.service memcached.service`
+
+
+**Link tham khảo:**
+
+https://github.com/beekhof/osp-ha-deploy/blob/master/keepalived/controller-node.md
+
+https://docs.openstack.org/ha-guide/index.html
+
+https://docs.openstack.org/install-guide/openstack-services.html#minimal-deployment-for-pike
