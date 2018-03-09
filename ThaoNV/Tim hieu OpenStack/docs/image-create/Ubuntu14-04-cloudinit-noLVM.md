@@ -100,15 +100,25 @@ Sau đó nhập lệnh `update-grub` để lưu lại.
 
 `/sbin/shutdown -h now`
 
-## Bước 8: Clean up image
+## Bước 8: Cài libguestfs-tools để xử lý image
+
+`apt-get install libguestfs-tools -y`
+
+**Lưu ý:**
+
+Từ bước này thực hiện trên host KVM.
+
+Bước 8 chỉ cần thực hiện ở lần đóng image đầu tiên.
+
+## Bước 9: Clean up image
 
 `virt-sysprep -d trusty`
 
-## Bước 9: Undefine libvirt domain
+## Bước 10: Undefine libvirt domain
 
 `virsh undefine trusty`
 
-## Bước 10: Giảm kích thước máy ảo
+## Bước 11: Giảm kích thước máy ảo
 
 `virt-sparsify --compress /tmp/trusty.qcow2 /tmp/trusty-shrink.qcow2`
 

@@ -61,23 +61,23 @@ Dưới đây là các hình minh họa tiến trình khi thực hiện migrate 
 
 - Pre-migration: VM trên host A đang chạy, host B được lựa chọn bởi người dùng hoặc scheduler.
 
-<img src="../images/migrate1.png">
+<img src="https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/Tim%20hieu%20OpenStack/images/migrate1.png?raw=true">
 
 - Reservation: Xác nhận host B có đủ tà nguyên để thực hiện migrate, tạo mới một máy ảo trên host B.
 
-<img src="../images/migrate3.png">
+<img src="https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/Tim%20hieu%20OpenStack/images/migrate3.png?raw=true">
 
 - Iterative pre-copy : Bộ nhớ được di chuyển, máy ảo mới ở trạng thái suspend
 
-<img src="../images/migrate5.png">
+<img src="https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/Tim%20hieu%20OpenStack/images/migrate5.png?raw=true">
 
 - Stop and copy : Suspend máy ảo và copy phần còn lại cũng như trạng thái của CPU.
 
-<img src="../images/migrate6.png">
+<img src="https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/Tim%20hieu%20OpenStack/images/migrate6.png?raw=true">
 
 - Commitment : Host B trở thành primary host cho VM.
 
-<img src="../images/migrate7.png">
+<img src="https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/Tim%20hieu%20OpenStack/images/migrate7.png?raw=true">
 
 <a name="compare"></a>
 ### 3. So sánh ưu nhược điểm giữa cold và live migrate
@@ -106,7 +106,7 @@ Dưới đây là các hình minh họa tiến trình khi thực hiện migrate 
 
 - Trong live-migrate, có 2 loại đó là True live migration và Block live migration. Hình dưới đây mô tả những loại storage mà 2 loại migration trên hỗ trợ:
 
-<img src="../images/migrate2.png">
+<img src="https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/Tim%20hieu%20OpenStack/images/migrate2.png?raw=true">
 
 **Ngữ cảnh sử dụng:**
 
@@ -293,7 +293,7 @@ block_migration_flag=VIR_MIGRATE_UNDEFINE_SOURCE, VIR_MIGRATE_PEER2PEER, VIR_MIG
 
 Máy ảo sẽ chuyển sang trạng thái `MIGRATING`.
 
-<img src="../images/migrate4.png">
+<img src="https://github.com/thaonguyenvan/meditech-thuctap/blob/master/ThaoNV/Tim%20hieu%20OpenStack/images/migrate4.png?raw=true">
 
 Sau một khoảng thời gian, máy ảo sẽ được migrate sang node compute mới.
 
