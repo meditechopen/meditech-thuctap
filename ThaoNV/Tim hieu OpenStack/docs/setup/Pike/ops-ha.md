@@ -6,6 +6,22 @@
 
 [2. Hướng dẫn cấu hình](#2)
 
+- [2.1 Cấu hình môi trường](#2.1)
+
+- [2.2 Cài đặt mysql và rabbitmq cluster](#2.2)
+
+- [2.3 Cấu hình haproxy + pacemaker](#2.3)
+
+- [2.4 Cấu hình keystone](#2.4)
+
+- [2.5 Cấu hình glance](#2.5)
+
+- [2.6 Cấu hình nova](#2.6)
+
+- [2.7 Cấu hình neutron](#2.7)
+
+- [2.8 Cấu hình horizon](#2.8)
+
 -----------------
 
 <a name="1"></a>
@@ -19,7 +35,7 @@ Phiên bản OPS sử dụng: Pike
 
 Phiên bản OS sử dụng: CentOS 7
 
-Lưu ý: Hướng dẫn dưới đây sử dụng linuxbridge và dành cho node controller
+Lưu ý: Hướng dẫn dưới đây sử dụng linuxbridge và dành cho node controller với 5 project chính.
 
 **IP Planning**
 
@@ -28,6 +44,7 @@ Lưu ý: Hướng dẫn dưới đây sử dụng linuxbridge và dành cho node
 <a name="2"></a>
 ## 2. Hướng dẫn cấu hình
 
+<a name="2.1"></a>
 ### 2.1 Cấu hình môi trường
 
 - Cài đặt ip theo ip plan
@@ -120,6 +137,7 @@ systemctl start memcached.service
 
 `init 6`
 
+<a name="2.2"></a>
 ### 2.2 Cài đặt mysql và rabbitmq cluster
 
 - Cài đặt galera cluster
@@ -377,6 +395,7 @@ systemctl start memcached.service
     rabbitmqctl set_permissions openstack ".*" ".*" ".*"
     ```
 
+<a name="2.3"></a>
 ### 2.3 Cấu hình haproxy + pacemaker
 
 - Tải packages
@@ -606,7 +625,8 @@ listen horizon
 
 - Khởi động lại lần lượt các server để nhận cấu hình. Lưu ý reset từng con một. Kiểm tra xem đã nhận ip vip chưa. Kiểm tra trang dashboard ở địa chỉ `http://192.168.100.45:8080/stats`
 
-### 2.4 Cấu hình dịch vụ keystone
+<a name="2.4"></a>
+### 2.4 Cấu hình keystone
 
 - Tạo db, thực hiện trên 1 node
 
@@ -810,6 +830,7 @@ export OS_IMAGE_API_VERSION=2
 
 `openstack token issue`
 
+<a name="2.5"></a>
 ### 2.5 Cấu hình dịch vụ glance
 
 - Tạo db, thực hiện trên 1 node
@@ -963,6 +984,7 @@ openstack image create "cirros" \
 
 Sau khi có id của image, ta vào thư mục `/var/lib/glance/images/` trên cả 3 node và copy image có id vừa tạo sang 2 node còn lại.
 
+<a name="2.6"></a>
 ### 2.6 Cấu hình dịch vụ nova
 
 - Tạo db và gán quyền trên 1 node
@@ -1187,6 +1209,7 @@ systemctl start openstack-nova-api.service \
 
 `openstack compute service list`
 
+<a name="2.7"></a>
 ### 2.7 Cấu hình dịch vụ neutron
 
 - Tạo db, thực hiện trên 1 node
@@ -1399,6 +1422,7 @@ systemctl start neutron-server.service \
 
 `openstack network agent list`
 
+<a name="2.8"></a>
 ### 2.8 Cấu hình horizon
 
 - Tải package
