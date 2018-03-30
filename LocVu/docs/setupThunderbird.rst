@@ -7,7 +7,7 @@ Thêm một email đã tồn tại
 
 ``File/New/Existing Mail Account...``
 
-.. image:: thunder2
+.. image:: https://raw.githubusercontent.com/locvx1234/meditech-thuctap/master/LocVu/images/thunder2.png
  :width: 40pt
 
 Bạn nhập thông tin `Your name`, `Email address` và `Password` và chọn `Continue`
@@ -16,12 +16,12 @@ Qúa trình tìm kiếm các cấu hình trong Email provider, Mozilla ISP datab
 
 Cấu hình được tìm thấy tự động, ví dụ như
 
-.. image:: thunder3
+.. image:: https://raw.githubusercontent.com/locvx1234/meditech-thuctap/master/LocVu/images/thunder3.png
  :width: 40pt
 
 Nếu không, bạn phải cấu hình thủ công bằng cách chọn `Manual config`
 
-.. image:: thunder3
+.. image:: https://raw.githubusercontent.com/locvx1234/meditech-thuctap/master/LocVu/images/thunder4.png
  :width: 40pt
 
 Và chọn `Re-test`
@@ -33,14 +33,14 @@ Thêm chữ ký
 ===========
 
 
-.. image:: thunder_signatue
+.. image:: https://raw.githubusercontent.com/locvx1234/meditech-thuctap/master/LocVu/images/thunder_signature.png
  :width: 40pt
 
 Chọn mail cần đặt chữ ký ở sidebar => `Views settings for this account`
 
 Trong hộp thoại `Account setting`, bạn hãy đặt chữ ký của mình vào ô `Signature text`
 
-.. image:: thunder_signatue2
+.. image:: https://raw.githubusercontent.com/locvx1234/meditech-thuctap/master/LocVu/images/thunder_signature2.png
  :width: 40pt
 
 
@@ -51,7 +51,7 @@ Chọn `Address Book` trên thanh công cụ (`Mail Toolbar`)
 
 Sau đó chọn `New Contact` để thêm một người mới
 
-.. image:: thunder_address
+.. image:: https://raw.githubusercontent.com/locvx1234/meditech-thuctap/master/LocVu/images/thunder_address.png
  :width: 40pt
 
 Danh bạ này có thể phân nhóm, và có một nhóm Collected Addresses là nhóm tự động thêm những người mình đã từng liên lạc với họ
@@ -67,7 +67,7 @@ Sử dụng template rất hữu ích khi bạn phải viết một bức thư t
 Mặc định nếu chọn `Save` thì mail sẽ được lưu vào `Draff`
 
 
-.. image:: thunder_template
+.. image:: https://raw.githubusercontent.com/locvx1234/meditech-thuctap/master/LocVu/images/thunder_template.png
  :width: 40pt
 
 Để sử dụng template, chọn `Templates` ở sidebar và chọn template mình muốn sử dụng.
