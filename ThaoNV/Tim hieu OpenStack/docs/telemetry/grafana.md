@@ -2,12 +2,13 @@
 
 ## Mục lục
 
-1. Hướng dẫn cài đặt grafna trên CentOS 7
+[1. Hướng dẫn cài đặt grafana trên CentOS 7](#1)
 
-2. Hướng dẫn cấu hình kết hợp gnocchi và grafna
+[2. Hướng dẫn cấu hình kết hợp gnocchi và grafna](#2)
 
 ---------------
 
+<a name="1"></a>
 ## 1. Hướng dẫn cài đặt grafna trên CentOS 7
 
 - Thêm file repo `/etc/yum.repos.d/grafana.repo`
@@ -45,6 +46,7 @@ Truy cập giao diện của grafana theo đường dẫn `http://ip-server:3000
 - Tham khảo các cách cài đặt grafana trên các OS khác nhau [tại đây](http://docs.grafana.org/installation/)
 
 
+<a name="2"></a>
 ## 2. Hướng dẫn cấu hình kết hợp gnocchi và grafna
 
 Yêu cầu:
@@ -99,3 +101,14 @@ systemctl restart openstack-gnocchi-*
 - Thêm dashboard mới và add các cấu lệnh query để hiển thị metrics
 
 <img src="https://i.imgur.com/CdRqhds.png">
+
+
+**Link tham khảo:**
+
+https://gnocchi.xyz/grafana.html
+
+https://julien.danjou.info/openstack-gnocchi-grafana/
+
+http://docs.grafana.org/installation/
+
+https://github.com/hocchudong/ghichep-grafana/blob/master/ghichep-grafana.md
