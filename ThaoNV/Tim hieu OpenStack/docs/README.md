@@ -4,11 +4,11 @@
 
 ### Tìm hiểu chung
 
-[1. Tìm hiểu chung về OpenStack](./docs/general/tim-hieu-chung-OpenStack.md)
+[1. Tìm hiểu chung về OpenStack](./general/tim-hieu-chung-OpenStack.md)
 
-[2. Tìm hiểu cấu trúc và thành phần của OpenStack](./docs/general/cau-truc-va-thanh-phan-openstack.md)
+[2. Tìm hiểu cấu trúc và thành phần của OpenStack](./general/cau-truc-va-thanh-phan-openstack.md)
 
-[3. Hướng dẫn sử dụng dashboard](./docs/general/hdsd-dashboard.md)
+[3. Hướng dẫn sử dụng dashboard](./general/hdsd-dashboard.md)
 
 ### Tài liệu hướng dẫn setup OPS
 
@@ -24,15 +24,15 @@
 
 ### Tài liệu nâng cao
 
-[1. Hướng dẫn reset root password của máy ảo CentOS 7 trên OpenStack](./docs/advance/Huong-dan-reset-root-password-may-ao-centos-tren-openstack.md)
+[1. Hướng dẫn reset root password của máy ảo CentOS 7 trên OpenStack](./advance/Huong-dan-reset-root-password-may-ao-centos-tren-openstack.md)
 
-[2. Tìm hiểu về migrate máy ảo trong OpenStack](./docs/advance/migration.md)
+[2. Tìm hiểu về migrate máy ảo trong OpenStack](./advance/migration.md)
 
-[3. Hướng dẫn rebuild lại máy ảo trong trường hợp Compute bị chết](./docs/advance/evacute.md)
+[3. Hướng dẫn rebuild lại máy ảo trong trường hợp Compute bị chết](./advance/evacute.md)
 
-[4. Hướng dẫn backup và restore lại controller](./docs/advance/backup-and-restore-controller.md)
+[4. Hướng dẫn backup và restore lại controller](./advance/backup-and-restore-controller.md)
 
-[5. Hướng dẫn đóng image trong OPS](./docs/image-create/)
+[5. Hướng dẫn đóng image trong OPS](./image-create/)
 
 ### Project Nova
 
