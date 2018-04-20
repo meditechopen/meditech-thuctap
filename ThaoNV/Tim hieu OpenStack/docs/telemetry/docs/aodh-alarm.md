@@ -60,7 +60,7 @@ Trên phía server dùng để cảnh báo (192.168.100.49) mình chạy 1 đo�
 pip install flask
 mkdir flask
 cd flask
-wget
+wget https://raw.githubusercontent.com/thaonguyenvan/meditech-thuctap/master/ThaoNV/Tim%20hieu%20OpenStack/docs/telemetry/scripts/aodh-alarm.py
 chmod +x alarm_proxy.py
 cd
 export FLASK_APP=flask/alarm_proxy.py

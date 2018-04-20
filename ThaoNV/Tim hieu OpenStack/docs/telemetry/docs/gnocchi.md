@@ -302,7 +302,7 @@ Tham khảo [tại dây](https://docs.openstack.org/ceilometer/pike/install/inde
 
 - Mặc định thì ceilometer chỉ lấy được những metrics nhất định.
 
-Tham khảo những thông số này [tại đây]()
+Tham khảo những thông số này [tại đây](https://docs.openstack.org/ceilometer/pike/admin/telemetry-measurements.html)
 
 - Để lấy được một số các thông số khác như mức độ sử dụng cpu của host compute thì ta cần cấu hình thêm snmp trên node compute
 
@@ -393,6 +393,10 @@ sources:
 ```
 
 Restart lại dịch vụ và kiểm tra lại danh sách các resource trên node controller xem metrics đã được poll lên chưa.
+
+**Lưu ý:**
+
+Phía trên chỉ là một số các metric mà ceilometer lấy được. Các metrics của các service như glance thì chỉ xuất hiện khi ta thực thi các tác vụ với nó ví dụ như tạo image. Lúc này message queue mới có thông tin và ceilometer mới lấy được với điều kiện các service này đã được cấu hình để đẩy metrics này qua AMQP.
 
 
 **Link tham khảo**
