@@ -125,6 +125,9 @@ function neutron_config() {
         ops_edit $ctl_l3_agent_conf DEFAULT interface_driver openvswitch
         ops_edit $ctl_l3_agent_conf DEFAULT external_network_bridge
 
+        ops_edit $ctl_metadata_agent DEFAULT nova_metadata_ip $CTL1_IP_NIC1
+        ops_edit $ctl_metadata_agent DEFAULT metadata_proxy_shared_secret Welcome123
+
         ln -s /etc/neutron/plugins/ml2/ml2_conf.ini /etc/neutron/plugin.ini
 }
 
