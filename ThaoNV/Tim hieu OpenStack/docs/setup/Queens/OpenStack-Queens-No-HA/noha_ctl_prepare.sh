@@ -1,4 +1,4 @@
-#!/bin/bash -ex 
+#!/bin/bash -ex
 ##############################################################################
 ### Script cai dat cac goi bo tro cho CTL
 
@@ -71,7 +71,7 @@ function install_repo_openstack {
         do
             echocolor "Cai dat install_repo tren $IP_ADD"
             sleep 3
-        ssh root@$IP_ADD << EOF 
+        ssh root@$IP_ADD << EOF
 yum -y install centos-release-openstack-queens
 yum -y install crudini wget vim
 yum -y install python-openstackclient openstack-selinux python2-PyMySQL
@@ -88,13 +88,13 @@ function khai_bao_host {
         scp /etc/hosts root@$COM2_IP_NIC1:/etc/
 }
 
-# Cai dat NTP server 
+# Cai dat NTP server
 function install_ntp_server {
-        yum -y install chrony
         for IP_ADD in $CTL1_IP_NIC1 $COM1_IP_NIC1 $COM2_IP_NIC1
-        do 
+        do
           echocolor "Cau hinh NTP cho $IP_ADD"
           sleep 3
+          yum -y install chrony
           cp /etc/chrony.conf /etc/chrony.conf.orig
           if [ "$IP_ADD" == "$CTL1_IP_NIC1" ]; then
                   sed -i 's/server 0.centos.pool.ntp.org iburst/ \
@@ -104,14 +104,14 @@ server 3.asia.pool.ntp.org iburst/g' /etc/chrony.conf
                   sed -i 's/server 1.centos.pool.ntp.org iburst/#/g' /etc/chrony.conf
                   sed -i 's/server 2.centos.pool.ntp.org iburst/#/g' /etc/chrony.conf
                   sed -i 's/server 3.centos.pool.ntp.org iburst/#/g' /etc/chrony.conf
-                  sed -i 's/#allow 192.168\/16/allow 192.168.20.0\/24/g' /etc/chrony.conf
-                  sleep 5                  
+                  sed -i 's/#allow 192.168.0.0\/16/allow 192.168.30.0\/24/g' /etc/chrony.conf
+                  sleep 5
                   systemctl enable chronyd.service
                   systemctl start chronyd.service
                   systemctl restart chronyd.service
                   chronyc sources
-          else 
-                  ssh root@$IP_ADD << EOF               
+          else
+                  ssh root@$IP_ADD << EOF
 sed -i 's/server 0.centos.pool.ntp.org iburst/server $CTL1_IP_NIC1 iburst/g' /etc/chrony.conf
 sed -i 's/server 1.centos.pool.ntp.org iburst/#/g' /etc/chrony.conf
 sed -i 's/server 2.centos.pool.ntp.org iburst/#/g' /etc/chrony.conf
@@ -121,8 +121,8 @@ systemctl start chronyd.service
 systemctl restart chronyd.service
 chronyc sources
 EOF
-          fi  
-        done        
+          fi
+        done
 }
 
 function install_memcached() {
@@ -146,10 +146,6 @@ sleep 3
 copykey
 setup_config
 
-echocolor "Cai dat proxy tren cac node"
-sleep 3
-install_proxy
-
 echocolor "Cai dat repo tren cac node"
 sleep 3
 install_repo_galera
@@ -159,7 +155,7 @@ echocolor "Cau hinh hostname"
 sleep 3
 khai_bao_host
 
-# Cai dat NTP 
+# Cai dat NTP
 echocolor "Cai dat Memcached tren cac node"
 install_ntp_server
 install_memcached

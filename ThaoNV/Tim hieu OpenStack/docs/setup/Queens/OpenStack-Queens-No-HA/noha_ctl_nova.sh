@@ -93,7 +93,7 @@ function nova_config {
 
         ops_edit $ctl_nova_conf api auth_strategy  keystone
 
-        ops_edit $ctl_nova_conf keystone_authtoken auth_url = http://$CTL1_IP_NIC1:5000/v3
+        ops_edit $ctl_nova_conf keystone_authtoken auth_url http://$CTL1_IP_NIC1:5000/v3
         ops_edit $ctl_nova_conf keystone_authtoken memcached_servers $CTL1_IP_NIC1:11211
         ops_edit $ctl_nova_conf keystone_authtoken auth_type password
         ops_edit $ctl_nova_conf keystone_authtoken project_domain_name Default
@@ -139,17 +139,6 @@ function nova_config {
 
 
 function nova_syncdb {
-				cat << 'EOF' >> /etc/httpd/conf.d/00-nova-placement-api.conf
-        <Directory /usr/bin>
-           <IfVersion >= 2.4>
-              Require all granted
-           </IfVersion>
-           <IfVersion < 2.4>
-              Order allow,deny
-              Allow from all
-           </IfVersion>
-        </Directory>
-        EOF
 
         systemctl restart httpd
 
@@ -204,6 +193,16 @@ nova_config
 
 echocolor "Dong bo DB cho NOVA"
 sleep 3
+echo '<Directory /usr/bin>
+   <IfVersion >= 2.4>
+      Require all granted
+   </IfVersion>
+   <IfVersion < 2.4>
+      Order allow,deny
+      Allow from all
+   </IfVersion>
+</Directory>' >> /etc/httpd/conf.d/00-nova-placement-api.conf
+
 nova_syncdb
 
 echocolor "Restart dich vu NOVA"

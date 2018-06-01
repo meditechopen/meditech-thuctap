@@ -102,11 +102,10 @@ function com_neutron_install {
 function com_neutron_config {
         com_neutron_conf=/etc/neutron/neutron.conf
         com_ml2_conf=/etc/neutron/plugins/ml2/ml2_conf.ini
-        com_openvswitch_agent=/etc/neutron/plugins/ml2/com_openvswitch_agent.ini
+        com_openvswitch_agent=/etc/neutron/plugins/ml2/openvswitch_agent.ini
 
 
         cp $com_neutron_conf $com_neutron_conf.orig
-        cp $com_ml2_conf $com_ml2_conf.orig
         cp $com_openvswitch_agent $com_openvswitch_agent.orig
 
         ops_edit $com_neutron_conf DEFAULT auth_strategy keystone
