@@ -124,22 +124,6 @@ function add_firewall_rules {
 # Implement functions
 ##############################################################################
 
-echo "Thao co dep trai ko?"
-echo "NHAP VAO 'co' HOAC 'ko'"
-read select
-
-if [ $select == "co" ]
-then
-echo "Starting script ..."
-elif [ $select == "ko" ]
-then
-echo "Script nay ko danh cho nguoi ko co mat tham mi"
-exit 1
-else
-echo "Nhap vao 'co' hoac 'ko'"
-exit 1
-fi
-
 echocolor "Do you want to keep firewalld?"
 echocolor "Press 1 for YES and any button for NO"
 read select
