@@ -1,4 +1,4 @@
-# Hướng dẫn cấu hình openvpn mode tun
+# Hướng dẫn cấu hình openvpn mode tap
 
 ## Mô hình
 
