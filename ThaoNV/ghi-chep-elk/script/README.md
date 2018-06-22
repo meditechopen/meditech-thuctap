@@ -46,7 +46,7 @@ After installed, you can access your dashboard of Kibana by address `http://your
 
 Firstly, download `ELK-client` script by the following command:
 
-`curl > ELK-client.sh`
+`curl https://raw.githubusercontent.com/thaonguyenvan/meditech-thuctap/master/ThaoNV/ghi-chep-elk/script/ELK-client.sh > ELK-client.sh`
 
 After that, run this script:
 
@@ -61,6 +61,7 @@ Moreover, you have to choose to install filebeat to push your OpenStack log or y
 Press `1` to push your OpenStack log and any button to push your syslog.
 
 Thanks for using this script,
+
 Good luck,
 
 ThaoNV
