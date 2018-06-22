@@ -11,7 +11,9 @@ If you do not have wget. Please run the following command to install it:
 After that, download three files by following commands:
 
 wget https://raw.githubusercontent.com/thaonguyenvan/meditech-thuctap/master/ThaoNV/ghi-chep-elk/script/ELK-server.sh
+
 wget https://raw.githubusercontent.com/thaonguyenvan/meditech-thuctap/master/ThaoNV/ghi-chep-elk/script/02-openstack.conf
+
 wget https://raw.githubusercontent.com/thaonguyenvan/meditech-thuctap/master/ThaoNV/ghi-chep-elk/script/03-syslog.conf
 
 Run the following command to run the script.
@@ -39,3 +41,7 @@ The script will start automatically.
 <img src="https://i.imgur.com/AonudeD.png">
 
 After installed, you can access your dashboard of Kibana by address `http://your-elk-server:5601`
+
+Thanks for using this script,
+
+ThaoNV
