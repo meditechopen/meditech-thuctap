@@ -1,10 +1,10 @@
 # Script install ELK Server
 
-This is script to install ELK server. Please nopte that this script is only work for CentOS 7.
+This is script to install ELK server. Please note that this script only works for CentOS 7.
 
-Firstly, please download script and two files config for logstash
+Firstly, please download script and two config files for logstash
 
-If you do not have wget. Please run the following command to install it:
+If you do not have `wget`. Please run the following command to install it:
 
 `yum install wget -y`
 
