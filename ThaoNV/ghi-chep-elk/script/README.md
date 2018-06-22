@@ -42,6 +42,27 @@ The script will start automatically.
 
 After installed, you can access your dashboard of Kibana by address `http://your-elk-server:5601`
 
+# Script to install filebeat in client to push log to ELK server
+
+Firstly, download `ELK-client` script by the following command:
+
+`curl > ELK-client.sh`
+
+After that, run this script:
+
+`bash ELK-client.sh`
+
+The script will ask you to enter your ELK server IP.
+
+Moreover, you have to choose to install filebeat to push your OpenStack log or your syslog.
+
+<img src="https://i.imgur.com/9N4RMey.png">
+
+Press `1` to push your OpenStack log and any button to push your syslog.
+
 Thanks for using this script,
+Good luck,
 
 ThaoNV
+
+<img src="https://media2.giphy.com/media/xTk9ZTOGgL1W84vX7q/200w.webp">
