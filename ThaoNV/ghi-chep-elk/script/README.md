@@ -1,6 +1,6 @@
 # Script install ELK Server
 
-<img src="https://media1.giphy.com/media/Cmr1OMJ2FN0B2/giphy.gif">
+<img src="https://media3.giphy.com/media/dzaUX7CAG0Ihi/giphy.gif">
 
 This is script to install ELK server. Please note that this script only works for CentOS 7.
 
