@@ -1,5 +1,7 @@
 # Script install ELK Server
 
+<img src="https://media1.giphy.com/media/Cmr1OMJ2FN0B2/giphy.gif">
+
 This is script to install ELK server. Please note that this script only works for CentOS 7.
 
 Firstly, please download script and two config files for logstash
