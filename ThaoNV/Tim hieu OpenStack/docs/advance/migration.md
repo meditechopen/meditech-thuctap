@@ -146,6 +146,7 @@ scp /var/lib/nova/.ssh/id_rsa.pub root@compute2:/root/
 mkdir -p /var/lib/nova/.ssh
 cat /root/id_rsa.pub >> /var/lib/nova/.ssh/authorized_keys
 echo 'StrictHostKeyChecking no' >> /var/lib/nova/.ssh/config
+chown -R nova:nova /var/lib/nova/.ssh
 ```
 
 - Từ node compute1 kiểm tra để chắc chắn rằng user `nova` có thể login được vào node compute2 còn lại mà không cần sử dụng password
