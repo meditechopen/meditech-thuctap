@@ -35,15 +35,6 @@ function hienthi {
 }
 
 function centos_install {
-cat << EOF >> /etc/yum.repos.d/filebeat.repo
-[filebeat]
-name=Filebeat for ELK clients
-baseurl=https://packages.elastic.co/beats/yum/el/$basearch
-enabled=1
-gpgkey=https://packages.elastic.co/GPG-KEY-elasticsearch
-gpgcheck=1
-EOF
-
 curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.2.4-x86_64.rpm
 
 rpm -vi filebeat-6.2.4-x86_64.rpm
