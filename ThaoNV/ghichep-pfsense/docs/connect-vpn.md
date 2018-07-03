@@ -8,7 +8,7 @@
 
 - Trong trường hợp máy bạn đã cài sẵn openvpn client, tải về file nén chứa các file xác thực.
 
-<img src="../images/35.png">
+<img src="../images/55.png">
 
 - Sau đó giải nén và copy toàn bộ thư mục vào foler `C:\Program Files\OpenVPN`
 
@@ -60,7 +60,7 @@ apt-get install openvpn
 
 - Download gói nén chứa các file xác thực
 
-<img src="../images/35.png">
+<img src="../images/55.png">
 
 - Giải nén và copy vào thư mục `/etc/openvpn`
 
