@@ -27,6 +27,9 @@ virt-install --virt-type kvm --name trusty --ram 1024 \
   --os-type=linux --os-variant=ubuntutrusty
 ```
 
+Lưu ý: Virtual size mà bạn chọn cho ổ đĩa sẽ là size tối thiểu của volume nếu bạn muốn boot máy ảo từ volume sau này.
+Nên tạo máy ảo với định dạng file ổ đĩa là qcow2 để không mất công chuyển đổi sau này.
+
 **Một số lưu ý trong quá trình cài đặt**
 
 - Đối với hostname, các bạn có thể đặt mặc định bởi ta dùng cloud-init để set sau.

@@ -29,6 +29,9 @@ virt-install --connect qemu:///system \
   --vnc --os-type windows --os-variant win2k8
 ```
 
+Lưu ý: Virtual size mà bạn chọn cho ổ đĩa sẽ là size tối thiểu của volume nếu bạn muốn boot máy ảo từ volume sau này.
+Nên tạo máy ảo với định dạng file ổ đĩa là qcow2 để không mất công chuyển đổi sau này.
+
 ### Bước 2: Chỉnh sửa file .xml
 
 Sau khi máy ảo được bật lên, tiến hành tắt máy ảo và bổ sung thêm channel trong <devices> (để máy host giao tiếp với máy ảo sử dụng qemu-guest-agent), sau đó save lại
