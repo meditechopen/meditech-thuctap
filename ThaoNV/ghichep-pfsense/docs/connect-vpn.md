@@ -103,3 +103,26 @@ Tiến hành comment lại dòng số 5 trong file cấu hình client (`ncp-ciph
 - Chuyển sang tab khác và kiểm tra ip sau đó ping thử tới các máy có cùng dải mạng LAN
 
 <img src="../images/52.png">
+
+## Hướng dẫn autostart openvpn trên ubuntu
+
+tạo file `auth` trong thư mục `/etc/openvpn`
+
+```
+vi /etc/openvpn/auth
+
+thaonv
+hihihoho
+```
+
+Trong đó `thaonv` là username và `hihihoho` là password của tk openvpn
+
+Sửa file conf trong `/etc/openvpn`
+
+`auth-user-pass /etc/openvpn/auth`
+
+Auto start service
+
+`systemctl enable openvpn@xxx`
+
+Trong đó xxx là tên của file cấu hình openvpn
