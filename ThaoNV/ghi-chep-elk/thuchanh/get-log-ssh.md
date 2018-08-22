@@ -223,7 +223,7 @@ Tạo Index cho ElasAlert
 - Tạo folder chứa rule và file rule
 
 ```
-mkdir -p alert_rules
+mkdir -p /root/elastalert/alert_rules/
 
 cat << EOF >> /root/elastalert/alert_rules/test.yml
 # The following values need to be configured for your environment
