@@ -5,6 +5,7 @@
 - [1. Hướng dẫn tách log ssh khỏi log secure](#1)
 - [2. Hướng dẫn cấu hình ELK lấy log SSH và filter](#2)
 - [3. Hướng dẫn cảnh báo dùng ElasAlert](#3)
+- [4. Hướng dẫn cấu hình geoip](#4)
 
 ### Lưu ý: Hướng dẫn này sử dụng ELK version 6 và OS CentOS 7
 
@@ -299,6 +300,38 @@ EOF
 - Kiểm tra
 
 <img src="https://i.imgur.com/4anLetW.png">
+
+<a name=""></a>
+### 4. Hướng dẫn cấu hình geoip
+
+Để cấu hình geoip, trước tiên ta cần filter được field source ip.
+
+Tại phần cấu hình filter trên logstash, ta thêm những cấu hình sau:
+
+```
+filter {
+    if [src_ipv4] {
+     geoip {
+       source => "src_ipv4"
+       target => "geoip"
+       database => "/opt/geoip/GeoLite2-City.mmdb"
+       add_field => [ "[geoip][coordinates]", "%{[geoip][longitude]}" ]
+       add_field => [ "[geoip][coordinates]", "%{[geoip][latitude]}" ]
+    }
+    mutate {
+     convert => [ "[geoip][coordinates]", "float" ]
+    }
+    }
+}
+```
+
+Tại phần cấu hình output cho logstash, ta để index mặc định là logstash-* .
+
+Sau khi cấu hình xong, tiến hành add biểu đồ lên Kibana
+
+<img src="https://i.imgur.com/V8FfTFo.png">
+
+<img src="https://media1.giphy.com/media/1zSiX3p2XEZpe/giphy.gif">
 
 **Link tham khảo**
 
