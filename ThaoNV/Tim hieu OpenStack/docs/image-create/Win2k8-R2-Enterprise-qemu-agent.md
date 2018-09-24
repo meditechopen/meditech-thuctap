@@ -139,6 +139,16 @@ Kiểm tra trong services.msc
 
 <img src="https://i.imgur.com/wZz5wV7.png">
 
+Truy cập vào "Device Manager" -> "Other Devices" -> "PCI Device" -> "Update Driver Software"
+
+<img src="https://i.imgur.com/X9fsFrn.png">
+
+Browse tới thư mục vừa được copy vào ổ C.
+
+<img src="https://i.imgur.com/2hTs15h.png">
+
+Driver đã đc cài đặt
+
 ### Bước 5: Cài đặt qemu-guest-agent
 #### *Chú ý: qemu-guest-agent là một daemon chạy trong máy ảo, giúp quản lý và hỗ trợ máy ảo khi cần (có thể cân nhắc việc cài thành phần này lên máy ảo)*
 
