@@ -72,11 +72,13 @@ Configure
 
 ```
 cd /tmp/ndoutils-2.1.3/
-./configure --prefix=/omd/sites/manager/usr/local/nagios/ --enable-mysql --disable-pgsql --with-ndo2db-user=manager -with-ndo2db-group=manager
+./configure --prefix=/omd/sites/manager/usr/local/nagios/ --enable-mysql --disable-pgsql --with-ndo2db-user=manager -with-ndo2db-group=manager --with-mysql-lib=/usr/lib/mysql
 make all
 ```
 
 `make install`
+
+`make install-config`
 
 Configure db
 
@@ -88,26 +90,32 @@ cd ..
 
 `echo 'show databases;' | mysql -u ndoutils -p'ndoutils_password' -h 192.168.100.39`
 
-`make install-config`
+```
+chown -R manager /omd/sites/manager/usr/local/
+
+```
+
 
 `su manager`
 
 ```
-chmod 766 config/ndo2db.cfg-sample config/ndomod.cfg-sample
 cp /tmp/ndoutils-2.1.3/src/ndomod-3x.o ~/usr/local/nagios/bin/ndomod.o
 cp /tmp/ndoutils-2.1.3/src/ndo2db-3x ~/usr/local/nagios/bin/ndo2db
 chmod 0744 ~/usr/local/nagios/bin/ndo*
-cp config/ndo2db.cfg-sample ~/usr/local/nagios/etc/ndo2db.cfg
-cp config/ndomod.cfg-sample ~/usr/local/nagios/etc/ndomod.cfg
+mv ~/usr/local/nagios/etc/ndo2db.cfg-sample ~/usr/local/nagios/etc/ndo2db.cfg
+mv ~/usr/local/nagios/etc/ndomod.cfg-sample ~/usr/local/nagios/etc/ndomod.cfg
 ```
 
 
 `vi ~/usr/local/nagios/etc/ndo2db.cfg`
 
 ```
+db_host=192.168.100.39
 db_user=ndoutils
 db_pass=ndoutils_password
 ```
+
+`exit`
 
 `make install-init`
 
@@ -128,6 +136,7 @@ systemctl start ndo2db.service
 
 if OK
 
+```
 [1535371000] ndomod: NDOMOD 2.1.3 (2017-04-13) Copyright (c) 2009 Nagios Core Development Team and Community Contributors
 [1535371000] ndomod: Successfully connected to data sink.  0 queued items to flush.
 [1535371000] ndomod registered for process data
@@ -157,3 +166,4 @@ if OK
 [1535371000] ndomod registered for contact status data'
 [1535371000] ndomod registered for adaptive contact data'
 [1535371000] Event broker module '/omd/sites/manager/usr/local/nagios/bin/ndomod.o' initialized successfully.
+```
