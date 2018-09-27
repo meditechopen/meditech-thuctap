@@ -4,11 +4,9 @@
 
 Tham khảo cách cài đặt check_mk agent [tại đây](https://github.com/thaonguyenvan/meditech-ghichep-omd/blob/master/docs/2.Install-agent.md)
 
-- B2. Clone plugin về
+- B2. Clone plugin về máy vừa cài agent
 
-`wget https://raw.githubusercontent.com/HeinleinSupport/check_mk/master/ceph/agents/plugins/ceph`
-
-Đặt tại thư mục `/usr/lib/check_mk_agent/plugins/`
+`cd /usr/lib/check_mk_agent/plugins/ && wget https://raw.githubusercontent.com/HeinleinSupport/check_mk/master/ceph/agents/plugins/ceph`
 
 Phân quyền
 
@@ -18,7 +16,7 @@ Chạy thử file plugins
 
 ```
 cd /usr/lib/check_mk_agent/plugins/
-.\ceph
+./ceph
 ```
 
 <img src="https://i.imgur.com/0lYJHci.png">
