@@ -103,3 +103,5 @@ firewall_driver = neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewal
 - Tạo một vm với dải mạng vừa tạo, tiến hành kiểm tra và ping tới máy ở bên ngoài OPS mà ta vừa cấu hình.
 
 <img src="https://i.imgur.com/4P8bNRB.png">
+
+**Lưu ý:** Port đấu nối với card data vm trên sw phải được cấu hình mode trunk. Ngoài ra ta cũng cần khai báo vlan theo đúng id vlan mà chúng ta thấy trên OPS. Ta chỉ có thể xem id này sau khi network được tạo bởi hiện tại neutron không cho phép ta specify id của vlan khi tạo tenant network.
