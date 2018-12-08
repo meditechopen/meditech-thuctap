@@ -51,15 +51,9 @@ Lưu ý: Sau khi thực hiện xong các bước tải jdk và weblogic về, d�
 
 <img src="https://i.imgur.com/jPgrZph.png">
 
-Chỉnh sửa file jolokia.cfg để phù hợp, ví dụ:
+Chỉnh sửa file `jolokia.cfg`, thêm `port = 7001` vào file cấu hình:
 
 ```
-server = "127.0.0.1"
-user = "None"
-password = "None"
-mode = "digest"
-suburi = "jolokia"
-instance = None
 port = 7001
 ```
 
@@ -67,8 +61,22 @@ port = 7001
 
 https://jolokia.org/download.html
 
+- Đổi tên file vừa tải về thành `jolokia.war`
+
 - Deploy thông qua giao diện web:
 
-<img src="https://i.imgur.com/K2m50LG.png">
+<img src="https://i.imgur.com/Vjeh5qR.png">
+
+<img src="https://i.imgur.com/DzKdJPl.png">
+
+<img src="https://i.imgur.com/ANByyOu.png">
+
+Còn lại để mặc định, sau khi deploy xong, truy cập vào địa chỉ `http://xxx:7001/jolokia`
+
+Nếu ko cần phải nhập thông tin xác thực và màn hình hiển thị như sau là ok
+
+<img src="https://i.imgur.com/pnnmUhe.png">
 
 - Tiến hành chạy thử script đặt tại `/usr/lib/check_mk_agent/plugins/`. Nếu chưa được, kiểm tra lại phần cấu hình.
+
+- Add host trên check mk
