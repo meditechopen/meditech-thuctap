@@ -17,11 +17,11 @@ Bạn có thể dử dụng virt-manager hoặc virt-install để tạo máy �
 Ở đây mình sử dụng virt-install
 
 ``` sh
-qemu-img create -f qcow2 /tmp/trusty.qcow2 10G
+qemu-img create -f qcow2 /tmp/u16.qcow2 10G
 
-virt-install --virt-type kvm --name trusty --ram 1024 \
-  --cdrom=/var/lib/libvirt/images/ubuntu-14.04.4-server-amd64.iso \
-  --disk /tmp/trusty.qcow2,format=qcow2 \
+virt-install --virt-type kvm --name u16 --ram 1024 \
+  --cdrom=/var/lib/libvirt/images/ubuntu-16.04.4-server-amd64.iso \
+  --disk /tmp/u16.qcow2,format=qcow2 \
   --network bridge=br0 \
   --graphics vnc,listen=0.0.0.0 --noautoconsole \
   --os-type=linux --os-variant=ubuntutrusty
@@ -47,15 +47,15 @@ Lưu ý: không dùng cấu hình tự động, mình đã thử và thấy máy
 - Install GRUB boot loader
 
 - Sau khi cài đặt xong, chọn `Continue` để reboot máy ảo.
-Lưu ý: Có một số trường hợp đối với ubuntu14.04, máy ảo sẽ không reboot kể cả khi nó báo là sẽ reboot
+Lưu ý: Có một số trường hợp đối với ubuntu16.04, máy ảo sẽ không reboot kể cả khi nó báo là sẽ reboot
 
 ## Bước 2 : Tắt máy ảo, xử lí trên KVM host
 
 - Chỉnh sửa file `.xml` của máy ảo, bổ sung thêm channel trong <devices> (để máy host giao tiếp với máy ảo sử dụng qemu-guest-agent), sau đó save lại
 
-`virsh edit trusty`
+`virsh edit u16`
 
-với `trusty` là tên máy ảo
+với `u16` là tên máy ảo
 
 ``` sh
 ...
@@ -112,6 +112,15 @@ Sau khi màn hình mở ra, lựa chọn duy nhất EC2
 
 <img src="http://i.imgur.com/o2e5Gwm.png">
 
+Thêm mới file `/etc/cloud/cloud.cfg.d/99-ec2-datasource.cfg` để disable warning
+
+```
+#cloud-config                                                       
+datasource:                                                          
+ Ec2:                                                                
+  strict_id: false
+```
+
 ## Bước 5: Cấu hình user nhận ssh keys
 
 Thay đổi file `/etc/cloud/cloud.cfg` để chỉ định user nhận ssh keys khi truyền vào, mặc định là `ubuntu`. Ở đây mình đổi thành `root`. Xóa hết những tùy chọn còn lại ở section `users`
@@ -129,6 +138,7 @@ users:
 Xóa nội dung file `/lib/udev/rules.d/75-persistent-net-generator.rules` và `/etc/udev/rules.d/70-persistent-net.rules` (file này được gen bởi file trước) bằng các sử dụng `:%d`  trong `vi`.
 
 Bạn cũng có thể thay thế file trên bằng 1 file rỗng. Lưu ý: không được xóa bỏ hoàn toàn file mà chỉ xóa nội dung.
+Nếu không có file thì có thể bỏ qua.
 
 ## Bước 7: Cấu hình để instance báo log ra console
 
@@ -152,6 +162,18 @@ mv netplug /etc/netplug/netplug
 chmod +x /etc/netplug/netplug
 ```
 
+Kiểm tra xem máy ảo nhận card mạng có tên là gì. Nếu là `eth` thì không cần chỉnh gì.
+Nếu là `ens` thì chỉnh file
+
+`/etc/netplug/netplugd.conf`
+
+`eth*`
+
+trở thành
+
+`ens*`
+
+
 ## Bước 9: Disable default config route
 
 Comment dòng `link-local 169.254.0.0` trong `/etc/networks`
@@ -164,8 +186,6 @@ Chú ý: qemu-guest-agent là một daemon chạy trong máy ảo, giúp quản 
 Để có thể thay đổi password máy ảo thì phiên bản qemu-guest-agent phải >= 2.5.0
 
 ``` sh
-apt-get install software-properties-common -y
-add-apt-repository cloud-archive:mitaka -y
 apt-get update
 apt-get install qemu-guest-agent -y
 ```
@@ -213,15 +233,15 @@ Bước 13 chỉ cần thực hiện ở lần đóng image đầu tiên.
 
 ## Bước 14: Clean up image
 
-`virt-sysprep -d trusty`
+`virt-sysprep -d u16`
 
 ## Bước 15: Undefine libvirt domain
 
-`virsh undefine trusty`
+`virsh undefine u16`
 
 ## Bước 16: Giảm kích thước máy ảo
 
-`virt-sparsify --compress /tmp/trusty.qcow2 /root/trusty.img`
+`virt-sparsify --compress /tmp/trusty.qcow2 /root/u16.img`
 
 **Lưu ý:**
 
@@ -235,7 +255,7 @@ Nếu img bạn sử dụng đang ở định dạng raw thì bạn cần thêm 
 glance image-create --name ubuntu \
 --disk-format qcow2 \
 --container-format bare \
---file /root/trusty.img \
+--file /root/u16.img \
 --visibility=public \
 --property hw_qemu_guest_agent=yes \
 --progress
