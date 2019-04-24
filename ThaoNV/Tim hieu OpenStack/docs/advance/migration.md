@@ -120,51 +120,41 @@ Dưới đây là các hình minh họa tiến trình khi thực hiện migrate 
 
 **Các bước cấu hình SSH Tunneling giữa các Nodes compute**
 
-- Cho phép user nova có thể login (thực hiện trên tất cả các node compute)
+- Cho phép user nova có thể login (thực hiện trên tất cả các node compute).
+Ví dụ ở đây ta muốn migrate vm từ node compute1 (192.168.10.1) tới node compute2 (192.168.10.2).
 
-`# usermod -s /bin/bash nova`
+`usermod -s /bin/bash nova`
 
 - Thực hiện tạo key pair trên node compute nguồn cho user nova
 
 ``` sh
-# su nova
-$ ssh-keygen
-$ echo 'StrictHostKeyChecking no' >> /var/lib/nova/.ssh/config
-$ cat /var/lib/nova/.ssh/id_rsa.pub >> /var/lib/nova/.ssh/authorized_keys
-$ exit
+su nova
+ssh-keygen
+echo 'StrictHostKeyChecking no' >> /var/lib/nova/.ssh/config
+exit
 ```
 
-- Thực hiện với quyền root, scp key pari tới compute node
+- Thực hiện với quyền root, scp key pair tới compute node. Nhập mật khẩu khi được yêu cầu.
 
 ``` sh
-scp /var/lib/nova/.ssh/id_rsa computeNodeAddress:~/
-scp /var/lib/nova/.ssh/id_rsa.pub computeNodeAddress:~/
+scp /var/lib/nova/.ssh/id_rsa.pub root@compute2:/root/
 ```
 
 - Trên node đích, thay đổi quyền của key pair cho user nova và add key pair đó vào SSH.
 
 ``` sh
-$ mkdir -p /var/lib/nova/.ssh
-$ cp id_rsa /var/lib/nova/.ssh/
-$ cat id_rsa.pub >> /var/lib/nova/.ssh/authorized_keys
-$ chown nova:nova /var/lib/nova/.ssh/authorized_keys
-$ chown nova:nova /var/lib/nova/.ssh/id_rsa
-$ echo 'StrictHostKeyChecking no' >> /var/lib/nova/.ssh/config
+mkdir -p /var/lib/nova/.ssh
+cat /root/id_rsa.pub >> /var/lib/nova/.ssh/authorized_keys
+echo 'StrictHostKeyChecking no' >> /var/lib/nova/.ssh/config
+chown -R nova:nova /var/lib/nova/.ssh
 ```
 
-- Kiểm tra để chắc chắn rằng user `nova` có thể login được vào node compute còn lại mà không cần sử dụng password
+- Từ node compute1 kiểm tra để chắc chắn rằng user `nova` có thể login được vào node compute2 còn lại mà không cần sử dụng password
 
 ``` sh
-# su nova
-$ ssh computeNodeAddress
-$ exit
-```
-
-- Thực hiện restart service (Thực hiện trên cả node nguồn và đích)
-
-``` sh
-systemctl restart libvirtd.service
-systemctl restart openstack-nova-compute.service
+su nova
+ssh 192.168.10.2
+exit
 ```
 
 **Thực hiện migrate máy ảo**
@@ -196,22 +186,12 @@ Các yêu cầu chung:
 
 **Cấu hình migration**
 
-- Sửa thông tin trong libvirt
-cp /etc/libvirt/libvirtd.conf /etc/libvirt/libvirtd.conf.orig
-
-``` sh
-sed -i 's|#listen_tls = 0|listen_tls = 0|'g /etc/libvirt/libvirtd.conf
-sed -i 's|#listen_tcp = 1|listen_tcp = 1|'g /etc/libvirt/libvirtd.conf
-sed -i 's|#tcp_port = "16509"|tcp_port = "16509"|'g /etc/libvirt/libvirtd.conf
-sed -i 's|#auth_tcp = "sasl"|auth_tcp = "none"|'g /etc/libvirt/libvirtd.conf
-
-cp /etc/sysconfig/libvirtd /etc/sysconfig/libvirtd.orig
-sed -i 's|#LIBVIRTD_ARGS="--listen"|LIBVIRTD_ARGS="--listen"|'g /etc/sysconfig/libvirtd
 ```
-
-- Cập nhậy URL trong file `/etc/nova/nova.conf`
-
-`live_migration_uri=qemu+tcp://nova@%s/system`
+sed -i 's/#listen_tls = 0/listen_tls = 0/g' /etc/libvirt/libvirtd.conf
+sed -i 's/#listen_tcp = 1/listen_tcp = 1/g' /etc/libvirt/libvirtd.conf
+sed -i 's/#auth_tcp = "sasl"/auth_tcp = "none"/g' /etc/libvirt/libvirtd.conf
+sed -i 's/#LIBVIRTD_ARGS="--listen"/LIBVIRTD_ARGS="--listen"/g' /etc/sysconfig/libvirtd
+```
 
 - Restart lại dịch vụ:
 

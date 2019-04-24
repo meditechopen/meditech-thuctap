@@ -27,6 +27,9 @@ virt-install --virt-type kvm --name trusty --ram 1024 \
   --os-type=linux --os-variant=ubuntutrusty
 ```
 
+Lưu ý: Virtual size mà bạn chọn cho ổ đĩa sẽ là size tối thiểu của volume nếu bạn muốn boot máy ảo từ volume sau này.
+Nên tạo máy ảo với định dạng file ổ đĩa là qcow2 để không mất công chuyển đổi sau này.
+
 **Một số lưu ý trong quá trình cài đặt**
 
 - Đối với hostname, các bạn có thể đặt mặc định bởi ta dùng cloud-init để set sau.
@@ -111,11 +114,13 @@ Sau khi màn hình mở ra, lựa chọn duy nhất EC2
 
 ## Bước 5: Cấu hình user nhận ssh keys
 
-Thay đổi file `/etc/cloud/cloud.cfg` để chỉ định user nhận ssh keys khi truyền vào, mặc định là `ubuntu`. Ở đây mình đổi thành admin. Xóa hết những tùy chọn còn lại ở section `users`
+Thay đổi file `/etc/cloud/cloud.cfg` để chỉ định user nhận ssh keys khi truyền vào, mặc định là `ubuntu`. Ở đây mình đổi thành `root`. Xóa hết những tùy chọn còn lại ở section `users`
 
 ``` sh
+disable_root: false
+
 users:
-  - name: admin
+  - name: root
     (...)
 ```
 

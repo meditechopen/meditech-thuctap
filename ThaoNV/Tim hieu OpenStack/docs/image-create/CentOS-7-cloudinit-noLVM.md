@@ -2,7 +2,7 @@
 
 ## Bước 1: Tạo máy ảo bằng kvm
 
-Bạn có thể dử dụng virt-manager hoặc virt-install để tạo máy ảo
+Bạn có thể dử dụng bất kì công cụ nào để tạo máy ảo.
 
 Ở đây mình sử dụng virt-install
 
@@ -15,6 +15,9 @@ Bạn có thể dử dụng virt-manager hoặc virt-install để tạo máy �
   --os-type=linux --os-variant=rhel7 \
   --location=/var/lib/libvirt/images/CentOS-7-x86_64-Minimal-1611.iso
 ```
+
+Lưu ý: Virtual size mà bạn chọn cho ổ đĩa sẽ là size tối thiểu của volume nếu bạn muốn boot máy ảo từ volume sau này.
+Nên tạo máy ảo với định dạng file ổ đĩa là qcow2 để không mất công chuyển đổi sau này.
 
 **Một số lưu ý trong quá trình cài đặt**
 

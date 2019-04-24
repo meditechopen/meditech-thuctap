@@ -8,7 +8,7 @@
 
 - Trong trường hợp máy bạn đã cài sẵn openvpn client, tải về file nén chứa các file xác thực.
 
-<img src="../images/35.png">
+<img src="../images/55.png">
 
 - Sau đó giải nén và copy toàn bộ thư mục vào foler `C:\Program Files\OpenVPN`
 
@@ -60,7 +60,7 @@ apt-get install openvpn
 
 - Download gói nén chứa các file xác thực
 
-<img src="../images/35.png">
+<img src="../images/55.png">
 
 - Giải nén và copy vào thư mục `/etc/openvpn`
 
@@ -103,3 +103,26 @@ Tiến hành comment lại dòng số 5 trong file cấu hình client (`ncp-ciph
 - Chuyển sang tab khác và kiểm tra ip sau đó ping thử tới các máy có cùng dải mạng LAN
 
 <img src="../images/52.png">
+
+## Hướng dẫn autostart openvpn trên ubuntu
+
+tạo file `auth` trong thư mục `/etc/openvpn`
+
+```
+vi /etc/openvpn/auth
+
+thaonv
+hihihoho
+```
+
+Trong đó `thaonv` là username và `hihihoho` là password của tk openvpn
+
+Sửa file conf trong `/etc/openvpn`
+
+`auth-user-pass /etc/openvpn/auth`
+
+Auto start service
+
+`systemctl enable openvpn@xxx`
+
+Trong đó xxx là tên của file cấu hình openvpn

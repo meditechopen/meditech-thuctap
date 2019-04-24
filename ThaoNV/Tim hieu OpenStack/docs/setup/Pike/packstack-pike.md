@@ -1,4 +1,4 @@
-# Hướng dẫn cài đặt OpenStack Newton bằng Packstack trên CENTOS 7
+# Hướng dẫn cài đặt OpenStack Pike bằng Packstack trên CENTOS 7
 
 
 ## 1. Các bước chuẩn bị
@@ -61,9 +61,11 @@
   sudo systemctl enable network
   sudo systemctl start network
 
-  sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
+	sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+	sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
+
   ```
-- Khai báo repos cho OpenStack Newton
+- Khai báo repos cho OpenStack Pike
 
 ```sh
     sudo yum install -y centos-release-openstack-pike
@@ -104,10 +106,11 @@
   sudo systemctl enable network
   sudo systemctl start network
 
-  sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
+	sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+	sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
   ```
 
-- Khai báo repos cho OpenStack Newton
+- Khai báo repos cho OpenStack Pike
 
 ```sh
     sudo yum install -y centos-release-openstack-pike
@@ -138,12 +141,6 @@ Làm tương tự như với compute1
 packstack --allinone \
     --default-password=Welcome123 \
     --os-cinder-install=y \
-    --os-ceilometer-install=y \
-    --os-trove-install=n \
-    --os-ironic-install=n \
-    --os-swift-install=y \
-    --os-gnocchi-install=y \
-    --os-aodh-install=y \
     --os-neutron-ovs-bridge-mappings=extnet:br-ex \
     --os-neutron-ovs-bridge-interfaces=br-ex:ens3 \
     --os-neutron-ovs-bridges-compute=br-ex \

@@ -26,6 +26,9 @@ Bạn có thể dử dụng virt-manager hoặc virt-install để tạo máy �
   --location=/var/lib/libvirt/images/CentOS-7-x86_64-Minimal-1611.iso
 ```
 
+Lưu ý: Virtual size mà bạn chọn cho ổ đĩa sẽ là size tối thiểu của volume nếu bạn muốn boot máy ảo từ volume sau này.
+Nên tạo máy ảo với định dạng file ổ đĩa là qcow2 để không mất công chuyển đổi sau này.
+
 **Một số lưu ý trong quá trình cài đặt**
 
 - Thay đổi Ethernet status sang `ON` (mặc định là OFF). Bên cạnh đó, hãy chắc chắn máy ảo nhận được dhcp
@@ -126,6 +129,8 @@ Sử dụng câu lệnh sau để check
 # yum update
 ```
 
+**Lưu ý:** Nếu bạn muốn đóng đúng phiên bản mong muốn thì không chạy lệnh này
+
 - Để cho phép hypervisor có thể reboot hoặc shutdown instance, bạn sẽ phải cài acpi service.
 
 ``` sh
@@ -135,7 +140,7 @@ Sử dụng câu lệnh sau để check
 
 - Cài đặt qemu guest agent, cloud-init và cloud-utils:
 
-`yum install qemu-guest-agent cloud-init cloud-utils`
+`yum install qemu-guest-agent cloud-init cloud-utils cloud-utils-growpart dracut-modules-growroot`
 
 - Kích hoạt và khởi động qemu-guest-agent service
 
@@ -168,9 +173,14 @@ Kiểm tra phiên bản qemu-ga bằng lệnh:
 disable_root: 0
 ssh_pwauth:   1
 ...
-users:
-  - name: root
-  (...)
+system_info:
+  default_user:
+    name: root
+  distro: rhel
+  paths:
+    cloud_dir: /var/lib/cloud
+    templates_dir: /etc/cloud/templates
+  ssh_svcname: sshd
 ```
 
 **Lưu ý:**
@@ -196,7 +206,10 @@ ssh_pwauth: True
 
 ## Bước 4: Tắt máy ảo
 
-`# poweroff`
+```
+yum clean all
+poweroff
+```
 
 ## Bước 5: Cài libguestfs-tools để xử lý image
 
@@ -210,7 +223,7 @@ Bước 5 chỉ cần thực hiện ở lần đóng image đầu tiên.
 
 ## Bước 6: Xóa bỏ MAC address details
 
-`# virt-sysprep -d centos`
+`# virt-sysprep -a centos.qcow2`
 
 ## Bước 7: Undefine the libvirt domain
 

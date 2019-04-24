@@ -29,6 +29,9 @@ virt-install --connect qemu:///system \
   --vnc --os-type windows --os-variant win2k8
 ```
 
+Lưu ý: Virtual size mà bạn chọn cho ổ đĩa sẽ là size tối thiểu của volume nếu bạn muốn boot máy ảo từ volume sau này.
+Nên tạo máy ảo với định dạng file ổ đĩa là qcow2 để không mất công chuyển đổi sau này.
+
 ### Bước 2: Chỉnh sửa file .xml
 
 Sau khi máy ảo được bật lên, tiến hành tắt máy ảo và bổ sung thêm channel trong <devices> (để máy host giao tiếp với máy ảo sử dụng qemu-guest-agent), sau đó save lại
@@ -135,6 +138,16 @@ PS C:\amd6>. \blnsvr.exe -i
 Kiểm tra trong services.msc
 
 <img src="https://i.imgur.com/wZz5wV7.png">
+
+Truy cập vào "Device Manager" -> "Other Devices" -> "PCI Device" -> "Update Driver Software"
+
+<img src="https://i.imgur.com/X9fsFrn.png">
+
+Browse tới thư mục vừa được copy vào ổ C.
+
+<img src="https://i.imgur.com/2hTs15h.png">
+
+Driver đã đc cài đặt
 
 ### Bước 5: Cài đặt qemu-guest-agent
 #### *Chú ý: qemu-guest-agent là một daemon chạy trong máy ảo, giúp quản lý và hỗ trợ máy ảo khi cần (có thể cân nhắc việc cài thành phần này lên máy ảo)*

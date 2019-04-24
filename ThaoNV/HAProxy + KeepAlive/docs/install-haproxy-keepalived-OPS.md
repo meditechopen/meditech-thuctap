@@ -30,7 +30,7 @@ Sử dụng câu lệnh
 
 Bạn có thể chỉ định ip bằng tùy chọn `--fixed-ip`
 
-Ta sẽ sử dụng port này sau.
+Ta sẽ sử dụng port này để chứa IP VIP.
 
 <a name="3"></a>
 ## 3.Cấu hình haproxy + keepalived
@@ -44,22 +44,25 @@ Tham khảo [tại đây](https://github.com/thaonguyenvan/meditech-thuctap/blob
 `vi /etc/haproxy/haproxy.cfg`
 
 ``` sh
-frontend http
+global
+        daemon
+        maxconn 256
 
-  bind *:80
+defaults
+        mode http
+        timeout connect 5000ms
+        timeout client 50000ms
+        timeout server 50000ms
+        stats enable
+        stats uri /monitor
+        stats auth root:meditech2017
 
-  default_backend web-servers
-backend web-servers
-
-    balance     roundrobin
-
-    option httpchk GET /
-
-    option  httplog
-
-    server haproxy1 192.168.100.52:80 check
-
-    server haproxy2 192.168.100.55:80 check
+listen httpd
+        bind 192.168.100.51:80
+        balance  roundrobin
+        mode  http
+        server haproxy1 192.168.100.52:80 check
+        server haproxy2 192.168.100.55:80 check
 ```
 
 Trong đó `192.168.100.52` và `192.168.100.55` là 2 web server của mình. Trên đây mình có cấu hình một trang web đơn giản:
@@ -75,31 +78,24 @@ Tương tự với web server còn lại
 `vi /etc/keepalived/keepalived.conf`
 
 ``` sh
-! Configuration File for keepalived
+vrrp_script chk_haproxy {           
+        script "killall -0 haproxy"     
+        interval 2                      
+        weight 2                        
+}
 
- vrrp_script haproxy {
-   script "killall -0 haproxy"
-   interval 2
-   weight 2
- }
- vrrp_instance VI_1 {
-     state MASTER
-     interface eth0
-     virtual_router_id 71
-     priority 100
-     advert_int 1
-     smtp_alert
-     authentication {
-         auth_type PASS
-         auth_pass 1111
-     }
-     virtual_ipaddress {
-         192.168.10.51 dev eth0
-     }
-     track_script {
-       haproxy
-     }
- }
+vrrp_instance VI_1 {
+        interface eth0
+        state MASTER
+        virtual_router_id 51
+        priority 101                    
+        virtual_ipaddress {
+            192.168.100.51         
+        }
+        track_script {
+            chk_haproxy
+        }
+}
 ```
 
 Trong đó `192.168.10.51` là ip của port VIP mà ta đã tạo lúc đầu.
@@ -116,13 +112,6 @@ service keepalived restart
 <a name="4"></a>
 ## 4. Cấu hình trên OPS
 
-**Cấu hình Security Groups**
-
-``` sh
-openstack security group create LB_group
-
-openstack security group rule create --protocol 112 --ingress --ethertype IPv4 --src-group LB_group LB_group
-```
 
 **Cấu hình neutron**
 
